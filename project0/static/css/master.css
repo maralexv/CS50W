@@ -1,6 +1,6 @@
 html {
-  color: #2c272d;
-  background-color: #eaeaea;
+  color: #201E2A;
+  background-color: #FBFAFB;
 }
 
 body {
@@ -46,17 +46,16 @@ a {
   text-decoration: none;
   background-color: transparent;
   color: inherit;
-  opacity: 0.75;
+  opacity: 0.8;
 }
 
 a:active,
 a:hover {
   outline: 0;
-  padding: 0px;
-  text-decoration: underline;
-  border: 2px solid grey;
-  border-radius: 4px;
-  background-color: lightgrey;
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  background-color: #B89A92;
 }
 
 img {
@@ -78,7 +77,7 @@ h6, h5, h4, h3, h2, h1 {
   margin-top: 2rem;
   margin-bottom: 2rem;
   font-family: "Raleway", sans-serif;
-  color: #bd0000;
+  color: #E65C2E;
   font-weight: 600;
   background-color: inherit;
 }
@@ -111,7 +110,7 @@ p {
   display: inline-block;
   margin-top: 0;
   font-family: "Lato", sans-serif;
-  color: #2c272d;
+  color: #201E2A;
   background-color: inherit;
 }
 
@@ -228,11 +227,11 @@ sup {
   min-width: 12em;
   margin: 1em 1em 1em 1em;
   padding: 1em;
-  border: 1px solid #bd0000;
+  border: 1px solid #B89A92;
   border-radius: 0.4rem;
-  box-shadow: 3px 3px 5px #bd0000;
+  box-shadow: 3px 3px 5px #B89A92;
   word-wrap: break-word;
-  background-color: #eaeaea;
+  background-color: #FBFAFB;
   background-clip: padding-box;
 }
 
@@ -253,7 +252,7 @@ sup {
   left: 0;
   top: 0;
   height: 100%;
-  background-color: #bd0000;
+  background-color: #B89A92;
   z-index: 3;
 }
 
@@ -267,19 +266,23 @@ sup {
 
 .menu-item {
   position: relative;
-  padding: 0.5rem;
-  margin: 0.5rem;
+  padding: 0.3rem;
+  margin: 0.15rem 1rem 0.15rem 1rem;
   height: 100%;
+  flex-basis: 0;
+  flex-grow: 1;
+  text-decoration: none;
   font-family: "Raleway", sans-serif;
   font-size: 1.5rem;
   font-weight: 500;
-  color: #2c272d;
+  color: #201E2A;
+  text-align: center;
 }
 
 .menu-item:hover,
 .menu-item:focus {
   text-decoration: none;
-  transform: scale(1.1);
+  transform: scale(1.09);
 }
 
 .menu-fixed-horizontal {
@@ -290,7 +293,8 @@ sup {
   width: 100%;
   white-space: nowrap;
   vertical-align: middle;
-  background-color: #bd0000;
+  background-color: #B89A92;
+  box-shadow: 0px 1px 4px 1px grey;
   z-index: 3;
 }
 
@@ -303,7 +307,7 @@ sup {
   width: 100%;
   white-space: nowrap;
   vertical-align: middle;
-  background-color: #bd0000;
+  background-color: #B89A92;
   z-index: 3;
 }
 
@@ -314,7 +318,7 @@ sup {
   font-family: "Lato", sans-serif;
   font-size: 1.15rem;
   font-weight: 400;
-  color: #2c272d;
+  color: #201E2A;
 }
 
 /*# sourceMappingURL=master.css.map */
