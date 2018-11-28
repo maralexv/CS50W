@@ -1,17 +1,18 @@
 $main-font: 'Lato', sans-serif;
 $big-font: 'Raleway', sans-serif;
-$prime-color: #201E2A;
-$sec-color: #FBFAFB;
-$ter-color: #B89A92;
-$quat-color: #E65C2E;
+$dark-color: #201E2A;
+$light-color: #FBFAFB;
+$shad-color: hsla(13, 21%, 65%, 1);
+$shad2-color: hsla(13, 21%, 65%, 0.5);
+$emph-color: #E65C2E;
 $radius: 4px;
 
 
 // ----------- Initial Settings ----------- //
 
 html {
-  color: $prime-color;
-  background-color: $sec-color;
+  color: $dark-color;
+  background-color: $light-color;
 }
 
 body {
@@ -60,7 +61,7 @@ a {
   text-decoration: none;
   background-color: transparent;
   color: inherit;
-  opacity: 0.8;
+  opacity: 0.7;
 }
 
 a:active,
@@ -69,9 +70,10 @@ a:hover {
   padding: 0;
   margin: 0;
   text-decoration: none;
-  // border: 2px solid grey;
-  // border-radius: 4px;
-  background-color: $ter-color;
+  border: 0 solid $shad-color;
+  border-radius: 4px;
+  background-clip: padding-box;
+  background-color: $shad2-color;
 }
 
 
@@ -92,53 +94,70 @@ hr {
 
 
 %heading {
-  display: block;
   margin-top: 2rem;
   margin-bottom: 2rem;
   font-family: $big-font;
-  color: $quat-color;
+  color: $emph-color;
   font-weight: 600;
   background-color: inherit;
 }
 
 h1 {
 @extend %heading;
-font-size: 6rem;
+font-size: 4em;
 }
 
 h2 {
 @extend %heading;
-font-size: 5rem;
+font-size: 3.2em;
 }
 
 h3 {
 @extend %heading;
-font-size: 4rem;
+font-size: 2.6em;
 }
 
 h4 {
 @extend %heading;
-font-size: 3rem;
+font-size: 2em;
 }
 
 h5 {
 @extend %heading;
-font-size: 2rem;
+font-size: 1.4em;
 }
 
 h6 {
 @extend %heading;
-font-size: 1rem;
+font-size: 1em;
 }
 
+@media screen and (min-width: 576) {
+  h1{font-size: 2.5em;}
+  h2{font-size: 2.2em;}
+  h3{font-size: 1.9em;}
+  h4{font-size: 1.4em;}
+  h5{font-size: 1em;}
+  h6{font-size: 0.9em;}
+}
+
+@media screen and (max-width: 768px) {
+  h1{font-size: 3em;}
+  h2{font-size: 2.5em;}
+  h3{font-size: 2em;}
+  h4{font-size: 1.5em;}
+  h5{font-size: 1em;}
+  h6{font-size: 0.95em;}
+}
 
 p {
-  display: inline-block;
   margin-top: 0;
   font-family: $main-font;
-  color: $prime-color;
+  font-size: 1.3vw;
+  color: $dark-color;
   background-color: inherit;
 }
+
 
 ol,
 ul,
@@ -146,6 +165,7 @@ dl {
   margin-top: 0;
   margin-bottom: 1rem;
   line-height: 1.75;
+  font-size: 1.25vw;
 }
 
 ol ol,
@@ -154,17 +174,6 @@ ol ul,
 ul ol {
   margin-bottom: 0;
 }
-
-sub,
-sup {
-  position: relative;
-  font-size: 75%;
-  line-height: 0;
-  vertical-align: baseline;
-}
-
-sub { bottom: -.25em; }
-sup { top: -.5em; }
 
 
 
@@ -179,7 +188,7 @@ sup { top: -.5em; }
   padding: 1em 1em 1em 1em;
 }
 
-@media (min-width: 576px) {
+@media (max-width: 576px) {
   .col {
     max-width: 540px;
   }
@@ -261,11 +270,11 @@ sup { top: -.5em; }
   min-width: 12em;
   margin: 1em 1em 1em 1em ;
   padding: 1em;
-  border: 1px solid $ter-color;
+  border: 1px solid $shad-color;
   border-radius: 0.4rem;
-  box-shadow: 3px 3px 5px $ter-color;
+  box-shadow: 3px 3px 5px $shad-color;
   word-wrap: break-word;
-  background-color: $sec-color;
+  background-color: $light-color;
   background-clip: padding-box;
 }
 
@@ -283,43 +292,50 @@ sup { top: -.5em; }
 
 // ---------- Menues ------------ //
 
-.menu-fixed {
+.menu-fixed_vertical {
   position: fixed;
   display: inline-block;
   left: 0;
   top: 0;
   height: 100%;
-  background-color: $ter-color;
+  overflow: auto;
+  background-color: $emph-color;
+  box-shadow: 1px 0px 4px 1px $shad-color;
   z-index: 3;
-}
 
-.menu-list {
-  position: relative;
-  display: inherit;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
+  .menu-list {
+    position: relative;
+    display: inherit;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
 
-.menu-item {
-  position: relative;
-  padding: 0.3rem;
-  margin: 0.15rem 1rem 0.15rem 1rem;
-  height: 100%;
-  flex-basis: 0;
-  flex-grow: 1;
-  text-decoration: none;
-  font-family: $big-font;
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: $prime-color;
-  text-align: center;
-}
+  .menu-item {
+    position: relative;
+    padding: 0.3rem;
+    margin: 1rem 0.15rem 1rem 0.15rem;
+    height: 100%;
+    flex-basis: 0;
+    flex-grow: 1;
+    text-decoration: none;
+    font-family: $big-font;
+    font-size: 1.6vw;
+    font-weight: 600;
+    color: $light-color;
+    text-align: center;
 
-.menu-item:hover, 
-.menu-item:focus {
-  text-decoration: none;
-  transform: scale(1.09);
+    a {
+    display: block;
+    padding: 6px 6px;
+    text-decoration: none;
+    }
+
+    a.active {
+    background-color: $shad-color;
+    color: $light-color;
+    }
+  }
 }
 
 
@@ -331,33 +347,62 @@ sup { top: -.5em; }
   width: 100%;
   white-space: nowrap;
   vertical-align: middle;
-  background-color: $ter-color;
-  box-shadow: 0px 1px 4px 1px grey;
+  background-color: $emph-color;
+  box-shadow: 0px 1px 4px 1px $shad-color;
   z-index: 3;
+
+  .menu-list {
+    position: relative;
+    display: inherit;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .menu-item {
+    position: relative;
+    padding: 0.2rem;
+    margin: 0.1rem 1rem 0.1rem 1rem;
+    height: 100%;
+    flex-basis: 0;
+    flex-grow: 1;
+    text-decoration: none;
+    font-family: $big-font;
+    font-size: 1.6vw;
+    font-weight: 600;
+    color: $light-color;
+    text-align: center;
+
+    a {
+    display: block;
+    padding: 6px 6px;
+    text-decoration: none;
+    }
+
+    a.active {
+    background-color: $shad-color;
+    color: $light-color;
+    }
+  }
 }
 
-
-.footer-fixed {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  white-space: nowrap;
-  vertical-align: middle;
-  background-color: $ter-color;
-  z-index: 3;
+footer {
+  .footer-fixed {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    white-space: nowrap;
+    vertical-align: middle;
+    margin: auto;
+    font-family: $main-font;
+    font-size: 1.5vw;
+    font-weight: 400;
+    color: $light-color;
+    background-color: $emph-color;
+    z-index: 3;
+  }
 }
-
-.footer-item {
-  position: relative;
-  padding: 0;
-  margin: auto;
-  font-family: $main-font;
-  font-size: 1.15rem;
-  font-weight: 400;
-  color: $prime-color;
-}
-
 
