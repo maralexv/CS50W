@@ -5,6 +5,7 @@ $light-color: #FBFAFB;
 $shad-color: hsla(13, 21%, 65%, 1);
 $shad2-color: hsla(13, 21%, 65%, 0.5);
 $emph-color: #E65C2E;
+$complement-color: #2eb8e6;
 $radius: 4px;
 
 
@@ -24,58 +25,56 @@ body {
   padding: 1%;
 }
 
-
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
 header,
-hgroup,
 main,
-menu,
 nav,
-section,
-summary {
+section {
   display: block;
 }
 
+table {
+  border-collapse: collapse;
+  border: 1px solid $emph-color;
+  width: 100%;
+  margin: auto;
+  background-color: transparent;
 
-audio,
-canvas,
-progress,
-video {
-  display: inline-block;
-  vertical-align: baseline;
+  th, td {
+    padding: 0.8em;
+    vertical-align: middle;
+    border: 1px solid $emph-color;
+  }
+
+  th {
+    font-weight: 800;
+    font-size: 1.5vw;
+    color: $light-color;
+    background-color: $emph-color;
+  }
+
+  td {
+    font-size: 1.3vw;
+  }
+
+  caption {
+    font-size: inherit;
+    font-style: italic;
+  }
 }
-
-audio:not([controls]) {
-  display: none;
-  height: 0;
-}
-
 
 a {
   padding: 2px;
   text-decoration: none;
   background-color: transparent;
   color: inherit;
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
 a:active,
 a:hover {
-  outline: 0;
-  padding: 0;
-  margin: 0;
-  text-decoration: none;
-  border: 0 solid $shad-color;
-  border-radius: 4px;
-  background-clip: padding-box;
-  background-color: $shad2-color;
+  color: inherit;
+  text-decoration: underline;
 }
-
 
 img { 
   max-width: 100%;
@@ -83,6 +82,11 @@ img {
   vertical-align: middle;
   border-style: none;
   display: block;
+}
+
+.img-border {
+  border: 4px solid $shad-color; 
+  box-shadow: 1px 1px 5px 6px $shad2-color;
 }
 
 
@@ -158,10 +162,7 @@ p {
   background-color: inherit;
 }
 
-
-ol,
-ul,
-dl {
+ol, ul, dl {
   margin-top: 0;
   margin-bottom: 1rem;
   line-height: 1.75;
@@ -175,6 +176,22 @@ ul ol {
   margin-bottom: 0;
 }
 
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2em;
+  vertical-align: middle;
+  margin: auto;
+  padding: 8px;
+  font-family: $main-font;
+  font-size: 1.2vw;
+  color: $light-color;
+  background-color: $emph-color;
+  white-space: nowrap;
+  z-index: 3;
+}
 
 
 // ----------- Alignments  ----------- //
@@ -272,25 +289,30 @@ ul ol {
   padding: 1em;
   border: 1px solid $shad-color;
   border-radius: 0.4rem;
-  box-shadow: 3px 3px 5px $shad-color;
+  // box-shadow: 3px 3px 5px $shad-color;
   word-wrap: break-word;
   background-color: $light-color;
   background-clip: padding-box;
+
+  .box-line > hr {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .box-header > h1, h2, h3, h4, h5, h6 {
+    display: inline-block;
+    margin-top: 2px;
+    align-vertical: top;
+  }
+
 }
 
-.box-line > hr {
-  margin-right: 0;
-  margin-left: 0;
-}
-
-.box-header > h1, h2, h3, h4, h5, h6 {
-  display: inline-block;
-  margin-top: 2px;
-  align-vertical: top;
+.box:hover {
+  transform: scale(1.02);
 }
 
 
-// ---------- Menues ------------ //
+// ---------- Menues / NAVs ------------ //
 
 .menu-fixed_vertical {
   position: fixed;
@@ -326,14 +348,18 @@ ul ol {
     text-align: center;
 
     a {
-    display: block;
-    padding: 6px 6px;
-    text-decoration: none;
+      display: block;
+      padding: 6px 6px;
+      text-decoration: none;
     }
 
     a.active {
-    background-color: $shad-color;
-    color: $light-color;
+      background-color: $shad-color;
+      color: $light-color;
+    }
+
+    a:hover, a:focus {
+      background-color: $shad2-color;
     }
   }
 }
@@ -374,35 +400,31 @@ ul ol {
     text-align: center;
 
     a {
-    display: block;
-    padding: 6px 6px;
-    text-decoration: none;
+      display: block;
+      padding: 6px 6px;
+      text-decoration: none;
     }
 
     a.active {
-    background-color: $shad-color;
-    color: $light-color;
+      background-color: $shad-color;
+      color: $light-color;
+    }
+
+    a:hover, a:focus {
+      background-color: $shad2-color;
     }
   }
 }
 
-footer {
-  .footer-fixed {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    white-space: nowrap;
-    vertical-align: middle;
-    margin: auto;
-    font-family: $main-font;
-    font-size: 1.5vw;
-    font-weight: 400;
-    color: $light-color;
-    background-color: $emph-color;
-    z-index: 3;
-  }
+
+// ----------- SPECIAL IDs  ----------- //
+
+#width-max {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: auto;
 }
+
+
 
