@@ -33,12 +33,12 @@ table th, table td {
 }
 table th {
   font-weight: 800;
-  font-size: 2.5vh;
+  font-size: 3vh;
   color: #FBFAFB;
   background-color: #E65C2E;
 }
 table td {
-  font-size: 2.2vh;
+  font-size: 2.5vh;
 }
 table caption {
   font-size: inherit;
@@ -81,7 +81,7 @@ hr {
 h6, h5, h4, h3, h2, h1 {
   margin-top: 2rem;
   margin-bottom: 2rem;
-  font-family: 2.5vh;
+  font-family: 3vh;
   color: #E65C2E;
   font-weight: 600;
   background-color: inherit;
@@ -164,7 +164,7 @@ h6 {
 p {
   margin-top: 0;
   font-family: "Lato", sans-serif;
-  font-size: 2.2vh;
+  font-size: 2.5vh;
   color: #201E2A;
   background-color: inherit;
 }
@@ -173,7 +173,7 @@ ol, ul, dl {
   margin-top: 0;
   margin-bottom: 1rem;
   line-height: 1.75;
-  font-size: 2.2vh;
+  font-size: 2.5vh;
 }
 
 ol ol,
@@ -193,7 +193,7 @@ footer {
   margin: auto;
   padding: 8px;
   font-family: "Lato", sans-serif;
-  font-size: 2.2vh;
+  font-size: 2.5vh;
   color: #FBFAFB;
   background-color: #E65C2E;
   white-space: nowrap;
@@ -328,7 +328,7 @@ footer {
   flex-basis: 0;
   flex-grow: 1;
   text-decoration: none;
-  font-family: 2.5vh;
+  font-family: 3vh;
   font-size: 3vh;
   font-weight: 600;
   color: #FBFAFB;
@@ -375,7 +375,7 @@ footer {
   flex-basis: 0;
   flex-grow: 1;
   text-decoration: none;
-  font-family: 2.5vh;
+  font-family: 3vh;
   font-size: 3vh;
   font-weight: 600;
   color: #FBFAFB;
