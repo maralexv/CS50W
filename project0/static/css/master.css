@@ -200,7 +200,7 @@ footer {
   z-index: 3;
 }
 
-.col {
+.column {
   display: block;
   width: 100%;
   margin-right: auto;
@@ -210,21 +210,21 @@ footer {
 }
 
 @media (max-width: 576px) {
-  .col {
+  .column {
     max-width: 540px;
   }
 }
 @media (min-width: 768px) {
-  .col {
+  .column {
     max-width: 720px;
   }
 }
 @media (min-width: 992px) {
-  .col {
+  .column {
     max-width: 960px;
   }
 }
-.row-edges, .row-center, .row-right, .row {
+.row-edges, .row-center, .row-right, .row-left {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
@@ -233,7 +233,7 @@ footer {
   margin: 0 auto 0 auto;
 }
 
-.row {
+.row-left {
   align-items: flex-start;
   justify-content: flex-start;
 }
