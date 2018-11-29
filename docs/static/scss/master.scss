@@ -196,7 +196,7 @@ footer {
 
 // ----------- Alignments  ----------- //
 
-.col {
+.column {
   display: block;
   width: 100%;
   margin-right: auto;
@@ -206,19 +206,19 @@ footer {
 }
 
 @media (max-width: 576px) {
-  .col {
+  .column {
     max-width: 540px;
   }
 }
 
 @media (min-width: 768px) {
-  .col {
+  .column {
     max-width: 720px;
   }
 }
 
 @media (min-width: 992px) {
-  .col {
+  .column {
     max-width: 960px;
   }
 }
@@ -233,7 +233,7 @@ footer {
   margin: 0 auto 0 auto;
 }
 
-.row {
+.row-left {
   @extend %rows;
   align-items: flex-start;
   justify-content: flex-start;
