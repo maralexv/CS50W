@@ -1,0 +1,403 @@
+html {
+  color: #201E2A;
+  background-color: #FBFAFB;
+}
+
+body {
+  max-width: 100%;
+  font-family: "Lato", sans-serif;
+  font-size: 1rem;
+  text-align: left;
+  margin: 0 4% 0 4%;
+  padding: 1%;
+}
+
+header,
+main,
+nav,
+section {
+  display: block;
+}
+
+table {
+  border-collapse: collapse;
+  border: 1px solid #E65C2E;
+  width: 100%;
+  margin: auto;
+  background-color: transparent;
+}
+table th, table td {
+  padding: 0.8em;
+  vertical-align: middle;
+  border: 1px solid #E65C2E;
+}
+table th {
+  font-weight: 800;
+  font-size: 1.5vw;
+  color: #FBFAFB;
+  background-color: #E65C2E;
+}
+table td {
+  font-size: 1.3vw;
+}
+table caption {
+  font-size: inherit;
+  font-style: italic;
+}
+
+a {
+  padding: 2px;
+  text-decoration: none;
+  background-color: transparent;
+  color: inherit;
+  opacity: 0.8;
+}
+
+a:active,
+a:hover {
+  color: inherit;
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+  border-style: none;
+  display: block;
+}
+
+.img-border {
+  border: 4px solid #b89b93;
+  box-shadow: 1px 1px 5px 6px rgba(184, 155, 147, 0.5);
+}
+
+hr {
+  box-sizing: content-box;
+  height: 0;
+  overflow: visible;
+}
+
+h6, h5, h4, h3, h2, h1 {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  font-family: "Raleway", sans-serif;
+  color: #E65C2E;
+  font-weight: 600;
+  background-color: inherit;
+}
+
+h1 {
+  font-size: 4em;
+}
+
+h2 {
+  font-size: 3.2em;
+}
+
+h3 {
+  font-size: 2.6em;
+}
+
+h4 {
+  font-size: 2em;
+}
+
+h5 {
+  font-size: 1.4em;
+}
+
+h6 {
+  font-size: 1em;
+}
+
+@media screen and (min-width: 576) {
+  h1 {
+    font-size: 2.5em;
+  }
+
+  h2 {
+    font-size: 2.2em;
+  }
+
+  h3 {
+    font-size: 1.9em;
+  }
+
+  h4 {
+    font-size: 1.4em;
+  }
+
+  h5 {
+    font-size: 1em;
+  }
+
+  h6 {
+    font-size: 0.9em;
+  }
+}
+@media screen and (max-width: 768px) {
+  h1 {
+    font-size: 3em;
+  }
+
+  h2 {
+    font-size: 2.5em;
+  }
+
+  h3 {
+    font-size: 2em;
+  }
+
+  h4 {
+    font-size: 1.5em;
+  }
+
+  h5 {
+    font-size: 1em;
+  }
+
+  h6 {
+    font-size: 0.95em;
+  }
+}
+p {
+  margin-top: 0;
+  font-family: "Lato", sans-serif;
+  font-size: 1.3vw;
+  color: #201E2A;
+  background-color: inherit;
+}
+
+ol, ul, dl {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  line-height: 1.75;
+  font-size: 1.25vw;
+}
+
+ol ol,
+ul ul,
+ol ul,
+ul ol {
+  margin-bottom: 0;
+}
+
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2em;
+  vertical-align: middle;
+  margin: auto;
+  padding: 8px;
+  font-family: "Lato", sans-serif;
+  font-size: 1.2vw;
+  color: #FBFAFB;
+  background-color: #E65C2E;
+  white-space: nowrap;
+  z-index: 3;
+}
+
+.column {
+  display: block;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  min-height: 1px;
+  padding: 1em 1em 1em 1em;
+}
+
+@media (max-width: 576px) {
+  .column {
+    max-width: 540px;
+  }
+}
+@media (min-width: 768px) {
+  .column {
+    max-width: 720px;
+  }
+}
+@media (min-width: 992px) {
+  .column {
+    max-width: 960px;
+  }
+}
+.row-edges, .row-center, .row-right, .row-left {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  min-height: 1px;
+  padding: 0 1em 0 1em;
+  margin: 0 auto 0 auto;
+}
+
+.row-left {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.row-right {
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.row-center {
+  align-items: center;
+  justify-content: center;
+}
+
+.row-edges {
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.float-left {
+  float: left;
+}
+
+.float-center {
+  margin: auto;
+}
+
+.float-right {
+  float: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-justify {
+  text-align: justify;
+}
+
+.box {
+  position: relative;
+  min-width: 12em;
+  margin: 1em 1em 1em 1em;
+  padding: 1em;
+  border: 1px solid #b89b93;
+  border-radius: 0.4rem;
+  word-wrap: break-word;
+  background-color: #FBFAFB;
+  background-clip: padding-box;
+}
+.box .box-line > hr {
+  margin-right: 0;
+  margin-left: 0;
+}
+.box .box-header > h1, .box h2, .box h3, .box h4, .box h5, .box h6 {
+  display: inline-block;
+  margin-top: 2px;
+  align-vertical: top;
+}
+
+.box:hover {
+  transform: scale(1.02);
+}
+
+.menu-fixed_vertical {
+  position: fixed;
+  display: inline-block;
+  left: 0;
+  top: 0;
+  height: 100%;
+  overflow: auto;
+  background-color: #E65C2E;
+  box-shadow: 1px 0px 4px 1px #b89b93;
+  z-index: 3;
+}
+.menu-fixed_vertical .menu-list {
+  position: relative;
+  display: inherit;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.menu-fixed_vertical .menu-item {
+  position: relative;
+  padding: 0.3rem;
+  margin: 1rem 0.15rem 1rem 0.15rem;
+  height: 100%;
+  flex-basis: 0;
+  flex-grow: 1;
+  text-decoration: none;
+  font-family: "Raleway", sans-serif;
+  font-size: 1.6vw;
+  font-weight: 600;
+  color: #FBFAFB;
+  text-align: center;
+}
+.menu-fixed_vertical .menu-item a {
+  display: block;
+  padding: 6px 6px;
+  text-decoration: none;
+}
+.menu-fixed_vertical .menu-item a.active {
+  background-color: #b89b93;
+  color: #FBFAFB;
+}
+.menu-fixed_vertical .menu-item a:hover, .menu-fixed_vertical .menu-item a:focus {
+  background-color: rgba(184, 155, 147, 0.5);
+}
+
+.menu-fixed-horizontal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  width: 100%;
+  white-space: nowrap;
+  vertical-align: middle;
+  background-color: #E65C2E;
+  box-shadow: 0px 1px 4px 1px #b89b93;
+  z-index: 3;
+}
+.menu-fixed-horizontal .menu-list {
+  position: relative;
+  display: inherit;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.menu-fixed-horizontal .menu-item {
+  position: relative;
+  padding: 0.2rem;
+  margin: 0.1rem 1rem 0.1rem 1rem;
+  height: 100%;
+  flex-basis: 0;
+  flex-grow: 1;
+  text-decoration: none;
+  font-family: "Raleway", sans-serif;
+  font-size: 1.6vw;
+  font-weight: 600;
+  color: #FBFAFB;
+  text-align: center;
+}
+.menu-fixed-horizontal .menu-item a {
+  display: block;
+  padding: 6px 6px;
+  text-decoration: none;
+}
+.menu-fixed-horizontal .menu-item a.active {
+  background-color: #b89b93;
+  color: #FBFAFB;
+}
+.menu-fixed-horizontal .menu-item a:hover, .menu-fixed-horizontal .menu-item a:focus {
+  background-color: rgba(184, 155, 147, 0.5);
+}
+
+#width-max {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: auto;
+}
+
+/*# sourceMappingURL=master.css.map */
