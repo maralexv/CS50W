@@ -1,5 +1,7 @@
 $main-font: 'Lato', sans-serif;
 $big-font: 'Raleway', sans-serif;
+$small-font: 2.5vh;
+$big-font: 3vh;
 $dark-color: #201E2A;
 $light-color: #FBFAFB;
 $shad-color: hsla(13, 21%, 65%, 1);
@@ -19,7 +21,7 @@ html {
 body {
   max-width: 100%;
   font-family: $main-font;
-  font-size: 1rem;
+  font-size: 1em;
   text-align: left;
   margin: 0 4% 0 4%;
   padding: 1%;
@@ -47,13 +49,13 @@ table {
 
   th {
     font-weight: 800;
-    font-size: 1.5vw;
+    font-size: $big-font;
     color: $light-color;
     background-color: $emph-color;
   }
 
   td {
-    font-size: 1.3vw;
+    font-size: $small-font;
   }
 
   caption {
@@ -157,7 +159,7 @@ font-size: 1em;
 p {
   margin-top: 0;
   font-family: $main-font;
-  font-size: 1.3vw;
+  font-size: $small-font;
   color: $dark-color;
   background-color: inherit;
 }
@@ -166,7 +168,7 @@ ol, ul, dl {
   margin-top: 0;
   margin-bottom: 1rem;
   line-height: 1.75;
-  font-size: 1.25vw;
+  font-size: $small-font;
 }
 
 ol ol,
@@ -186,7 +188,7 @@ footer {
   margin: auto;
   padding: 8px;
   font-family: $main-font;
-  font-size: 1.2vw;
+  font-size: $small-font;
   color: $light-color;
   background-color: $emph-color;
   white-space: nowrap;
@@ -335,21 +337,21 @@ footer {
 
   .menu-item {
     position: relative;
-    padding: 0.3rem;
-    margin: 1rem 0.15rem 1rem 0.15rem;
+    padding: 0.2rem;
+    margin: 1rem 0.1rem 1rem 0.1rem;
     height: 100%;
     flex-basis: 0;
     flex-grow: 1;
     text-decoration: none;
     font-family: $big-font;
-    font-size: 1.6vw;
+    font-size: 3vh;
     font-weight: 600;
     color: $light-color;
     text-align: center;
 
     a {
       display: block;
-      padding: 6px 6px;
+      padding: 4px 4px;
       text-decoration: none;
     }
 
@@ -371,6 +373,7 @@ footer {
   top: 0;
   display: flex;
   width: 100%;
+  overflow: auto;
   white-space: nowrap;
   vertical-align: middle;
   background-color: $emph-color;
@@ -388,20 +391,20 @@ footer {
   .menu-item {
     position: relative;
     padding: 0.2rem;
-    margin: 0.1rem 1rem 0.1rem 1rem;
+    margin: 0.1rem 0.5rem 0.1rem 0.5rem;
     height: 100%;
     flex-basis: 0;
     flex-grow: 1;
     text-decoration: none;
     font-family: $big-font;
-    font-size: 1.6vw;
+    font-size: 3vh;
     font-weight: 600;
     color: $light-color;
     text-align: center;
 
     a {
       display: block;
-      padding: 6px 6px;
+      padding: 4px 4px;
       text-decoration: none;
     }
 
