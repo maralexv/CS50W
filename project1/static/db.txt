@@ -1,0 +1,21 @@
+Heroku PostgreSQL database:
+
+To set envviriable:
+$ export DATABASE_URL=postgres://rnkmlwicbqrbue:04ddc47838a2d2154dc910d66ce497098c3cea0f76819fb3dd643ce2a5ccffe3@ec2-54-247-119-167.eu-west-1.compute.amazonaws.com:5432/dchfvvdlg1scil
+
+Heroku Git URL: https://git.heroku.com/maralexv-cs50.git
+
+Host: ec2-54-247-119-167.eu-west-1.compute.amazonaws.com
+
+User: rnkmlwicbqrbue
+
+Port: 5432
+
+Password: 04ddc47838a2d2154dc910d66ce497098c3cea0f76819fb3dd643ce2a5ccffe3
+
+Database: dchfvvdlg1scil
+
+URI: postgres://rnkmlwicbqrbue:04ddc47838a2d2154dc910d66ce497098c3cea0f76819fb3dd643ce2a5ccffe3@ec2-54-247-119-167.eu-west-1.compute.amazonaws.com:5432/dchfvvdlg1scil
+
+Heroku CLI: heroku pg:psql postgresql-triangular-59296 --app maralexv-cs50
+

@@ -23,26 +23,25 @@ db = scoped_session(sessionmaker(bind=engine))
 
 
 # Home Page
-@app.route("/", methods=['POST'])
-def index():
+@app.route("/")
+def home():
 
 	# if user is logged in
-	if 'username' in session:
-        return f'Logged in as {escape(session['username'])}'
+
 
 	# if user is NOT logged in
-	return 'You are not logged in'
+	
 
 	# search a book (by ISBN, Title or Author)
 
 	# list the books from search
 
 
-    return render_template("index.html", username=session["username"], books=session["books"])
+    return render_template("index.html")
 
 
 # Book Page
-@app.route("/book", )
+@app.route("/book")
 def book():
 
 	# details abot the book
@@ -56,13 +55,13 @@ def book():
 
 # User Registration Page
 @app.route("/register", methods=['POST'])
-def registration():
+def register():
 
 	# registraton form
 
 	# set user to logged-in
 
-		redirect(url_for('index'))
+	#	redirect(url_for('index'))
 
 	render_template("register.html")
 
@@ -73,6 +72,7 @@ def logout():
     # remove the username from the session if it's there
     session.pop('username', None)
     return redirect(url_for('index'))
+
 
 
 #Page Not Found Error
