@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{%set active_page = 'Home' -%}
+{% block title %}{{ active_page }}{% endblock title %}
+
+{% block content %}
+<div class="container">
+	<h1>Hello World!</h1>
+	<a href="{{ url_for('book') }}">Book</a>
+</div>
+
+
+{% endblock content %}

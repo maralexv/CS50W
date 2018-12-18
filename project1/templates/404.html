@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{%set active_page = '404' -%}
+{% block title %}{{ active_page }}{% endblock title %}
+
+{% block content %}
+	<div class="container">
+		<h2><strong>Page not found.</strong></h2>
+		<h4>Please return <a href="{{ url_for('home') }}">Home</a> and try again.</h4>
+	</div>
+{% endblock %}
