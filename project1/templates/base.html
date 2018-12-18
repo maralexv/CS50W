@@ -19,8 +19,7 @@
 		  </button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-		{% set navigation_bar = [('/', 'home', 'Home'), ('/book', 'book', 'Book')] -%}
-		{% set account_item = [('login', 'Login'), ('register', 'Register'), ('logout', 'Logout')] -%}
+		{% set navigation_bar = [('/', 'home', 'Home'), ('/book', 'book', 'Book Selected')] -%}
 
 		{% set active_page = active_page|default('Home') -%}
 
@@ -38,25 +37,37 @@
 	        </a>
 	      
 	        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-	          {%- for id, caption in account_item %}
-	          	<a class="dropdown-item" href="{{ url_for(id) }}">{{ caption|e }}</a>
-	          {% endfor -%}
+	 					{% if g.user %}
+	 						<a class="dropdown-item" href="#">{{ g.user['username'] }}</a>
+	          	<a class="dropdown-item" href="{{ url_for('logout') }}">Log Out</a>
+	 					{% else %}
+	 						<a class="dropdown-item" href="{{ url_for('login') }}">Log In</a>
+	 						<a class="dropdown-item" href="{{ url_for('register') }}">Register</a>
+	         	{% endif %}
 	        </div>
 	      </li>
 			</ul>
 		</div>
 	</nav>
 
+	<section class="content">
+	  <header>
+	    {% block header %}{% endblock %}
+	  </header>
+	  {% for message in get_flashed_messages() %}
+	    <div class="flash">{{ message }}</div>
+	  {% endfor %}
 
 	{% block content %}
 		
 	{% endblock content %}
+	</section>
 
 	{% block footer %}
 		<nav class="navbar fixed-bottom justify-content-center navbar-dark bg-dark">
 		  <ul class="navbar-nav justify-content-center mr-auto">
 		  	<li class="nav-item">
-		  		<a class="nav-link" href="#">Copyright A. Marchenko &copy;</a>
+		  		<a class="nav-link" href="#">A. Marchenko &copy;</a>
 		  	</li>
 		  </ul>
 		</nav>

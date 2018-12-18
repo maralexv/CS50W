@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, request, session, render_template, redirect, url_for, flash
+from flask import Flask, request, session, render_template, redirect, url_for, flash, g
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -15,6 +15,7 @@ if not os.getenv("DATABASE_URL"):
 # Configure session to use filesystem
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+
 app.secret_key = os.urandom(16)
 Session(app)
 
@@ -22,10 +23,7 @@ Session(app)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
-
-##########################################
 #############    VIEWS   #################
-##########################################
 
 # Home Page
 @app.route("/")
@@ -42,11 +40,11 @@ def home():
 @app.route("/book")
 def book():
 	error = None
-	# check if user is logged-in
-	if 'username' in session:
-        user = session['username']
-    else:
-    	error = 'You are not logged-in.'
+	# # check if user is logged-in
+	# if 'username' in session:
+ #        user = session['username']
+ #    else:
+ #    	error = 'You are not logged-in.'
 
 
 	# provide details about the book
@@ -79,11 +77,36 @@ def login():
         if error is None:
             session.clear()
             session['user_id'] = user['id']
-            return redirect(url_for('index'))
+
+            '''
+            # If a user was trying to visit a page that requires a login
+            # flask saves that URL as 'next'.
+            next = request.args.get('next')
+
+            # Now check if that next exists, otherwise we'll go to
+            # the welcome page.
+            if next == None or not next[0]=='/':
+                next = url_for('home')
+
+            return redirect(next)
+            '''
 
         flash(error)
 
-    return redirect(url_for('index'))
+    return redirect(url_for('home'))
+
+
+# Load current user into g
+@app.before_request()
+def load_logged_in_user():
+    user_id = session.get('user_id')
+
+    if user_id is None:
+        g.user = None
+    else:
+        g.user = db.execute(
+            'SELECT * FROM users WHERE id = ?', (user_id)
+        ).fetchone()
 
 
 # User Registration Page
