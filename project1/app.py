@@ -52,6 +52,12 @@ def book():
 
 	return render_template("book.html")
 
+# User login
+@app.route('/login')
+def login():
+   
+    return redirect(url_for('index'))
+
 
 # User Registration Page
 @app.route("/register", methods=['POST'])

@@ -19,20 +19,31 @@
 		  </button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-		{% set navigation_bar = [('/', 'home', 'Home'), ('/book', 'book', 'Book'), ('/register', 'register', 'Register')] -%}
+		{% set navigation_bar = [('/', 'home', 'Home'), ('/book', 'book', 'Book')] -%}
+		{% set account_item = [('login', 'Login'), ('register', 'Register'), ('logout', 'Logout')] -%}
 
 		{% set active_page = active_page|default('Home') -%}
 
-		<ul class="navbar-nav mr-auto">
-			{%- for href, id, caption in navigation_bar %}
-				<li {% if id == active_page %} class="nav-item active" {% else %} class="nav-item" {% endif%}>
-					<a class="nav-link" href="{{ url_for(id) }}">{{ caption|e }}</a>
-				</li>
-			{% endfor -%}
-		</ul>
-		<form action class="form-inline my-2 my-lg-0" >
-	      <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Logout</button>
-	    </form>
+			<ul class="navbar-nav mr-auto">
+				{%- for href, id, caption in navigation_bar %}
+					<li {% if caption == active_page %} class="nav-item active" {% else %} class="nav-item" {% endif %}>
+						<a class="nav-link" href="{{ url_for(id) }}">{{ caption|e }}</a>
+					</li>
+				{% endfor -%}
+			</ul>
+			<ul class="navbar-nav justify-content-end">
+					<li class="nav-item dropdown">
+	        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	          Account
+	        </a>
+	      
+	        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+	          {%- for id, caption in account_item %}
+	          	<a class="dropdown-item" href="{{ url_for(id) }}">{{ caption|e }}</a>
+	          {% endfor -%}
+	        </div>
+	      </li>
+			</ul>
 		</div>
 	</nav>
 
