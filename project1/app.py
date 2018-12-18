@@ -30,14 +30,6 @@ db = scoped_session(sessionmaker(bind=engine))
 # Home Page
 @app.route("/")
 def home():
-	# check if user is registered
-
-
-	# check if user is logged-in
-	if 'username' in session:
-        # logged-in
-    else:
-    	# not logged-in
 	
 	# form to search a book (by ISBN, Title or Author)
 
@@ -49,6 +41,13 @@ def home():
 # Book Page
 @app.route("/book")
 def book():
+	error = None
+	# check if user is logged-in
+	if 'username' in session:
+        user = session['username']
+    else:
+    	error = 'You are not logged-in.'
+
 
 	# provide details about the book
 
@@ -71,7 +70,7 @@ def login():
         # db = get_db()
         error = None
         user = db.execute(
-            'SELECT username, userpassword FROM users WHERE username = ?, userpassword = ?', 
+            'SELECT * FROM users WHERE username = ?, userpassword = ?', 
             (username, userpassword)).fetchone()
 
         if user is None:
