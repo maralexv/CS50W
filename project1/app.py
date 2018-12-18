@@ -1,10 +1,11 @@
 import os
 
-from flask import Flask, request, session, render_template, redirect, url_for
+from flask import Flask, request, session, render_template, redirect, url_for, flash
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
+# Initialise the App
 app = Flask(__name__)
 
 # Check for environment variable
@@ -22,20 +23,25 @@ engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
 
+##########################################
+#############    VIEWS   #################
+##########################################
+
 # Home Page
 @app.route("/")
 def home():
+	# check if user is registered
 
-	# if user is logged in
 
-
-	# if user is NOT logged in
+	# check if user is logged-in
+	if 'username' in session:
+        # logged-in
+    else:
+    	# not logged-in
 	
+	# form to search a book (by ISBN, Title or Author)
 
-	# search a book (by ISBN, Title or Author)
-
-	# list the books from search
-
+	# list the most popular books from Goodreads
 
     return render_template("index.html")
 
@@ -44,30 +50,78 @@ def home():
 @app.route("/book")
 def book():
 
-	# details abot the book
+	# provide details about the book
 
-	# av.rating fro goodreads and number of ratings
+	# av.rating from this website users and number of ratings
+
+	# av.rating from goodreads and number of ratings
 
 	# review submission	
 
 	return render_template("book.html")
 
+
 # User login
 @app.route('/login')
 def login():
-   
+	
+	if request.method == 'POST':
+        username = request.form['username']
+        userpassword = request.form['userpassword']
+        # db = get_db()
+        error = None
+        user = db.execute(
+            'SELECT username, userpassword FROM users WHERE username = ?, userpassword = ?', 
+            (username, userpassword)).fetchone()
+
+        if user is None:
+            error = 'Incorrect username or password.'
+
+        if error is None:
+            session.clear()
+            session['user_id'] = user['id']
+            return redirect(url_for('index'))
+
+        flash(error)
+
     return redirect(url_for('index'))
 
 
 # User Registration Page
-@app.route("/register", methods=['POST'])
+@app.route("/register", methods=['GET', 'POST'])
 def register():
 
-	# registraton form
+	if request.method == 'POST':
+        username = request.form['username']
+        useremail = request.form['useremail']
+        userpassword = request.form['userpassword']
+        # db = get_db()
+        error = None
 
-	# set user to logged-in
+        if not username:
+            error = 'Username is required.'
+        elif not useremail:
+        	error = 'Email is required.'
+        elif not userpassword:
+            error = 'Password is required.'
+        elif db.execute(
+            'SELECT id FROM users WHERE username = ?', (username,)
+        ).fetchone() is not None:
+            error = f'User {username} is already registered.'
+        elif db.execute(
+            'SELECT id FROM users WHERE useremail = ?', (useremail,)
+        ).fetchone() is not None:
+            error = f'User with email {useremail} is already registered.'
 
-	#	redirect(url_for('index'))
+        if error is None:
+            db.execute(
+                'INSERT INTO users (username, useremail, userpassword) VALUES (?, ?, ?)',
+                (username, useremail, userpassword)
+            )
+            db.commit()
+            return redirect(url_for('login'))
+
+        flash(error)
 
 	render_template("register.html")
 
@@ -80,19 +134,18 @@ def logout():
     return redirect(url_for('index'))
 
 
-
-#Page Not Found Error
+# Page Not Found error
 @app.errorhandler(404)
 def page_not_found(error):
 	return render_template("404.html"), 404
 
 
-#Restricted area, unauthorised access attempt
+# Restricted area, unauthorised access attempt
 @app.errorhandler(401)
-def page_not_found(error):
+def unauthorised(error):
 	return render_template("401.html"), 401
 
 
-
+# Run the App
 if __name__ == "__main__":
 	app.run(debug=True)
