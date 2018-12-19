@@ -30,19 +30,17 @@
 					</li>
 				{% endfor -%}
 			</ul>
-			<ul class="navbar-nav justify-content-end">
+			<ul class="navbar-nav justify-content-end pr-2">
 					<li class="nav-item dropdown">
 	        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	          Account
+	          {% if g.user %}{{ g.user.name }}{% else %}Account{% endif %}
 	        </a>
-	      
-	        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-	 					{% if g.user %}
-	 						<a class="dropdown-item" href="#">{{ g.user['username'] }}</a>
-	          	<a class="dropdown-item" href="{{ url_for('logout') }}">Log Out</a>
-	 					{% else %}
-	 						<a class="dropdown-item" href="{{ url_for('login') }}">Log In</a>
-	 						<a class="dropdown-item" href="{{ url_for('register') }}">Register</a>
+	        <div class="dropdown-menu pr-2" aria-labelledby="navbarDropdown">
+				{% if g.user %}
+  					<a class="dropdown-item" href="{{ url_for('logout') }}">Log Out</a>
+				{% else %}
+					<a class="dropdown-item" href="{{ url_for('login') }}">Log In</a>
+					<a class="dropdown-item" href="{{ url_for('register') }}">Register</a>
 	         	{% endif %}
 	        </div>
 	      </li>
@@ -52,26 +50,23 @@
 
 	<section class="content">
 	  <header>
+	  	<img class="img-fluid" src={{ url_for('static', filename='bookspic.png') }}>
+	  	<br><br>
 	    {% block header %}{% endblock %}
 	  </header>
 	  {% for message in get_flashed_messages() %}
-	    <div class="flash">{{ message }}</div>
+	    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+	    	<h5>{{ message }}</h5>
+	    	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+	    </div>
 	  {% endfor %}
 
 	{% block content %}
 		
 	{% endblock content %}
 	</section>
-
-	{% block footer %}
-		<nav class="navbar fixed-bottom justify-content-center navbar-dark bg-dark">
-		  <ul class="navbar-nav justify-content-center mr-auto">
-		  	<li class="nav-item">
-		  		<a class="nav-link" href="#">A. Marchenko &copy;</a>
-		  	</li>
-		  </ul>
-		</nav>
-	{% endblock footer %}
 	
 	<!-- Optional Scripts -->
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

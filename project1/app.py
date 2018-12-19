@@ -23,15 +23,26 @@ Session(app)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
+
 #############    VIEWS   #################
 
-# Home Page
-@app.route("/")
-def home():
-	
-	# form to search a book (by ISBN, Title or Author)
 
-	# list the most popular books from Goodreads
+# Home Page
+@app.route("/", methods=['GET', 'POST'])
+def home():
+
+    if request.method == 'POST':
+        query = request.form.get('query')
+
+        books = db.execute('SELECT * FROM books WHERE isbn LIKE :isbn OR title LIKE :title OR author LIKE :author',
+            {'isbn': '%'+query+'%', 'title': '%'+query+'%', 'author': '%'+query+'%'}
+            ).fetchall()
+
+        session['books'] = books
+        g.books = books
+        quantity = len(books)
+
+        return render_template("index.html", books=session['books'], quantity=quantity)
 
     return render_template("index.html")
 
@@ -39,44 +50,41 @@ def home():
 # Book Page
 @app.route("/book")
 def book():
-	error = None
-	# # check if user is logged-in
-	# if 'username' in session:
- #        user = session['username']
- #    else:
- #    	error = 'You are not logged-in.'
 
-
-	# provide details about the book
+    # provide details about the book
 
 	# av.rating from this website users and number of ratings
 
 	# av.rating from goodreads and number of ratings
 
-	# review submission	
-
-	return render_template("book.html")
+	# for for user to provide reating and review	
+    
+    return render_template("book.html")
 
 
 # User login
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-	
-	if request.method == 'POST':
-        username = request.form['username']
-        userpassword = request.form['userpassword']
-        # db = get_db()
+
+    if request.method == 'POST':
+        username = request.form.get('username')
+        userpassword = request.form.get('userpassword')
+
         error = None
-        user = db.execute(
-            'SELECT * FROM users WHERE username = ?, userpassword = ?', 
-            (username, userpassword)).fetchone()
+        user = db.execute('SELECT * FROM users WHERE username = :username', {'username': username}
+            ).fetchone()
 
         if user is None:
-            error = 'Incorrect username or password.'
+            error = 'Account does not exist or incorrect Username.'
+        elif user['userpassword'] != userpassword:
+            error = 'Incorrect Password.'
 
         if error is None:
             session.clear()
             session['user_id'] = user['id']
+            g.user = user
+
+            return redirect(url_for('home'))
 
             '''
             # If a user was trying to visit a page that requires a login
@@ -88,36 +96,34 @@ def login():
             if next == None or not next[0]=='/':
                 next = url_for('home')
 
-            return redirect(next)
+            return redirect(next, user=session['user'])
             '''
 
         flash(error)
 
-    return redirect(url_for('home'))
+    return render_template("login.html")
 
 
-# Load current user into g
-@app.before_request()
+@app.before_request
 def load_logged_in_user():
     user_id = session.get('user_id')
 
     if user_id is None:
         g.user = None
     else:
-        g.user = db.execute(
-            'SELECT * FROM users WHERE id = ?', (user_id)
-        ).fetchone()
+        g.user = db.execute('SELECT * FROM users WHERE id = :id', {'id': user_id}).fetchone()
 
 
 # User Registration Page
 @app.route("/register", methods=['GET', 'POST'])
 def register():
 
-	if request.method == 'POST':
-        username = request.form['username']
-        useremail = request.form['useremail']
-        userpassword = request.form['userpassword']
-        # db = get_db()
+    if request.method == 'POST':
+        name = request.form.get("name").capitalize()
+        username = request.form.get("username")
+        useremail = request.form.get("useremail")
+        userpassword = request.form.get("userpassword")
+
         error = None
 
         if not username:
@@ -127,33 +133,36 @@ def register():
         elif not userpassword:
             error = 'Password is required.'
         elif db.execute(
-            'SELECT id FROM users WHERE username = ?', (username,)
-        ).fetchone() is not None:
-            error = f'User {username} is already registered.'
+            'SELECT id FROM users WHERE username = :username', {'username': username}
+            ).fetchone() is not None:
+            error = f'User "{username}" is already registered.'
         elif db.execute(
-            'SELECT id FROM users WHERE useremail = ?', (useremail,)
-        ).fetchone() is not None:
+            'SELECT id FROM users WHERE useremail = :useremail', {'useremail': useremail}
+            ).fetchone() is not None:
             error = f'User with email {useremail} is already registered.'
 
         if error is None:
             db.execute(
-                'INSERT INTO users (username, useremail, userpassword) VALUES (?, ?, ?)',
-                (username, useremail, userpassword)
-            )
+                'INSERT INTO users (name, username, useremail, userpassword) VALUES (:name, :username, :useremail, :userpassword)',
+                {'name': name, 'username': username, 'useremail': useremail, 'userpassword': userpassword}
+                )
             db.commit()
             return redirect(url_for('login'))
 
         flash(error)
 
-	render_template("register.html")
+    return render_template("register.html")
 
 
 # User logout
 @app.route('/logout')
 def logout():
     # remove the username from the session if it's there
-    session.pop('username', None)
-    return redirect(url_for('index'))
+    session.pop('user_id', None)
+    session.pop('books', None)
+    g.user = None
+    g.books = None
+    return redirect(url_for('home'))
 
 
 # Page Not Found error

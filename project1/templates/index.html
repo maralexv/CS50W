@@ -4,9 +4,51 @@
 
 {% block content %}
 <div class="container">
-	<h3>Hello World!</h3>
-	<a href="{{ url_for('book') }}">Book</a>
-</div>
+	{% if g.user %}
+	<h3>Welcome, {{ g.user.name }}.</h3>
+	{% else %}
+	<h3>Welcome to the Book Reviews!</h3>
+	{% endif %}
+	
+	{% if g.user %}
+	<div class="conteiner">
+	<div class="jumbotron">
+		<h4>What books would you like to rate and review this time?</h4><br>
+		<div class="row">
+		<div class="col-sm-auto col-md-8 col-lg-5">
+			<form method="POST">
+				<div class="form-group">
+					<label for="query">Start typing a Book Title, Author or ISBN:</label>
+		    		<input type="text" name="query" class="form-control" id="query" placeholder="">
+		    	</div>
 
+	    		<button type="submit" class="btn btn-dark">Search</button>
+  			</form>
+		</div>
+		</div>
+	</div>
+	</div>
+
+		{% if g.books %}
+		<p>There are <strong>{{ quantity }} books</strong> in my library that satisfy your search criteria:</p>
+		<ol>
+			{% for book in books %}
+				<li><a href="{{url_for('book')}}">"<strong>{{ book.title }}</strong>"</a> by {{ book.author }}</li>
+			{% else %}
+				<li><strong>Sorry, there are no such books in my library.</strong></li>
+			{% endfor %}
+		</ol>
+		{% endif %}
+
+	{% else %}
+	<p>This is the place where you can flip through my library and rate the books as well as leave book reviews.</p>
+	<p>To start using the site you need to 
+	<a href="{{ url_for('register') }}">Register</a>...   
+	or 
+	<a href="{{ url_for('login') }}">Login </a>
+	if you have registered already.</p>
+	<h5>Have fun!</h5>
+	{% endif %}
+</div>
 
 {% endblock content %}
