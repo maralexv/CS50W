@@ -1,15 +1,23 @@
 {% extends "base.html" %}
-{%set active_page = 'Book' -%}
+{%set active_page = 'Book Selected' -%}
 {% block title %}{{ active_page }}{% endblock title %}
 
 {% block content %}
 	<div class="container">
-		<h4>Book:</h4>
-		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-		consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-		cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-		proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		<div class="row"> 
+			<div class="col">
+				<h4>The Book "<strong>TITLE</strong>",selected by the user will be here.</h4>
+				<p>Details of the book such as:</p>
+				<ul>
+					<li>Author, title, year.</li>
+					<li>Average rating of the users of this site + number of ratings.</li>
+					<li>Averagte ratng form Good Reads + the number of ratings.</li>
+					<li>All reviews by the users of this site for this book.</li>
+				</ul>
+			</div>
+			<div class="col">
+				<p>Place for the form for the current ueser to submit his/her rating and revew.</p>
+			</div>
+		</div>
 	</div>
 {% endblock content %}
