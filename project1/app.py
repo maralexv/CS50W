@@ -34,15 +34,24 @@ def home():
     if request.method == 'POST':
         query = request.form.get('query')
 
+        error = None
+        quantity = None
+
         books = db.execute('SELECT * FROM books WHERE isbn LIKE :isbn OR title LIKE :title OR author LIKE :author',
             {'isbn': '%'+query+'%', 'title': '%'+query+'%', 'author': '%'+query+'%'}
             ).fetchall()
 
-        session['books'] = books
-        g.books = books
-        quantity = len(books)
+        if books == []:
+            error = 'Sorry, there are no such books in my Library. Please try anothere search.'
+        
+        if error is None:
+            session['books'] = books
+            g.books = books
+            quantity = len(books)
 
-        return render_template("index.html", books=session['books'], quantity=quantity)
+            return render_template("index.html", books=session['books'], quantity=quantity)
+
+        flash(error)
 
     return render_template("index.html")
 
@@ -119,7 +128,7 @@ def load_logged_in_user():
 def register():
 
     if request.method == 'POST':
-        name = request.form.get("name").capitalize()
+        name = " ".join([x.capitalize() for x in request.form.get("name").split()])
         username = request.form.get("username")
         useremail = request.form.get("useremail")
         userpassword = request.form.get("userpassword")
