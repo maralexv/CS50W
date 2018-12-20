@@ -57,10 +57,15 @@ def home():
 
 
 # Book Page
-@app.route("/book")
-def book():
+@app.route("/book/int:book_id")
+def book(book_id):
 
-    # provide details about the book
+    error = None
+
+    # fetch the book from db
+    book = db.execute('SELECT * FROM books WHERE id = :id', {'id': book_id}).fetchone()
+    session['book'] = book
+    g.book = book
 
 	# av.rating from this website users and number of ratings
 
@@ -68,7 +73,7 @@ def book():
 
 	# for for user to provide reating and review	
     
-    return render_template("book.html")
+    return render_template("book.html", book=session['book'])
 
 
 # User login
@@ -163,14 +168,24 @@ def register():
     return render_template("register.html")
 
 
+# User profile
+@app.route('/userprofile')
+def userprofile():
+
+    render_template('userprofile.html')
+
+
 # User logout
 @app.route('/logout')
 def logout():
-    # remove the username from the session if it's there
+    # remove user from the session if it's there
     session.pop('user_id', None)
     session.pop('books', None)
+    session.pop('book', None)
+    # flush g variable
     g.user = None
     g.books = None
+    g.book = None
     return redirect(url_for('home'))
 
 
@@ -180,7 +195,7 @@ def page_not_found(error):
 	return render_template("404.html"), 404
 
 
-# Restricted area, unauthorised access attempt
+# Unauthorised access attempt error
 @app.errorhandler(401)
 def unauthorised(error):
 	return render_template("401.html"), 401

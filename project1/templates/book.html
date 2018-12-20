@@ -6,13 +6,14 @@
 	<div class="container">
 		<div class="row"> 
 			<div class="col">
-				<h4>The Book "<strong>TITLE</strong>",selected by the user will be here.</h4>
-				<p>Details of the book such as:</p>
-				<ul>
-					<li>Author, title, year.</li>
-					<li>Average rating of the users of this site + number of ratings.</li>
+				<p>Author: <strong>{{ book.author }}</strong></p>
+				<p>Title: <strong>{{ book.title }}</strong></p>
+				<p>ISBN: <strong>{{ book.isbn }}</strong></p>
+				<p>Year first published: <strong>{{ book.year }}</strong></p>
+
+					{# <li>Average rating of the users of this site + number of ratings.</li>
 					<li>Averagte ratng form Good Reads + the number of ratings.</li>
-					<li>All reviews by the users of this site for this book.</li>
+					<li>All reviews by the users of this site for this book.</li> #}
 				</ul>
 			</div>
 			<div class="col">

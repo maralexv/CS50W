@@ -18,8 +18,12 @@
 		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span>
 		  </button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-		{% set navigation_bar = [('/', 'home', 'Home'), ('/book', 'book', 'Book Selected')] -%}
+		
+		{%if g.book %}
+			{% set navigation_bar = [('/', 'home', 'Home'), ('/book', 'book', 'Book Selected')] -%}
+		{% else %}
+			{% set navigation_bar = [('/', 'home', 'Home')] -%}
+		{% endif %}
 
 		{% set active_page = active_page|default('Home') -%}
 
@@ -37,6 +41,7 @@
 	        </a>
 	        <div class="dropdown-menu pr-2" aria-labelledby="navbarDropdown">
 				{% if g.user %}
+						<a class="dropdown-item" href="#">Profile</a>
   					<a class="dropdown-item" href="{{ url_for('logout') }}">Log Out</a>
 				{% else %}
 					<a class="dropdown-item" href="{{ url_for('login') }}">Log In</a>
