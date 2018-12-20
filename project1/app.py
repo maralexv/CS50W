@@ -57,15 +57,15 @@ def home():
 
 
 # Book Page
-@app.route("/book/int:book_id")
-def book(book_id):
+@app.route("/book/<int:id>/")
+def book(id):
 
-    error = None
+    # error = None
 
-    # fetch the book from db
-    book = db.execute('SELECT * FROM books WHERE id = :id', {'id': book_id}).fetchone()
-    session['book'] = book
-    g.book = book
+    # # fetch the book from db
+    # book = db.execute('SELECT * FROM books WHERE id = :id', {'id': book_id}).fetchone()
+    # session['book'] = book
+    # g.book = book
 
 	# av.rating from this website users and number of ratings
 
@@ -73,7 +73,7 @@ def book(book_id):
 
 	# for for user to provide reating and review	
     
-    return render_template("book.html", book=session['book'])
+    return render_template("book.html", id=id)
 
 
 # User login
