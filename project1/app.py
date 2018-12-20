@@ -37,7 +37,7 @@ def home():
         error = None
         quantity = None
 
-        books = db.execute('SELECT * FROM books WHERE isbn LIKE :isbn OR title LIKE :title OR author LIKE :author',
+        books = db.execute('SELECT * FROM books WHERE isbn LIKE :isbn OR title LIKE :title OR author LIKE :author ORDER BY author',
             {'isbn': '%'+query+'%', 'title': '%'+query+'%', 'author': '%'+query+'%'}
             ).fetchall()
 
@@ -57,23 +57,43 @@ def home():
 
 
 # Book Page
-@app.route("/book/<int:id>/")
-def book(id):
+@app.route("/book/<int:bookid>/", methods=['GET', 'POST'])
+def book(bookid):
 
-    # error = None
+    # fetch the book from db
+    book = db.execute('SELECT * FROM books WHERE id = :id', {'id': bookid}).fetchone()
+    session['book'] = book
 
-    # # fetch the book from db
-    # book = db.execute('SELECT * FROM books WHERE id = :id', {'id': book_id}).fetchone()
-    # session['book'] = book
-    # g.book = book
+    # User rating and review for this book
+    usereval = db.execute('SELECT * FROM ratings WHERE user_id = :user_id AND book_id = :book_id', 
+        {'user_id': g.user.id, 'book_id': bookid}
+        ).fetchone()
 
-	# av.rating from this website users and number of ratings
+    
+    if request.method == ['POST']:
+        rating = int(request.form.get('rating'))
+        review = request.form.get('review')
+
+        if not rating:
+            flash('Please rate the book. Rating is required.')
+        else:
+            db.execute('INSERT INTO ratings (rating, book_id, user_id, review) VALUES (?, ?, ?, ?)',
+                (rating, bookid, int(session['user_id']), review))
+            db.commit()
+            return redirect(url_for('book', bookid))
+
+	# book's av.rating from this website users, number of ratings, all reviews
+    # avrating = db.execute()
+
+    # numrating = db.execute()
+
+    # reviews = db.execute()
 
 	# av.rating from goodreads and number of ratings
 
-	# for for user to provide reating and review	
+	# form for user to provide reating and review
     
-    return render_template("book.html", id=id)
+    return render_template("book.html", book=session['book'], usereval=usereval)
 
 
 # User login
