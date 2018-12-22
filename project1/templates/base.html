@@ -5,7 +5,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Books Revies - {% block title %}{% endblock title %}</title>
-	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<!-- My CSS -->
@@ -27,6 +27,9 @@
 		  flex: 2;
 		  margin-left: 1em;
 		}
+		.checked {
+		  color: orange;
+		}
 	</style>
 </head>
 
@@ -37,9 +40,9 @@
 		  </button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-			{% set navigation_bar = [('/', 'home', 'Home')] -%}
+			{% set navigation_bar = [('/', 'home', 'Search books')] -%}
 
-		{% set active_page = active_page|default('Home') -%}
+			{% set active_page = active_page|default('Search books') -%}
 
 			<ul class="navbar-nav mr-auto">
 				{%- for href, id, caption in navigation_bar %}
@@ -70,7 +73,6 @@
 
 	<section>
 	  <header>
-	  	<img class="img-fluid" style="width: 100%; margin-bottom: 1rem;" src={{ url_for('static', filename='bookspic.png') }}>
 	    {% block header %}{% endblock %}
 	  </header>
 	  {% for message in get_flashed_messages() %}
@@ -85,6 +87,12 @@
 	{% block content %}
 		
 	{% endblock content %}
+
+	</section>
+	<section>
+		<footer>
+			<img class="img-fluid" style="width: 100%; position: fixed; bottom: 0;" src={{ url_for('static', filename='bookspic.png') }}>
+		</footer>
 	</section>
 	
 	<!-- Optional Scripts -->

@@ -4,7 +4,7 @@
 
 {% block content %}
 	<div class="container-fluid">
-		<div class="flex row"> 
+		<div class="flex row wrap"> 
 			<div class="col-5 left">
 				<h4>The book you have selected:</h4>
 				<ul class="list-group list-group-flush">
@@ -12,13 +12,38 @@
 					<li class="list-group-item">Title: "<strong>{{ book.title }}</strong>"</li>
 					<li class="list-group-item">ISBN: <strong>{{ book.isbn }}</strong></li>
 					<li class="list-group-item">Year published: <strong>{{ book.year }}</strong></li>
-					<li class="list-group-item">Average Rating: <strong></strong></li>
-					<li class="list-group-item">Times rated: <strong></strong></li>
+					<li class="list-group-item">Average Rating: <strong>{{ avrating }}</strong></li>
+					<li class="list-group-item">Times rated: <strong>{{ numrating }}</strong></li>
 					<li class="list-group-item">Good Reads Rating: <strong></strong></li>
 					<li class="list-group-item">Times rated on Good Reads: <strong></strong></li>
 				</ul>
 				<br>
-				<p>All reviews by the users of this site for this book.</p> 
+				
+				<h4>Reviews of this book by other users:</h4><br>
+				<div class="container">
+					{% for item in reviews %}
+					<div class="card">
+					  <div class="card-header">
+					    <strong>{{ item.name }} on {{ item.timst.strftime('%d.%m.%Y') }}</strong>
+					  </div>
+							{% if item.rating == 1 %}
+							{% set ev = 'Waste of time' %}
+							{% elif item.rating == 2  %}
+							{% set ev = 'So-so' %}
+							{% elif item.rating == 3  %}
+							{% set ev = 'Okeyish' %}
+							{% elif item.rating == 4  %}
+							{% set ev = 'Good' %}
+							{% else %}
+							{% set ev = 'Excellent' %}
+							{% endif %}
+					  <div class="card-body">
+					    <h5 class="card-title">Rated this book as <span style="color: #8c6815;">{{ ev }}</span></h5>
+					    <p class="card-text">{{ item.review }}</p>
+					  </div>
+					</div><br>
+					{% endfor %}
+				</div>
 				
 			</div>
 				<div class="col-1"></div>
@@ -34,8 +59,8 @@
 					{% set eval = 'Good' %}
 					{% else %}
 					{% set eval = 'Excellent' %}
-					{% endif %}
-				<h5>Your Rating for This Book: <span style="color: #8c6815;">{{ eval }}</span></h5>
+				{% endif %}
+				<h5>Your Rating for "{{ book.title }}": <span style="color: #8c6815;">{{ eval }}</span></h5>
 				<div class="row">
 					<div class="col-3"><h5>Your Review:</h5></div>
 					<div class="col-9">{{ usereval.review }}</div>

@@ -99,12 +99,12 @@ def book(bookid):
         {'book_id': bookid}
         )
 
-    if avrating == [] or numrating == []:
+    if avrating is None or numrating is None:
         avrating = 'This book has not been rated yet.'
         numrating = 0
 
     # Fetch all the reviews for tghe book with users
-    reviews = db.execute('SELECT review FROM ratings WHERE book_id = :book_id',
+    reviews = db.execute('SELECT book_id, rating, review, timst, name FROM ratings JOIN users ON ratings.user_id=users.id WHERE book_id = :book_id ORDER BY timst DESC',
         {'book_id': bookid}
         )
 
@@ -112,7 +112,7 @@ def book(bookid):
 
     # form for user to provide reating and review
     
-    return render_template("book.html", bookid=bookid, book=book, usereval=usereval, reviews=reviews)
+    return render_template("book.html", bookid=bookid, book=book, usereval=usereval, reviews=reviews, avrating=avrating, numrating=numrating)
 
 
 # User Login Page
