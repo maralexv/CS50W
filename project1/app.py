@@ -94,14 +94,14 @@ def book(bookid):
 	# Book's av.rating from this website users, number of ratings, all reviews
     avrating = db.execute('SELECT AVG(rating) FROM ratings WHERE book_id = :book_id',
         {'book_id': bookid}
-        )
+        ).fetchone()
     numrating = db.execute('SELECT COUNT(*) FROM ratings WHERE book_id = :book_id',
         {'book_id': bookid}
-        )
+        ).fetchone()
 
-    if avrating is None or numrating is None:
-        avrating = 'This book has not been rated yet.'
-        numrating = 0
+    # if avrating is None or numrating is None:
+    #     avrating = 'This book has not been rated yet.'
+    #     numrating = 0
 
     # Fetch all the reviews for tghe book with users
     reviews = db.execute('SELECT book_id, rating, review, timst, name FROM ratings JOIN users ON ratings.user_id=users.id WHERE book_id = :book_id ORDER BY timst DESC',

@@ -12,14 +12,14 @@
 					<li class="list-group-item">Title: "<strong>{{ book.title }}</strong>"</li>
 					<li class="list-group-item">ISBN: <strong>{{ book.isbn }}</strong></li>
 					<li class="list-group-item">Year published: <strong>{{ book.year }}</strong></li>
-					<li class="list-group-item">Average Rating: <strong>{{ avrating }}</strong></li>
-					<li class="list-group-item">Times rated: <strong>{{ numrating }}</strong></li>
+					<li class="list-group-item">Average Rating: <strong>{{ "%0.1f"|format(avrating.avg) }}</strong></li>
+					<li class="list-group-item">Times rated: <strong>{{ numrating.count }}</strong></li>
 					<li class="list-group-item">Good Reads Rating: <strong></strong></li>
 					<li class="list-group-item">Times rated on Good Reads: <strong></strong></li>
 				</ul>
 				<br>
 				
-				<h4>Reviews of this book by other users:</h4><br>
+				<h4>Reviews of this book by users:</h4><br>
 				<div class="container">
 					{% for item in reviews %}
 					<div class="card">
@@ -38,7 +38,7 @@
 							{% set ev = 'Excellent' %}
 							{% endif %}
 					  <div class="card-body">
-					    <h5 class="card-title">Rated this book as <span style="color: #8c6815;">{{ ev }}</span></h5>
+					    <h5 class="card-title">Rated this book as <span style="color: #8c6815;">{{item.rating}} ({{ ev }})</span></h5>
 					    <p class="card-text">{{ item.review }}</p>
 					  </div>
 					</div><br>
@@ -60,7 +60,7 @@
 					{% else %}
 					{% set eval = 'Excellent' %}
 				{% endif %}
-				<h5>Your Rating for "{{ book.title }}": <span style="color: #8c6815;">{{ eval }}</span></h5>
+				<h5>Your Rating for "{{ book.title }}": <span style="color: #8c6815;">{{usereval.rating}} ({{ eval }})</span></h5>
 				<div class="row">
 					<div class="col-3"><h5>Your Review:</h5></div>
 					<div class="col-9">{{ usereval.review }}</div>
