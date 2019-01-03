@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{%set active_page = '{{g.user.name}} Profile' -%}
+{% block title %}{{ active_page }}{% endblock title %}
+
+{% block content %}
+<div class="container">
+	{% if g.user %}
+	<h4>Here is what I have in my records:</h4>
+	<p>Name: {{ g.user.name }}</p>
+	<p>Username: {{ g.user.username }}</p>
+	<p>Email: {{ g.user.useremail }}</p>
+</div>
+	
+{% endblock %}

@@ -3,20 +3,87 @@
 {% block title %}{{ active_page }}{% endblock title %}
 
 {% block content %}
-	<div class="container">
-		<div class="row"> 
-			<div class="col">
-				<h4>The Book "<strong>TITLE</strong>",selected by the user will be here.</h4>
-				<p>Details of the book such as:</p>
-				<ul>
-					<li>Author, title, year.</li>
-					<li>Average rating of the users of this site + number of ratings.</li>
-					<li>Averagte ratng form Good Reads + the number of ratings.</li>
-					<li>All reviews by the users of this site for this book.</li>
+	<div class="container-fluid">
+		<div class="flex row wrap"> 
+			<div class="col-5 left">
+				<h4>The book you have selected:</h4>
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item">Author: <strong>{{ book.author }}</strong></li>
+					<li class="list-group-item">Title: "<strong>{{ book.title }}</strong>"</li>
+					<li class="list-group-item">ISBN: <strong>{{ book.isbn }}</strong></li>
+					<li class="list-group-item">Year published: <strong>{{ book.year }}</strong></li>
+					<li class="list-group-item">Average Rating: <strong>{{ "%0.2f"|format(avrating.avg) }}</strong></li>
+					<li class="list-group-item">Times rated: <strong>{{ numrating.count }}</strong></li>
+					<li class="list-group-item">Goodreads Rating: <strong>{{ grrating }}</strong></li>
+					<li class="list-group-item">Times rated on Goodreads: <strong>{{ grcount }}</strong></li>
 				</ul>
+				<br>
+				
+				<h4>Reviews of this book by users:</h4><br>
+				<div class="container">
+					{% for item in reviews %}
+					<div class="card">
+					  <div class="card-header">
+					    <strong>{{ item.name }} on {{ item.timst.strftime('%d.%m.%Y') }}</strong>
+					  </div>
+							{% if item.rating == 1 %}
+							{% set ev = 'Waste of time' %}
+							{% elif item.rating == 2  %}
+							{% set ev = 'So-so' %}
+							{% elif item.rating == 3  %}
+							{% set ev = 'Okeyish' %}
+							{% elif item.rating == 4  %}
+							{% set ev = 'Good' %}
+							{% else %}
+							{% set ev = 'Excellent' %}
+							{% endif %}
+					  <div class="card-body">
+					    <h5 class="card-title">Rated this book as <span style="color: #8c6815;">{{item.rating}} ({{ ev }})</span></h5>
+					    <p class="card-text">{{ item.review }}</p>
+					  </div>
+					</div><br>
+					{% endfor %}
+				</div>
 			</div>
-			<div class="col">
-				<p>Place for the form for the current ueser to submit his/her rating and revew.</p>
+				<div class="col-1"></div>
+			<div class="col-6 right">
+				{% if usereval %}
+					{% if usereval.rating == 1 %}
+					{% set eval = 'Waste of time' %}
+					{% elif usereval.rating == 2  %}
+					{% set eval = 'So-so' %}
+					{% elif usereval.rating == 3  %}
+					{% set eval = 'Okeyish' %}
+					{% elif usereval.rating == 4  %}
+					{% set eval = 'Good' %}
+					{% else %}
+					{% set eval = 'Excellent' %}
+				{% endif %}
+				<h5>Your Rating for "{{ book.title }}": <span style="color: #8c6815;">{{usereval.rating}} ({{ eval }})</span></h5>
+				<div class="row">
+					<div class="col-3"><h5>Your Review:</h5></div>
+					<div class="col-9">{{ usereval.review }}</div>
+				</div>
+				{% else %}
+				<form method="POST">
+					<div class="form-group col-5 row">
+						<label for="rating">Your Rating</label>
+				    	<select class="custom-select" name="rating" id="rating" required>
+				    		<option value="">Choose...</option>
+				    		<option value="1">1 - Waste of time</option>
+				    		<option value="2">2 - So-so</option>
+				    		<option value="3">3 - Okeyish</option>
+				    		<option value="4">4 - Good</option>
+				    		<option value="5">5 - Excellent</option>
+				    	</select>
+				  	</div>
+					<div class="form-group row col-auto">
+						<label for="review">Review</label>
+				    	<textarea class="form-control" name="review" id="review" rows="5" placeholder="Write up your review for this book here"></textarea>
+				  	</div>
+				    <button type="submit" class="btn btn-dark">Submit</button>
+			  	</form>
+			  	{% endif %}
 			</div>
 		</div>
 	</div>

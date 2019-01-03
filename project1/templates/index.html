@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{%set active_page = 'Home' -%}
+{% set active_page = 'Search books' -%}
 {% block title %}{{ active_page }}{% endblock title %}
 
 {% block content %}
@@ -12,8 +12,8 @@
 	
 	{% if g.user %}
 	<div class="conteiner">
-	<div class="jumbotron">
-		<h4>What books would you like to rate and review this time?</h4><br>
+		<h4>What books would you like to rate and review this time?</h4>
+		<small id="emailHelp" class="form-text text-muted">Remember, book titles and author names are case sensitive.</small><br>
 		<div class="row">
 		<div class="col-sm-auto col-md-8 col-lg-5">
 			<form method="POST">
@@ -27,17 +27,19 @@
 		</div>
 		</div>
 	</div>
-	</div>
 
 		{% if g.books %}
-		<p>There are <strong>{{ quantity }} books</strong> in my library that satisfy your search criteria:</p>
-		<ol>
-			{% for book in books %}
-				<li><a href="{{url_for('book')}}">"<strong>{{ book.title }}</strong>"</a> by {{ book.author }}</li>
+			{% if quantity == 1 %}
+				<p>There is <strong>{{ quantity }} book</strong> in my library that satisfy your search criteria:</p>
 			{% else %}
-				<li><strong>Sorry, there are no such books in my library.</strong></li>
-			{% endfor %}
-		</ol>
+				<p>There are <strong>{{ quantity }} books</strong> in my library that satisfy your search criteria:</p>
+			{% endif %}
+
+			<ol>
+				{% for book in books %}
+					<li><a href="{{ url_for('book', bookid=book.id) }}">"<strong>{{ book.title }}</strong>"</a> by {{ book.author }}</li>
+				{% endfor %}
+			</ol>
 		{% endif %}
 
 	{% else %}

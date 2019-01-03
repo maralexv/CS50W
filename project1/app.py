@@ -1,5 +1,5 @@
 import os
-
+import requests
 from flask import Flask, request, session, render_template, redirect, url_for, flash, g
 from flask_session import Session
 from sqlalchemy import create_engine
@@ -24,61 +24,117 @@ engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
 
-#############    VIEWS   #################
-
+######################    VIEWS   ######################
 
 # Home Page
 @app.route("/", methods=['GET', 'POST'])
 def home():
-
+    '''
+    Home page with form to search the book library
+    '''
+    # Simple form that accepts one query for all argumants
     if request.method == 'POST':
         query = request.form.get('query')
 
-        books = db.execute('SELECT * FROM books WHERE isbn LIKE :isbn OR title LIKE :title OR author LIKE :author',
+        error = None
+        quantity = None
+
+        # Fetch all the books, satisfying to search 
+        books = db.execute('SELECT * FROM books WHERE isbn LIKE :isbn OR title LIKE :title OR author LIKE :author ORDER BY author',
             {'isbn': '%'+query+'%', 'title': '%'+query+'%', 'author': '%'+query+'%'}
             ).fetchall()
 
-        session['books'] = books
-        g.books = books
-        quantity = len(books)
+        if books == []:
+            error = 'Sorry, there are no such books in my Library. Please try anothere search.'
+        
+        # Load the books into session
+        if error is None:
+            session['books'] = books
+            g.books = books
+            quantity = len(books)
 
-        return render_template("index.html", books=session['books'], quantity=quantity)
+            return render_template("index.html", books=session['books'], quantity=quantity)
+
+        flash(error)
 
     return render_template("index.html")
 
 
 # Book Page
-@app.route("/book")
-def book():
+@app.route("/book/<int:bookid>/", methods=['GET', 'POST'])
+def book(bookid):
+    '''
+    Dual purpose view: displays book informaiton, 
+    and provides possibilty for user to review the book 
+    '''
 
-    # provide details about the book
+    # Form for book review, will be displaied if user's review for this book doesn't exist
+    if request.method == 'POST':
+        rtg = request.form.get('rating')
+        rvw = request.form.get('review')
 
-	# av.rating from this website users and number of ratings
+        if not rtg:
+            flash('Please rate the book. Rating is required.')
+        else:
+            db.execute('INSERT INTO ratings (rating, book_id, user_id, review) VALUES (:rating, :book_id, :user_id, :review)',
+                {'rating': rtg, 'book_id': bookid, 'user_id': int(session['user_id']), 'review': rvw}
+                )
+            db.commit()
+            return redirect(url_for('book', bookid=bookid))
 
-	# av.rating from goodreads and number of ratings
+    # Fetch the book from db to be passed to the html for display on the page
+    book = db.execute('SELECT * FROM books WHERE id = :id', {'id': bookid}).fetchone()
+    g.book = book
 
-	# for for user to provide reating and review	
-    
-    return render_template("book.html")
+    # User rating and review for this book, will be displaied if exists
+    usereval = db.execute('SELECT * FROM ratings WHERE user_id = :user_id AND book_id = :book_id', 
+        {'user_id': g.user.id, 'book_id': bookid}
+        ).fetchone()
+
+	# Book's av.rating from this website users, number of ratings, all reviews
+    avrating = db.execute('SELECT AVG(rating) FROM ratings WHERE book_id = :book_id',
+        {'book_id': bookid}
+        ).fetchone()
+    numrating = db.execute('SELECT COUNT(*) FROM ratings WHERE book_id = :book_id',
+        {'book_id': bookid}
+        ).fetchone()
+
+    # Fetch all the reviews for tghe book with users
+    reviews = db.execute('SELECT book_id, rating, review, timst, name FROM ratings JOIN users ON ratings.user_id=users.id WHERE book_id = :book_id ORDER BY timst DESC',
+        {'book_id': bookid}
+        )
+
+    # av.rating and number of ratings from Goodreads
+    goodreads = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "qXpPQv2DwijzCIgVO2BQ", "isbns": book.isbn}).json()
+    grrating = goodreads['books'][0]['average_rating']
+    grcount = goodreads['books'][0]['work_ratings_count']
 
 
-# User login
+    return render_template("book.html", bookid=bookid, book=book, usereval=usereval, reviews=reviews, avrating=avrating, numrating=numrating, grrating=grrating, grcount=grcount)
+
+
+# User Login Page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 
+    # Login form - get the form data
     if request.method == 'POST':
         username = request.form.get('username')
         userpassword = request.form.get('userpassword')
 
         error = None
+
+        # Fetch the user data form db
         user = db.execute('SELECT * FROM users WHERE username = :username', {'username': username}
             ).fetchone()
 
+        # Manage error messages
         if user is None:
             error = 'Account does not exist or incorrect Username.'
         elif user['userpassword'] != userpassword:
             error = 'Incorrect Password.'
 
+        # Login user = get the user into session
         if error is None:
             session.clear()
             session['user_id'] = user['id']
@@ -104,6 +160,7 @@ def login():
     return render_template("login.html")
 
 
+# Make sure g.user is loaded before every request
 @app.before_request
 def load_logged_in_user():
     user_id = session.get('user_id')
@@ -117,9 +174,12 @@ def load_logged_in_user():
 # User Registration Page
 @app.route("/register", methods=['GET', 'POST'])
 def register():
+    '''
+    Regiser User and redirect to Login page
+    '''
 
     if request.method == 'POST':
-        name = request.form.get("name").capitalize()
+        name = " ".join([x.capitalize() for x in request.form.get("name").split()])
         username = request.form.get("username")
         useremail = request.form.get("useremail")
         userpassword = request.form.get("userpassword")
@@ -154,14 +214,26 @@ def register():
     return render_template("register.html")
 
 
-# User logout
+# User Profile
+@app.route('/userprofile')
+def userprofile():
+    '''
+    Display user account/profile and give option to update or delete it
+    '''
+
+    render_template('userprofile.html')
+
+
+# User Logout
 @app.route('/logout')
 def logout():
-    # remove the username from the session if it's there
+    # remove user, books from the session if it's there
     session.pop('user_id', None)
     session.pop('books', None)
+    # flush g variables
     g.user = None
     g.books = None
+    g.book = None
     return redirect(url_for('home'))
 
 
@@ -171,7 +243,7 @@ def page_not_found(error):
 	return render_template("404.html"), 404
 
 
-# Restricted area, unauthorised access attempt
+# Unauthorised access attempt error
 @app.errorhandler(401)
 def unauthorised(error):
 	return render_template("401.html"), 401
