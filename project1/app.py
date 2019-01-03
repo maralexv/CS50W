@@ -1,5 +1,5 @@
 import os
-
+import requests
 from flask import Flask, request, session, render_template, redirect, url_for, flash, g
 from flask_session import Session
 from sqlalchemy import create_engine
@@ -99,20 +99,18 @@ def book(bookid):
         {'book_id': bookid}
         ).fetchone()
 
-    # if avrating is None or numrating is None:
-    #     avrating = 'This book has not been rated yet.'
-    #     numrating = 0
-
     # Fetch all the reviews for tghe book with users
     reviews = db.execute('SELECT book_id, rating, review, timst, name FROM ratings JOIN users ON ratings.user_id=users.id WHERE book_id = :book_id ORDER BY timst DESC',
         {'book_id': bookid}
         )
 
-    # av.rating from goodreads and number of ratings
+    # av.rating and number of ratings from Goodreads
+    goodreads = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "qXpPQv2DwijzCIgVO2BQ", "isbns": book.isbn}).json()
+    grrating = goodreads['books'][0]['average_rating']
+    grcount = goodreads['books'][0]['work_ratings_count']
 
-    # form for user to provide reating and review
-    
-    return render_template("book.html", bookid=bookid, book=book, usereval=usereval, reviews=reviews, avrating=avrating, numrating=numrating)
+
+    return render_template("book.html", bookid=bookid, book=book, usereval=usereval, reviews=reviews, avrating=avrating, numrating=numrating, grrating=grrating, grcount=grcount)
 
 
 # User Login Page

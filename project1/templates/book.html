@@ -12,10 +12,10 @@
 					<li class="list-group-item">Title: "<strong>{{ book.title }}</strong>"</li>
 					<li class="list-group-item">ISBN: <strong>{{ book.isbn }}</strong></li>
 					<li class="list-group-item">Year published: <strong>{{ book.year }}</strong></li>
-					<li class="list-group-item">Average Rating: <strong>{{ "%0.1f"|format(avrating.avg) }}</strong></li>
+					<li class="list-group-item">Average Rating: <strong>{{ "%0.2f"|format(avrating.avg) }}</strong></li>
 					<li class="list-group-item">Times rated: <strong>{{ numrating.count }}</strong></li>
-					<li class="list-group-item">Good Reads Rating: <strong></strong></li>
-					<li class="list-group-item">Times rated on Good Reads: <strong></strong></li>
+					<li class="list-group-item">Goodreads Rating: <strong>{{ grrating }}</strong></li>
+					<li class="list-group-item">Times rated on Goodreads: <strong>{{ grcount }}</strong></li>
 				</ul>
 				<br>
 				
@@ -44,7 +44,6 @@
 					</div><br>
 					{% endfor %}
 				</div>
-				
 			</div>
 				<div class="col-1"></div>
 			<div class="col-6 right">
