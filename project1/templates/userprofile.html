@@ -4,11 +4,23 @@
 
 {% block content %}
 <div class="container">
+	<br>
 	{% if g.user %}
-	<h4>Here is what I have in my records:</h4>
-	<p>Name: {{ g.user.name }}</p>
-	<p>Username: {{ g.user.username }}</p>
-	<p>Email: {{ g.user.useremail }}</p>
+		<h4>Hello {{ g.user.name }}.</h4>
+		<h4>Here is what I have in my records:</h4>
+		<p>Username: {{ g.user.username }}</p>
+		<p>Email: {{ g.user.useremail }}</p>
+		<br>
+		<form method="POST">
+		  <button type="submit" class="btn btn-danger">Delete User</button>
+		  <small class="form-text">This action is irreversable, your profile and all your reviews will be deleted.</small>
+	  	</form>
+	{% else %}
+		<h4>
+			Please <a href="{{ url_for('login') }}">Login </a> or <a href="{{ url_for('register') }}">Register</a>.
+		</h4>
+	{% endif %}
+
 </div>
 	
 {% endblock %}

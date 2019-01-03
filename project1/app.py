@@ -138,37 +138,14 @@ def login():
         if error is None:
             session.clear()
             session['user_id'] = user['id']
+            session['user'] = user
             g.user = user
 
             return redirect(url_for('home'))
 
-            '''
-            # If a user was trying to visit a page that requires a login
-            # flask saves that URL as 'next'.
-            next = request.args.get('next')
-
-            # Now check if that next exists, otherwise we'll go to
-            # the welcome page.
-            if next == None or not next[0]=='/':
-                next = url_for('home')
-
-            return redirect(next, user=session['user'])
-            '''
-
         flash(error)
 
     return render_template("login.html")
-
-
-# Make sure g.user is loaded before every request
-@app.before_request
-def load_logged_in_user():
-    user_id = session.get('user_id')
-
-    if user_id is None:
-        g.user = None
-    else:
-        g.user = db.execute('SELECT * FROM users WHERE id = :id', {'id': user_id}).fetchone()
 
 
 # User Registration Page
@@ -215,13 +192,26 @@ def register():
 
 
 # User Profile
-@app.route('/userprofile')
+@app.route('/userprofile', methods=['GET', 'POST'])
 def userprofile():
     '''
-    Display user account/profile and give option to update or delete it
+    Display user account/profile and give option to delete it
     '''
+    if request.method == 'POST':
+        db.execute(
+            'DELETE FROM ratings WHERE user_id = :user_id',
+            {'user_id': g.user.id}
+            )
+        db.commit()
+        db.execute(
+            'DELETE FROM users WHERE id = :id',
+            {'id': g.user.id}
+            )
+        db.commit()
+        
+        return redirect(url_for('home'))
 
-    render_template('userprofile.html')
+    return render_template('userprofile.html')
 
 
 # User Logout
@@ -229,12 +219,24 @@ def userprofile():
 def logout():
     # remove user, books from the session if it's there
     session.pop('user_id', None)
+    session.pop('user', None)
     session.pop('books', None)
     # flush g variables
     g.user = None
     g.books = None
     g.book = None
     return redirect(url_for('home'))
+
+
+# Make sure g.user is loaded before every request
+@app.before_request
+def load_logged_in_user():
+    user_id = session.get('user_id')
+
+    if user_id is None:
+        g.user = None
+    else:
+        g.user = db.execute('SELECT * FROM users WHERE id = :id', {'id': user_id}).fetchone()
 
 
 # Page Not Found error

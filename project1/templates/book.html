@@ -7,6 +7,18 @@
 		<div class="flex row wrap"> 
 			<div class="col-5 left">
 				<h4>The book you have selected:</h4>
+				{% if numrating.count == 0 %}
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item">Author: <strong>{{ book.author }}</strong></li>
+					<li class="list-group-item">Title: "<strong>{{ book.title }}</strong>"</li>
+					<li class="list-group-item">ISBN: <strong>{{ book.isbn }}</strong></li>
+					<li class="list-group-item">Year published: <strong>{{ book.year }}</strong></li>
+					<li class="list-group-item">Average Rating: <strong>This book hasn't been rated yet!</strong></li>
+					<li class="list-group-item">Times rated: <strong>0</strong></li>
+					<li class="list-group-item">Goodreads Rating: <strong>{{ grrating }}</strong></li>
+					<li class="list-group-item">Times rated on Goodreads: <strong>{{ grcount }}</strong></li>
+				</ul>
+				{% else %}
 				<ul class="list-group list-group-flush">
 					<li class="list-group-item">Author: <strong>{{ book.author }}</strong></li>
 					<li class="list-group-item">Title: "<strong>{{ book.title }}</strong>"</li>
@@ -20,6 +32,7 @@
 				<br>
 				
 				<h4>Reviews of this book by users:</h4><br>
+				{% endif %}
 				<div class="container">
 					{% for item in reviews %}
 					<div class="card">
