@@ -1,2 +1,2 @@
 # CS50W
-My practice-along with CS50 course from HarvardX on edX
+My practice-along with CS50-W course from HarvardX on edX
