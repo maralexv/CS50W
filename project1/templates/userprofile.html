@@ -4,11 +4,49 @@
 
 {% block content %}
 <div class="container">
+	<br>
 	{% if g.user %}
-	<h4>Here is what I have in my records:</h4>
-	<p>Name: {{ g.user.name }}</p>
-	<p>Username: {{ g.user.username }}</p>
-	<p>Email: {{ g.user.useremail }}</p>
+		<h4>Hello {{ g.user.name }}.</h4>
+		<h4>Here is what I have in my records:</h4>
+		<p>Username: {{ g.user.username }}</p>
+		<p>Email: {{ g.user.useremail }}</p>
+		<br>
+		<form method="POST">
+		  <button type="submit" class="btn btn-danger">Delete User</button>
+		  <small class="form-text" style="color: red;">This action is irreversable, your profile and all your reviews will be deleted.</small>
+	  	</form>
+	  	<br>
+	  	<h5>All your book reviews are below:</h5>
+		<div class="container">
+			{% for item in userreviews %}
+			<div class="card">
+			  <div class="card-header">
+			    <strong>"{{ item.title }}"</strong>, by {{ item.author }}, {{ item.year }}, ISBN: {{ item.isbn }}
+			  </div>
+					{% if item.rating == 1 %}
+					{% set ev = 'Waste of time' %}
+					{% elif item.rating == 2  %}
+					{% set ev = 'So-so' %}
+					{% elif item.rating == 3  %}
+					{% set ev = 'Okeyish' %}
+					{% elif item.rating == 4  %}
+					{% set ev = 'Good' %}
+					{% else %}
+					{% set ev = 'Excellent' %}
+					{% endif %}
+			  <div class="card-body">
+			    <h5 class="card-title">Your rating on {{ item.timst.strftime('%d.%m.%Y') }}: <span style="color: #8c6815;">{{item.rating}} ({{ ev }})</span> </h5>
+			    <p class="card-text">{{ item.review }}</p>
+			  </div>
+			</div><br>
+			{% endfor %}
+		</div>
+	{% else %}
+		<h4>
+			Please <a href="{{ url_for('login') }}">Login </a> or <a href="{{ url_for('register') }}">Register</a>.
+		</h4>
+	{% endif %}
+
 </div>
 	
 {% endblock %}
