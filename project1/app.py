@@ -1,5 +1,6 @@
 import os
 import requests
+import json
 from flask import Flask, request, session, render_template, redirect, url_for, flash, g
 from flask_session import Session
 from sqlalchemy import create_engine
@@ -211,7 +212,12 @@ def userprofile():
         
         return redirect(url_for('home'))
 
-    return render_template('userprofile.html')
+    # All user reviews, will be displaied if exists
+    userreviews = db.execute('SELECT * FROM ratings JOIN books ON books.id=ratings.book_id WHERE user_id = :user_id', 
+        {'user_id': g.user.id}
+        ).fetchall()
+
+    return render_template('userprofile.html', userreviews=userreviews)
 
 
 # User Logout
@@ -226,6 +232,34 @@ def logout():
     g.books = None
     g.book = None
     return redirect(url_for('home'))
+
+
+@app.route("/api/<isbn>")
+def api(isbn):
+    '''
+    returns a json dictionary with data for book with given ISBN
+    '''
+    error = None
+    jbook = db.execute('SELECT id, title, author, year, isbn FROM books WHERE isbn = :isbn', 
+            {'isbn': isbn}
+            ).fetchone()
+
+    if jbook is None:
+        error = 404
+    else:
+        jbookid = jbook[0]
+        javr = db.execute('SELECT AVG(rating) FROM ratings WHERE book_id = :book_id',
+                {'book_id': jbookid}
+                ).fetchone()
+        jnumr = db.execute('SELECT COUNT(*) FROM ratings WHERE book_id = :book_id',
+                {'book_id': jbookid}
+                ).fetchone()
+
+    if error == None:
+        jbookdict = {'title': jbook.title, 'author': jbook.author, 'year': jbook.year,  'isbn': jbook.isbn, 'review_count': jnumr.count, 'average_score': str(javr.avg)}
+        return json.dumps(jbookdict)
+    else:
+        return render_template("404.html"), 404
 
 
 # Make sure g.user is loaded before every request
