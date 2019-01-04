@@ -9,7 +9,6 @@ Users can login and logout, view their profile, where their data and all their r
 Finally, Goodreads API is used to fetch Goodreds rating for books basd on ISBN (if available). The 'api' for this app is created as view. Anyone, folowing the link/api/<isbn> would get the json file with book title, author, publishing year, ISBN, average score and times the book was rated on this website.
 
 '''bash
-.
 ├── README.md
 ├── app.py
 ├── requirements.txt
