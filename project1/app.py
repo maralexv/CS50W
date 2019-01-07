@@ -1,7 +1,6 @@
 import os
 import requests
-import json
-from flask import Flask, request, session, render_template, redirect, url_for, flash, g
+from flask import Flask, request, session, render_template, redirect, url_for, flash, g, json
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -245,7 +244,8 @@ def api(isbn):
             ).fetchone()
 
     if jbook is None:
-        error = 404
+        error = "Invalid ISBN. No such book in my library."
+        return json.jsonify({"error": error}), 404
     else:
         jbookid = jbook[0]
         javr = db.execute('SELECT AVG(rating) FROM ratings WHERE book_id = :book_id',
@@ -256,8 +256,7 @@ def api(isbn):
                 ).fetchone()
 
     if error == None:
-        jbookdict = {'title': jbook.title, 'author': jbook.author, 'year': jbook.year,  'isbn': jbook.isbn, 'review_count': jnumr.count, 'average_score': str(javr.avg)}
-        return json.dumps(jbookdict)
+        return json.jsonify({'title': jbook.title, 'author': jbook.author, 'year': jbook.year,  'isbn': jbook.isbn, 'review_count': jnumr.count, 'average_score': str(javr.avg)})
     else:
         return render_template("404.html"), 404
 
@@ -280,9 +279,9 @@ def page_not_found(error):
 
 
 # Unauthorised access attempt error
-@app.errorhandler(401)
+@app.errorhandler(403)
 def unauthorised(error):
-	return render_template("401.html"), 401
+	return render_template("401.html"), 403
 
 
 # Run the App
