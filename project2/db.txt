@@ -1,0 +1,29 @@
+-- ############################# Heroku ############################################## --
+Heroku PostgreSQL database:
+
+To set env viriable:
+$ export 
+
+Heroku Git URL: 
+
+Host: 
+
+User: 
+
+Port: 
+
+Password: 
+
+Database: 
+
+URI: 
+
+Heroku CLI: 
+
+
+-- ############################# Locakhost ############################################## --
+localhost PostgreSQL database:
+
+To set env viriable:
+$ export DATABASE_URL=postgresql://postgres:aE8-Gu4-qaI3@localhost:5432/cs50wproject2
+
