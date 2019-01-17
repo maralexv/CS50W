@@ -3,17 +3,15 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Flack</title>
-	<link href="https://fonts.googleapis.com/css?family=Sarabun" rel="stylesheet">
-	<!-- <link href="/static/mystyle.css" rel="stylesheet" type="text/css" media="screen"> -->
+	<title></title>
 	<style type="text/css" media="screen">
 		:root {
-			--border-color: steelblue;
+			--main-color: steelblue;
+			--secondary-color: salmon;
 			--message-color: dodgerblue;
 			--worning-color: orange;
 			--reply-color: lightgrey;
 		}
-
 		/* Hide scrollbar */
 		* {
 			-ms-overflow-style: none; /* IE 10+ */
@@ -21,129 +19,136 @@
 		}
 		*::-webkit-scrollbar { width: 0 !important } /* Webkit (Safari and Chrome) */
 
-
 		body {
 			font-family: 'Sarabun', sans-serif;
-			font-size: 100%;
+			font-size: 1rem;
 		}
-
-		p {
-			font-size: 0.875rem;
-		}
-
-		.small {
-			font-size: 0.75em;
-		}
-
-		/*.wrap {
-		  	height: 100vh;
-		  	display: flex;
-		  	width: 100%;
-		}
-
-		.top {
-			position: fixed;
-			width: 100%;
-			top: 0;
-			margin: 0 0 3rem 0;
-			padding: 0.5rem 1rem 0.5rem 1rem;
-			text-align: center;
-			font-size: 1.1rem;
-			background-color: var(--channel-color);
-		}
-
-		.left, .right {
-			overflow-y: scroll;
-			height: 100vh;
-			padding: 2rem 0 0 0;
-			margin: 0;
-		}
-
-		.left {
-		  	min-width: 5rem;
-		  	flex: 1;
-		  	color: white;
-		  	background-color: var(--channel-color);
-		}
-
-		.right {
-		  	min-width: 17rem;
-		  	flex: 13;
-		  	padding-left: 1rem;
-		  	padding-right: 0.5rem;
-		}*/
-
-		.channelarea {
-			min-width: 100px;
-			height: 100vh;
-			padding: 0.5rem;
-		}
-
-		.channelnameinput {
-			float: left;
-			margin-left: 0.2rem;
-		}
-
-		.channelicon {
-			position: relative;
-			float: left;
-			margin: 1rem auto 1rem auto;
-			width: 40px;
-			height: 40px;
-			border: 3px solid grey;
+		button {
+			border: 1px solid var(--main-color);
+			padding: 0.25rem;
 			border-radius: 5px;
-			background-color: lightgrey;
-			padding: 1rem;
+			background-color: white;
 		}
-
-		.mesagearea {
-			position: absolute;
-			top: 0;
-			left: 0;
-			min-width: 200px;
-			height: 90vh;
-			margin: auto;
-			padding: 0.5rem 2rem 0.5rem 2rem;
-		}
-
-		.message {
-			position: absolute;
-			right: 0;
-			border-radius: 5px;
+		button:hover {
 			background-color: var(--message-color);
 			color: white;
 		}
-
-		.reply {
+		.main {
+			display: flex;
 			position: absolute;
+			top: 0;
 			left: 0;
-			border-radius: 5px;
-			background-color: var(--reply-color);
+			height: 100vh;
+			width: 100vw;
+			background-color: white;
+			z-index: 0;
 		}
-
-		.messagewritearea {
-			position: -webkit-sticky; /* Safari */
-			position: sticky;
-			bottom: 0;
-			margin: auto;
-			border-top: 2px solid var(--border-color);
+		.mswindow {
+			display: block;
+			position: relative;
+			top: calc(2vh + 30px);
+			margin: 0 auto;
+			height: 85%;
+			width: 75%;
+			border: 2px solid grey;
 		}
-
-		.usernameinput {
+		.ms {
 			position: absolute;
-			top: 45vh;
-			margin: auto;
+			bottom: 0;
+			left: 12.4%;
+			width: 75%;
+			height: 40px;
+			border: 2px solid grey;
 		}
+		.nickname {
+			display: block;
+			position: absolute;
+			top: 17%;
+			left: 11%;
+			height: 66vh;
+			width: 75vw;
+			border-radius: 1em;
+			padding: 1rem;
+			color: white;
+			box-shadow: 5px 10px 40px rgba(0, 0, 0, 0.25), -5px -10px 40px rgba(0, 0, 0, 0.19);
+			background-color: var(--main-color);
+			opacity: 0.85;
+			z-index: 1;
+		}
+		.chatlistarea {
+			display: flex;
+			position: absolute;
+			top: 0;
+			left: calc(60px - 80vw);
+			height: 100vh;
+			width: 80vw;
+			z-index: 2;
+		}
+		.chatlist {
+			position: relative;
+			height: 100vh;
+			width: calc(80vw - 70px);
+			padding-left: 2em;
+			background-color: var(--main-color);
+			opacity: 0.9;
+			box-shadow: 5px 0 6px rgba(0, 0, 0, 0.3);
+		}
+		.tab {
+			position: relative;
+			top: 2vh;
+			right: 0;
+			width: 70px;
+			height: 25px;
+			background-color: var(--secondary-color);
+			/*padding: 5px 3px 5px 15px;*/
+			text-align: center;
+			line-height: 25px;
+			opacity: 0.99;
+			box-shadow: 5px 0 6px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.2);
+		}
+		.tab:hover {
+			background-color: var(--main-color);
+			color: white;
+			box-shadow: 5px 0 6px grey, 0 4px 6px rgba(0, 0, 0, 0.4);
+		}
+		.mymessage {
 
+		}
+		.reply {
+			
+		}
+			
 	</style>
+
+	<script>
+		
+	</script>
+		}
 </head>
 <body>
-	<section>
-	<div >
+	<div class="main">
+		<!-- <h1>main window</h1> -->
+		<div class="mswindow">
+			<h1>messages will go here</h1>
+		</div>
+		<div class="ms">
+			palce to type your message
+		</div>
+		
+	</div>
+	<div class="nickname">
+		<h1>choose your nickname</h1>
+	</div>
+	<div class="chatlistarea">
+		<div class="chatlist">
+			<h1>list of chatrooms</h1>
+		</div>
+		<div id="tab" class="tab">
+			chats
+		</div>
+
 	</div>
 
-	</section>
-
-	<script src="/static/script.js"></script>
+	
 </body>
 </html>
