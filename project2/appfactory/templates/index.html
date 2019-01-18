@@ -24,13 +24,13 @@
 			font-size: 1rem;
 		}
 		button {
-			border: 1px solid var(--main-color);
+			border: 1px solid var(--secondary-color);
 			padding: 0.25rem;
 			border-radius: 5px;
 			background-color: white;
 		}
 		button:hover {
-			background-color: var(--message-color);
+			background-color: var(--main-color);
 			color: white;
 		}
 		.main {
@@ -46,6 +46,7 @@
 		.mswindow {
 			display: block;
 			position: relative;
+			overflow-y: scroll;
 			top: calc(2vh + 30px);
 			margin: 0 auto;
 			height: 85%;
@@ -75,6 +76,14 @@
 			opacity: 0.85;
 			z-index: 1;
 		}
+		@keyframes moveright {
+			from { left: calc(60px - 80vw); }
+			to { left: 0; }
+		}
+		@keyframes moveleft {
+			from { left: 0; }
+			to { left: calc(60px - 80vw); }
+		}	
 		.chatlistarea {
 			display: flex;
 			position: absolute;
@@ -83,12 +92,17 @@
 			height: 100vh;
 			width: 80vw;
 			z-index: 2;
+			animation-name: moveright;
+           	animation-duration: 0.8s;
+           	animation-fill-mode: forwards;
+           	animation-play-state: paused;
 		}
 		.chatlist {
 			position: relative;
 			height: 100vh;
 			width: calc(80vw - 70px);
 			padding-left: 2em;
+			overflow-y: scroll;
 			background-color: var(--main-color);
 			opacity: 0.9;
 			box-shadow: 5px 0 6px rgba(0, 0, 0, 0.3);
@@ -111,19 +125,41 @@
 			color: white;
 			box-shadow: 5px 0 6px grey, 0 4px 6px rgba(0, 0, 0, 0.4);
 		}
+		.msplaceholder {
+			display: block;
+			
+		}
 		.mymessage {
-
+			/*position: absolute;*/
+			right: 0;
+			max-width: 60%;
+			padding: 0.5rem 1rem 0.5rem 1rem;
+			border-radius: 7px;
+			background-color: var(--message-color);
+			color: white;
 		}
 		.reply {
-			
+			/*position: absolute;*/
+			left: 0;
+			max-width: 60%;
+			padding: 0.5rem 1rem 0.5rem 1rem;
+			border-radius: 7px;
+			background-color: var(--reply-color);
 		}
-			
+		
 	</style>
 
 	<script>
+		// bring chatlist when tab is clicked
+		document.addEventListener('DOMContentLoaded', function() {
+			const tab = document.querySelector('#tab');
+			tab.onclick = function() {
+				tab.parentElement.style.animationPlayState = 'running';
+			};
+		});
 		
 	</script>
-		}
+
 </head>
 <body>
 	<div class="main">
@@ -140,7 +176,7 @@
 		<h1>choose your nickname</h1>
 	</div>
 	<div class="chatlistarea">
-		<div class="chatlist">
+		<div id="chatlist" class="chatlist">
 			<h1>list of chatrooms</h1>
 		</div>
 		<div id="tab" class="tab">
