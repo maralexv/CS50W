@@ -3,9 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>Flack</title>
-	<link href="https://fonts.googleapis.com/css?family=Sarabun" rel="stylesheet">
+	<title></title>
 	<style type="text/css" media="screen">
 		:root {
 			--main-color: steelblue;
@@ -37,22 +35,22 @@
 		}
 		.main {
 			display: flex;
-			position: relative;
+			position: absolute;
 			top: 0;
 			left: 0;
 			height: 100vh;
 			width: 100vw;
 			background-color: white;
-			z-index: -1;
+			z-index: 0;
 		}
 		.mswindow {
 			display: block;
 			position: relative;
 			overflow-y: scroll;
-			top: 30px;
+			top: calc(2vh + 30px);
 			margin: 0 auto;
-			height: 85vh;
-			width: 75vw;
+			height: 85%;
+			width: 75%;
 			border: 2px solid grey;
 		}
 		.ms {
@@ -60,20 +58,18 @@
 			bottom: 0;
 			left: 12.4%;
 			width: 75%;
-			height: 60px;
+			height: 40px;
 			border: 2px solid grey;
 		}
 		.nickname {
 			display: block;
 			position: absolute;
 			top: 17%;
-			left: 13%;
+			left: 11%;
 			height: 66vh;
 			width: 75vw;
 			border-radius: 1em;
-			text-align: center;
-			-webkit-align-items: center; /* Safari 7.0+ */
-			align-items: center;
+			padding: 1rem;
 			color: white;
 			box-shadow: 5px 10px 40px rgba(0, 0, 0, 0.25), -5px -10px 40px rgba(0, 0, 0, 0.19);
 			background-color: var(--main-color);
@@ -81,50 +77,60 @@
 			z-index: 1;
 		}
 		@keyframes moveright {
-			from { left: -80vw); }
+			from { left: calc(60px - 80vw); }
 			to { left: 0; }
 		}
 		@keyframes moveleft {
 			from { left: 0; }
-			to { left: -80vw); }
+			to { left: calc(60px - 80vw); }
 		}	
 		.chatlistarea {
 			display: flex;
 			position: absolute;
 			top: 0;
-			/*left:0;*/
+			left: calc(60px - 80vw);
 			height: 100vh;
 			width: 80vw;
+			z-index: 2;
+			animation-name: moveright;
+           	animation-duration: 0.8s;
+           	animation-fill-mode: forwards;
+           	animation-play-state: paused;
+		}
+		.chatlist {
+			position: relative;
+			height: 100vh;
+			width: calc(80vw - 70px);
+			padding-left: 2em;
 			overflow-y: scroll;
-			overflow-x: hidden;
 			background-color: var(--main-color);
 			opacity: 0.9;
-			box-shadow: 3px 0 5px rgba(0, 0, 0, 0.3);
-			z-index: 2;
-			/*animation-name: moveleft;
-           	animation-duration: 0.5s;
-           	animation-fill-mode: forwards;
-           	animation-play-state: paused;*/
+			box-shadow: 5px 0 6px rgba(0, 0, 0, 0.3);
 		}
-		#right {
-			animation-name: moveright;
-           	animation-duration: 0.5s;
-           	animation-fill-mode: forwards;
-           	animation-play-state: paused;
+		.tab {
+			position: relative;
+			top: 2vh;
+			right: 0;
+			width: 70px;
+			height: 25px;
+			background-color: var(--secondary-color);
+			/*padding: 5px 3px 5px 15px;*/
+			text-align: center;
+			line-height: 25px;
+			opacity: 0.99;
+			box-shadow: 5px 0 6px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.2);
 		}
-		#left {
-			animation-name: moveleft;
-           	animation-duration: 0.5s;
-           	animation-fill-mode: forwards;
-           	animation-play-state: paused;
+		.tab:hover {
+			background-color: var(--main-color);
+			color: white;
+			box-shadow: 5px 0 6px grey, 0 4px 6px rgba(0, 0, 0, 0.4);
 		}
 		.msplaceholder {
 			display: block;
-			width: 100%;
-			border: 1px solid grey;
+			
 		}
 		.mymessage {
-			/*position: relative;*/
+			/*position: absolute;*/
 			right: 0;
 			max-width: 60%;
 			padding: 0.5rem 1rem 0.5rem 1rem;
@@ -133,7 +139,7 @@
 			color: white;
 		}
 		.reply {
-			/*position: relative;*/
+			/*position: absolute;*/
 			left: 0;
 			max-width: 60%;
 			padding: 0.5rem 1rem 0.5rem 1rem;
@@ -144,41 +150,20 @@
 	</style>
 
 	<script>
-
-		// bring chatlist when it is clicked
-		// document.addEventListener('DOMContentLoalded', function() {
-		// 	const elem = document.querySelector('.chatlistarea');
-		// 	elem.onclick = function() {
-  //              	elem.style.animationPlayState = 'running';
-  //              	if (elem.id === 'right') {
-  //              		elem.id = 'left';
-  //              	} 
-  //              	else {
-  //              		elem.id = 'right';
-  //              	};	
-		// 	};
-  //   	});
-
- 		// 
+		// bring chatlist when tab is clicked
 		document.addEventListener('DOMContentLoaded', function() {
-			document.querySelector('.chatlistarea').onclick = function() {
-				document.querySelector('#left').style.animationPlayState = 'running';
-			}
+			const tab = document.querySelector('#tab');
+			tab.onclick = function() {
+				tab.parentElement.style.animationPlayState = 'running';
+			};
 		});
-
-		
 		
 	</script>
 
 </head>
 <body>
-	<div class="nickname">
-		<h1>choose your nickname</h1>
-	</div>
-	<div id="left" class="chatlistarea">
-
-	</div>
 	<div class="main">
+		<!-- <h1>main window</h1> -->
 		<div class="mswindow">
 			<h1>messages will go here</h1>
 		</div>
@@ -187,6 +172,19 @@
 		</div>
 		
 	</div>
+	<div class="nickname">
+		<h1>choose your nickname</h1>
+	</div>
+	<div class="chatlistarea">
+		<div id="chatlist" class="chatlist">
+			<h1>list of chatrooms</h1>
+		</div>
+		<div id="tab" class="tab">
+			chats
+		</div>
+
+	</div>
+
 	
 </body>
 </html>
