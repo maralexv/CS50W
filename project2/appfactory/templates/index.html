@@ -33,32 +33,30 @@
 			background-color: var(--main-color);
 			color: white;
 		}
-		.main {
-			display: flex;
+		@keyframes moveright {
+			from { left: -95vw; }
+			to { left: 0; }
+		}
+		@keyframes moveleft {
+			from { left: 0; }
+			to { left: -95vw; }
+		}	
+		.chat {
+			display: block;
 			position: absolute;
 			top: 0;
-			left: 0;
-			height: 100vh;
-			width: 100vw;
-			background-color: white;
+			left: 10vw;
+			height: 90vh;
+			width: 100%;
 			z-index: 0;
 		}
-		.mswindow {
-			display: block;
-			position: relative;
-			overflow-y: scroll;
-			top: calc(2vh + 30px);
-			margin: 0 auto;
-			height: 85%;
-			width: 75%;
-			border: 2px solid grey;
-		}
 		.ms {
+			display: block;
 			position: absolute;
 			bottom: 0;
-			left: 12.4%;
-			width: 75%;
-			height: 40px;
+			left: 10vw;
+			width: 100%;
+			height: 10vh;
 			border: 2px solid grey;
 		}
 		.nickname {
@@ -72,58 +70,26 @@
 			padding: 1rem;
 			color: white;
 			box-shadow: 5px 10px 40px rgba(0, 0, 0, 0.25), -5px -10px 40px rgba(0, 0, 0, 0.19);
-			background-color: var(--main-color);
-			opacity: 0.85;
+			background-color: var(--worning-color);
+			opacity: 0.60;
 			z-index: 1;
 		}
-		@keyframes moveright {
-			from { left: calc(60px - 80vw); }
-			to { left: 0; }
-		}
-		@keyframes moveleft {
-			from { left: 0; }
-			to { left: calc(60px - 80vw); }
-		}	
-		.chatlistarea {
+		.convlist {
 			display: flex;
 			position: absolute;
 			top: 0;
-			left: calc(60px - 80vw);
+			left: 0vw;
 			height: 100vh;
-			width: 80vw;
-			z-index: 2;
-			animation-name: moveright;
-           	animation-duration: 0.8s;
-           	animation-fill-mode: forwards;
-           	animation-play-state: paused;
-		}
-		.chatlist {
-			position: relative;
-			height: 100vh;
-			width: calc(80vw - 70px);
-			padding-left: 2em;
+			width: 100vw;
 			overflow-y: scroll;
 			background-color: var(--main-color);
 			opacity: 0.9;
 			box-shadow: 5px 0 6px rgba(0, 0, 0, 0.3);
-		}
-		.tab {
-			position: relative;
-			top: 2vh;
-			right: 0;
-			width: 70px;
-			height: 25px;
-			background-color: var(--secondary-color);
-			/*padding: 5px 3px 5px 15px;*/
-			text-align: center;
-			line-height: 25px;
-			opacity: 0.99;
-			box-shadow: 5px 0 6px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.2);
-		}
-		.tab:hover {
-			background-color: var(--main-color);
-			color: white;
-			box-shadow: 5px 0 6px grey, 0 4px 6px rgba(0, 0, 0, 0.4);
+			z-index: 2;
+			animation-name: moveleft;
+           	animation-duration: 0.5s;
+           	animation-fill-mode: forwards;
+           	animation-play-state: paused;
 		}
 		.msplaceholder {
 			display: block;
@@ -152,9 +118,9 @@
 	<script>
 		// bring chatlist when tab is clicked
 		document.addEventListener('DOMContentLoaded', function() {
-			const tab = document.querySelector('#tab');
-			tab.onclick = function() {
-				tab.parentElement.style.animationPlayState = 'running';
+			var item = document.querySelector('.convlist');
+			item.onclick = function() {
+				item.style.animationPlayState = 'running';
 			};
 		});
 		
@@ -162,27 +128,19 @@
 
 </head>
 <body>
-	<div class="main">
-		<!-- <h1>main window</h1> -->
-		<div class="mswindow">
-			<h1>messages will go here</h1>
-		</div>
-		<div class="ms">
-			palce to type your message
-		</div>
-		
+	<div class="chat">
+		<h1>messages will go here</h1>
 	</div>
+	<div class="ms">
+		palce to type your message
+	</div>
+		
 	<div class="nickname">
 		<h1>choose your nickname</h1>
 	</div>
-	<div class="chatlistarea">
-		<div id="chatlist" class="chatlist">
-			<h1>list of chatrooms</h1>
-		</div>
-		<div id="tab" class="tab">
-			chats
-		</div>
-
+	<div class="convlist">
+		<h1>list of conversatons</h1>
+		
 	</div>
 
 	
