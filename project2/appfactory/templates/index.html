@@ -26,13 +26,13 @@
 			font-size: 1rem;
 		}
 		button {
-			border: 1px solid var(--secondary-color);
+			border: 1px solid var(--main-color);
 			padding: 0.25rem;
 			border-radius: 5px;
 			background-color: white;
 		}
 		button:hover {
-			background-color: var(--main-color);
+			background-color: var(--message-color);
 			color: white;
 		}
 		.main {
@@ -48,8 +48,12 @@
 		.mswindow {
 			display: block;
 			position: relative;
+<<<<<<< HEAD
 			overflow-y: scroll;
 			top: 30px;
+=======
+			top: calc(2vh + 30px);
+>>>>>>> parent of dd36640... added animaton to chatlist
 			margin: 0 auto;
 			height: 85vh;
 			width: 75vw;
@@ -80,6 +84,7 @@
 			opacity: 0.85;
 			z-index: 1;
 		}
+<<<<<<< HEAD
 		@keyframes moveright {
 			from { left: -80vw); }
 			to { left: 0; }
@@ -88,6 +93,8 @@
 			from { left: 0; }
 			to { left: -80vw); }
 		}	
+=======
+>>>>>>> parent of dd36640... added animaton to chatlist
 		.chatlistarea {
 			display: flex;
 			position: absolute;
@@ -95,8 +102,18 @@
 			/*left:0;*/
 			height: 100vh;
 			width: 80vw;
+<<<<<<< HEAD
 			overflow-y: scroll;
 			overflow-x: hidden;
+=======
+			z-index: 2;
+		}
+		.chatlist {
+			position: relative;
+			height: 100vh;
+			width: calc(80vw - 70px);
+			padding-left: 2em;
+>>>>>>> parent of dd36640... added animaton to chatlist
 			background-color: var(--main-color);
 			opacity: 0.9;
 			box-shadow: 3px 0 5px rgba(0, 0, 0, 0.3);
@@ -118,6 +135,7 @@
            	animation-fill-mode: forwards;
            	animation-play-state: paused;
 		}
+<<<<<<< HEAD
 		.msplaceholder {
 			display: block;
 			width: 100%;
@@ -139,11 +157,19 @@
 			padding: 0.5rem 1rem 0.5rem 1rem;
 			border-radius: 7px;
 			background-color: var(--reply-color);
+=======
+		.mymessage {
+
 		}
-		
+		.reply {
+			
+>>>>>>> parent of dd36640... added animaton to chatlist
+		}
+			
 	</style>
 
 	<script>
+<<<<<<< HEAD
 
 		// bring chatlist when it is clicked
 		// document.addEventListener('DOMContentLoalded', function() {
@@ -167,9 +193,11 @@
 		});
 
 		
+=======
+>>>>>>> parent of dd36640... added animaton to chatlist
 		
 	</script>
-
+		}
 </head>
 <body>
 	<div class="nickname">
@@ -187,6 +215,22 @@
 		</div>
 		
 	</div>
+<<<<<<< HEAD
+=======
+	<div class="nickname">
+		<h1>choose your nickname</h1>
+	</div>
+	<div class="chatlistarea">
+		<div class="chatlist">
+			<h1>list of chatrooms</h1>
+		</div>
+		<div id="tab" class="tab">
+			chats
+		</div>
+
+	</div>
+
+>>>>>>> parent of dd36640... added animaton to chatlist
 	
 </body>
 </html>
