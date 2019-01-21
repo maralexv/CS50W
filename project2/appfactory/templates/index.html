@@ -24,124 +24,263 @@
 			font-size: 1rem;
 		}
 		button {
-			border: 1px solid var(--secondary-color);
-			padding: 0.25rem;
-			border-radius: 5px;
-			background-color: white;
+			-webkit-appearance: none;
+			background: transparent;
+			border: 0;
+			outline:0;
 		}
-		button:hover {
-			background-color: var(--main-color);
-			color: white;
+		nav {
+			display: flex;
+			position: sticky;
+			position: -webkit-sticky;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 50px;
+			border-bottom: 1px solid lightgrey;
+			margin-bottom: 10px;
+			z-index: inherit;
+			background-color: grey;
+			opacity: 0.7;
 		}
-		@keyframes moveright {
-			from { left: -95vw; }
+		nav ul{
+			-webkit-display: flex;
+			display: flex;
+			-webkit-align-items: center;
+			/*flex-grow: 1;*/
+			flex-direction: row;
+			margin-right: 20px;
+			align-items: center;
+			justify-content: space-between;
+			-webkit-justify-content: space-between;
+			width: 100%;
+		}
+		nav li {
+			display: inline-block;
+			list-style-type: none;
+			/*cursor: pointer;*/
+		}
+		svg {
+			stroke: black;
+			stroke-width: 2;
+			stroke-linecap: round;
+			stroke-linejoin: round;
+			fill: none;
+			}
+		.menu {
+			cursor: pointer;
+			/*position: absolute;*/
+			margin-top: 0px;
+			margin-left: 0px;
+			width: 25px;
+			height: 45px;
+		}
+		.menu:hover polyline, .menu:hover line,
+		.menu:focus polyline, .menu:focus line {
+			stroke-width: 4;
+		}
+		.menu:active polyline, .menu:active line {
+			stroke-width: 4;
+			transition: all 100ms ease-in-out;
+		}
+		@keyframes up {
+			from { top: 0; }
+			to { top: -150vh; }
+		}
+		@keyframes dwn {
+			from { top: -150vh; }
+			to { top: 0; }
+		}
+		@keyframes rgtf {
+			from { left: -150vw; }
 			to { left: 0; }
 		}
-		@keyframes moveleft {
+		@keyframes lftf {
 			from { left: 0; }
-			to { left: -95vw; }
+			to { left: -150vw; }
 		}	
-		.chat {
-			display: block;
-			position: absolute;
-			top: 0;
-			left: 10vw;
-			height: 90vh;
-			width: 100%;
-			z-index: 0;
+		@keyframes rgts {
+			from { left: -20vw; }
+			to { left: 0; }
 		}
-		.ms {
-			display: block;
-			position: absolute;
-			bottom: 0;
-			left: 10vw;
-			width: 100%;
-			height: 10vh;
-			border: 2px solid grey;
-		}
+		@keyframes lfts {
+			from { left: 0; }
+			to { left: -20; }
+		}	
 		.nickname {
-			display: block;
-			position: absolute;
-			top: 17%;
-			left: 11%;
-			height: 66vh;
-			width: 75vw;
-			border-radius: 1em;
-			padding: 1rem;
-			color: white;
-			box-shadow: 5px 10px 40px rgba(0, 0, 0, 0.25), -5px -10px 40px rgba(0, 0, 0, 0.19);
-			background-color: var(--worning-color);
-			opacity: 0.60;
-			z-index: 1;
-		}
-		.convlist {
 			display: flex;
 			position: absolute;
 			top: 0;
-			left: 0vw;
+			left: 0;
 			height: 100vh;
 			width: 100vw;
+			align-items: center;
+			justify-content: center;
+			color: white;
+			background-color: var(--worning-color);
+			opacity: 0.60;
+			z-index: 2;
+			animation-name: up;
+           	animation-duration: 1s;
+           	animation-fill-mode: forwards;
+           	animation-play-state: paused;
+		}
+		.convlist {
+			display: block;
+			position: absolute;
+			top: 0;
+			left: 0;
+			padding: 0;
+			height: 100vh;
+			width: 100vw;
+			justify-content: center;
 			overflow-y: scroll;
 			background-color: var(--main-color);
 			opacity: 0.9;
 			box-shadow: 5px 0 6px rgba(0, 0, 0, 0.3);
-			z-index: 2;
-			animation-name: moveleft;
-           	animation-duration: 0.5s;
+			z-index: 1;
+			animation-name: lftf;
+           	animation-duration: 1s;
            	animation-fill-mode: forwards;
            	animation-play-state: paused;
 		}
+		.conv-item {
+			display: flex;
+			margin: 5% auto 5% 5%;
+			align-items: center;
+			flex-direction: row;
+		}
+		.chatarea {
+			display: block;
+			position: absolute;
+			padding: 0;
+			top: 0;
+			left: 0;
+			height: 100vh;
+			width: 100%;
+			overflow-y: scroll;
+			z-index: 0;
+		}
+		.messagearea {
+			display: block;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			padding: 0;
+			width: 100%;
+			height: 60px;
+			background-color: grey;
+			z-index: 0;
+		}
 		.msplaceholder {
 			display: block;
+			width: 100%;
+			height: auto;
+			margin: 2%;
+			border-bottom: 1px solid lightgrey;
 			
 		}
-		.mymessage {
-			/*position: absolute;*/
-			right: 0;
-			max-width: 60%;
+		.mymessage .reply{
+			position: relative;
+			max-width: 80%;
 			padding: 0.5rem 1rem 0.5rem 1rem;
-			border-radius: 7px;
-			background-color: var(--message-color);
-			color: white;
 		}
-		.reply {
-			/*position: absolute;*/
-			left: 0;
-			max-width: 60%;
-			padding: 0.5rem 1rem 0.5rem 1rem;
-			border-radius: 7px;
-			background-color: var(--reply-color);
-		}
+		.mymessage { right: 0; }
+		.reply { left: 0;}
 		
 	</style>
 
 	<script>
 		// bring chatlist when tab is clicked
 		document.addEventListener('DOMContentLoaded', function() {
-			var item = document.querySelector('.convlist');
-			item.onclick = function() {
-				item.style.animationPlayState = 'running';
+			var item1 = document.querySelector('.nickname');
+			var item2 = document.querySelector('.convlist');
+			var item3 = document.querySelector('#back');
+			var item4 = document.querySelector('#user1');
+			var item5 = document.querySelector('#user2');
+			item1.onclick = function() {
+				item1.style.animationName = 'up';
+				item1.style.animationPlayState = 'running';
 			};
+			item2.onclick = function() {
+				item2.style.animationName = 'lftf';
+				item2.style.animationPlayState = 'running';
+			};
+			item3.onclick = function() {
+				item2.style.animationName = 'rgtf';
+				item2.style.animationPlayState = 'running';
+			};
+			item4.onclick = function() {
+				item1.style.animationName = 'dwn';
+				item1.style.animationPlayState = 'running';
+			};	
 		});
 		
 	</script>
 
 </head>
 <body>
-	<div class="chat">
-		<h1>messages will go here</h1>
-	</div>
-	<div class="ms">
-		palce to type your message
-	</div>
-		
+
 	<div class="nickname">
 		<h1>choose your nickname</h1>
 	</div>
+
 	<div class="convlist">
-		<h1>list of conversatons</h1>
-		
+		<nav>
+			<ul>
+				<li> </li>
+				<li>All Conversations</li>
+				<li>
+					<button id="user1" class="menu">
+					  <svg width="20px" height="30px" viewBox="0 0 70 80">
+					    <line x1="0" y1="10" x2="80" y2="10"/>
+					    <line x1="0" y1="35" x2="80" y2="35"/>
+					    <line x1="0" y1="60" x2="80" y2="60"/>
+					  </svg>
+					</button>
+				</li>
+			</ul>
+		</nav>
+		<div class="conv-item">
+			Conversation 1
+		</div>
+		<div class="conv-item">
+			Conversation 2
+		</div>
+		<div class="conv-item">
+			Conversation 3
+		</div>
 	</div>
+
+	<div class="chatarea">
+		<nav>
+			<ul>
+				<li>
+					<button id="back" class="menu">
+					  <svg width="20px" height="40px" viewBox="0 0 50 80">
+					    <polyline points="45.63,75.8 0.375,38.087 45.63,0.375"/>
+					  </svg>
+					</button>
+				</li>
+				<li>Conversation Name</li>
+				<li>
+					<button id="user2" class="menu">
+					  <svg width="20px" height="30px" viewBox="0 0 70 90">
+					    <line x1="0" y1="10" x2="80" y2="10"/>
+					    <line x1="0" y1="35" x2="80" y2="35"/>
+					    <line x1="0" y1="60" x2="80" y2="60"/>
+					  </svg>
+					</button>
+				</li>
+			</ul>
+		</nav>
+		<h1>messages will go here</h1>
+	</div>
+	
+	<div class="messagearea">
+		palce to type your message
+	</div>
+		
 
 	
 </body>
