@@ -1,4 +1,3 @@
-# import time
 import random
 from flask import Flask, session
 from flask_sqlalchemy import SQLAlchemy
@@ -25,6 +24,7 @@ def prepopulate():
 	# add channels
 	if channels == []:
 		for channel_n in range (1,8):
+			user_id = random.randint(1,3)
 			channel = Channel(channel=(f"Channel Number {channel_n}"))
 			db.session.add(channel)
 			db.session.commit()
