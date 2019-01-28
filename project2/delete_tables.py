@@ -1,5 +1,5 @@
-from init import app, db
-from models import *
+from appfactory import app, db
+from appfactory.models import *
 
 db.init_app(app)
 
