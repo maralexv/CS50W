@@ -36,12 +36,35 @@
 			-webkit-display: flex;
 			display: flex;
 			-webkit-align-items: center;
-			flex-direction: row;
-			margin: 0 10px;
+			/*flex-direction: column;*/
+			margin: 10px 10px;
+			padding: 10px;
 			align-items: center;
 			justify-content: center;
 			-webkit-justify-content: center;
 			max-width: 95%;
+		}
+		fieldset {
+			-webkit-display: flex;
+			display: flex;
+			flex-direction: column;
+			-webkit-align-items: center;
+			margin: 10px 10px;
+			padding: 10px;
+			align-items: center;
+			justify-content: center;
+			-webkit-justify-content: center;
+			border: 1px solid var(--main-color);
+			border-radius: 4px;
+			box-shadow: 2px 2px 10px lightgrey, -2px -2px 20px lightgrey;
+		}
+		input {
+			width: 80%;
+			padding: 6px;
+  			margin: 10px 10px;
+  			border: 1px solid var(--main-color);
+			border-radius: 4px;
+			font-size: 1rem;
 		}
 		nav {
 			display: flex;
@@ -72,14 +95,6 @@
 		nav li {
 			display: inline-block;
 			list-style-type: none;
-		}
-		input {
-			width: 100%;
-			padding: 6px;
-  			margin: 1px 10px;
-  			border: 2px solid var(--main-color);
-			border-radius: 4px;
-			font-size: 1rem;
 		}
 		svg {
 			stroke: var(--main-color);
@@ -173,7 +188,7 @@
 		}
 		.nickname {
 			display: flex;
-			flex-direction: column;
+			flex-direction: row;
 			position: absolute;
 			top: 0;
 			left: 0;
@@ -188,6 +203,27 @@
 			opacity: 1;
 			z-index: 2;
 			animation-name: up;
+           	animation-duration: 1s;
+           	animation-fill-mode: forwards;
+           	animation-play-state: paused;
+		}
+		.user {
+			display: flex;
+			flex-direction: column;
+			position: absolute;
+			top: -110vh;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			margin: 0;
+			align-items: center;
+			justify-content: center;
+			background-color: snow;
+			border-bottom: 1px solid grey;
+			box-shadow: 2px 0 5px grey;
+			opacity: 1;
+			z-index: 2;
+			animation-name: dwn;
            	animation-duration: 1s;
            	animation-fill-mode: forwards;
            	animation-play-state: paused;
@@ -229,7 +265,7 @@
 			margin: 0;
 			top: 0;
 			left: 0;
-			height: calc(100vh - 50px);
+			height: calc(100vh - 85px);
 			width: 100vw;
 			overflow-y: hidden;
 			z-index: 0;
@@ -239,7 +275,7 @@
 			flex-direction: column;
 			align-items: flex-end;
 			overflow-y: auto;
-			height: calc(100vh - 50px - 50px);
+			height: calc(100vh - 50px - 85px);
 			z-index: -1
 		}
 		.inputarea {
@@ -249,24 +285,24 @@
 			left: 0;
 			padding: 0;
 			width: 100%;
-			max-height: 50px;
+			max-height: 85px;
 			border-top: 1px solid lightgrey;
 			background-color: white;
 			opacity: 0.65;
 			z-index: 0;
 		}
-		.msplaceholder {
+		.placeholder {
 			display: block;
 			width: 100%;
 			margin: 7px 5px 7px 5px;
 			padding: 10px 10px;
 		}
-		.mymessage, .reply{
+		.my, .reply{
 			display: flex;
 			max-width: 60%;
 			padding: 0.75rem;
 		}
-		.mymessage { 
+		.my { 
 			float: right; 
 			text-align: right;
 			margin-right: 10px;
@@ -278,26 +314,28 @@
 			background-color: whitesmoke;
 			border-radius: 20px;
 		}
-		.nick {
-			font-size: 1.1rem;
-			font-weight: bold;
-		}
 		
 	</style>
 
 	<script>
+
 		document.addEventListener('DOMContentLoaded', function() {
-			var nick = document.querySelector('#nick');
-			var nickpage = document.querySelector('.nickname');
+			var nickname = document.querySelector('.nickname');
+			var userpage = document.querySelector('.user');
 			var chats = document.querySelectorAll('.conv-item');
 			var backarr = document.querySelector('#back');
 			var user1 = document.querySelector('#user1');
 			var user2 = document.querySelector('#user2');
 
-			// remove log-in screen and reveal the chats list
-			nick.onclick = function () {
-				nickpage.style.animationName = 'up';
-				nickpage.style.animationPlayState = 'running';
+			// remove nickname screen and reveal the chats list
+			document.querySelector('#form').onsubmit = function() {
+				var username = document.querySelector('#username').value;
+				var useremail = document.querySelector('#useremail').value;
+				console.log(username);
+				console.log(useremail);
+				nickname.style.animationName = 'up';
+				nickname.style.animationPlayState = 'running';
+				return false;
 			};
 			
 			// move chat list screen away to reveal message area with messages 
@@ -313,15 +351,34 @@
 				chats[0].parentElement.style.animationName = 'rgtf';
 				chats[0].parentElement.style.animationPlayState = 'running';
 			};
-			// bring back the log-in or account screen
+			// bring account screen
 			user1.onclick = function() {
-				nickpage.style.animationName = 'dwn';
-				nickpage.style.animationPlayState = 'running';
+				userpage.style.animationName = 'dwn';
+				userpage.style.animationPlayState = 'running';
 			};
 			user2.onclick = function() {
-				nickpage.style.animationName = 'dwn';
-				nickpage.style.animationPlayState = 'running';
+				userpage.style.animationName = 'dwn';
+				userpage.style.animationPlayState = 'running';
 			};
+			// remove account screen
+			userpage.onclick = function() {
+				userpage.style.animationName = 'up';
+				userpage.style.animationPlayState = 'running';
+			};
+			// post a message
+			document.querySelector('#message').onsubmit = function() {
+				let message = document.querySelector('#txt').value;
+				console.log(message);
+				// const placeholder = document.createElement('div');
+				let content = document.createElement('div');
+				// placeholder.className = 'msplaceholder';
+				content.className = 'my';
+				content.innerHTML = message;
+				// placeholder.innerHTML = content;
+				document.querySelector('.wrapper').append(content);
+				return false;
+			};
+
 		});
 		
 	</script>
@@ -330,25 +387,19 @@
 <body>
 
 	<div class="nickname">
-		<div>
-			<h2>Hi there! Choose your nickname:</h2>
-		</div>
-		<div>
-			<form>
-				<input type="text" name="" placeholder="Nickname" size="60">
-				<input type="email" name="" placeholder="Email" size="60">
-				<button class="send">
-					<svg width="20px" height="40px" viewBox="0 0 50 80">
-						<polyline points="0,75 45,38 0,0"/>
-					</svg>
-				</button>
-			</form>
-			<button id="nick" class="send">
-				<svg width="20px" height="40px" viewBox="0 0 50 80">
-					<polyline points="0,75 45,38 0,0"/>
-				</svg>
-			</button>
-		</div>
+		<form id="form">
+			<fieldset>
+				<legend><h3>Hi there! Choose your nickname:</h3></legend>
+				<input id="username" type="text" name="username" placeholder="Nickname" size="60" autocomlete="off">
+				<input id="useremail" type="text" name="useremail" placeholder="Email" size="60" autocomlete="off">
+				<input type="submit" value="Save">
+			</fieldset>
+		</form>
+	</div>
+
+	<div class="user">
+		<h2 id="nicky"></h2>
+		<h2 id="emaily"></h2>
 	</div>
 
 	<div class="convlist">
@@ -402,7 +453,8 @@
 		</nav>
 		
 		<div class="wrapper">
-			<div class="msplaceholder">
+			
+			<div class="placeholder">
 				<div class="reply">
 					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -410,54 +462,15 @@
 					consequat.
 				</div>
 			</div>
-			<div class="msplaceholder">
-				<div class="reply">
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat.
-				</div>
-			</div>
-			<div class="msplaceholder">
-				<div class="mymessage">
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat.
-				</div>
-			</div>
-			<div class="msplaceholder">
-				<div class="reply">
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat.
-				</div>
-			</div>
-			<div class="msplaceholder">
-				<div class="mymessage">
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat.
-				</div>
-			</div>
-			<div class="msplaceholder">
-				<div class="reply">
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat.
-				</div>
-			</div>
+
 		</div>
 
 	</div>
 	
 	<div class="inputarea">
-		<form id="" method="" accept-charset="utf-8">
-				<input type="text" name="">
-				<button id="" class="send">
+		<form id="message" method="" accept-charset="utf-8">
+				<input id="txt" type="text" name="">
+				<button id="" class="send" type="submit">
 					<svg width="20px" height="40px" viewBox="0 0 50 80">
 					    <polyline points="0,75 45,38 0,0"/>
 					</svg>
