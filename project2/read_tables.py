@@ -9,9 +9,13 @@ def read():
 	''' read and report back from db tables '''
 
 	# fetch all the users
+	print(User.query.all())
 	users = User.users_list() 
 	print('\nAll Users:')
 	print(users)
+	username = 'Alex'
+	user = User.query.filter_by(name=username).first()
+	print(f"{user.name}'s ID is {user.id}")
 
 
 	# fetch the chat channels
@@ -20,10 +24,10 @@ def read():
 	print(channels)
 
 	# fetch messages of specific user
-	u = 3
-	channels_list = Message.channels_by_user(u)
+	u = 10
+	channels = Message.channels_by_user(u)
 	print(f'\nAll Chat Channels for User {u}')
-	print(channels_list)
+	print(channels)
 
 	# fetch messages of specific channel
 	ch = 1

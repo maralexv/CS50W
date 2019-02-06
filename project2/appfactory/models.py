@@ -18,6 +18,16 @@ class User(db.Model):
 		return [i.name for i in us]
 
 
+	def all_users():
+		return User.query.all()
+
+
+	def add_user(name):
+		user = User(name=name)
+		db.session.add(user)
+		db.session.commit()
+
+
 
 class Channel(db.Model):
 
@@ -31,6 +41,12 @@ class Channel(db.Model):
 		''' returns a list of titles of all channels '''
 		ch = Channel.query.all()
 		return [i.channel for i in ch]
+
+
+	def add_channel(chat):
+		channel = Channel(channel=chat)
+		db.session.add(channel)
+		db.session.commit()
 
 
 

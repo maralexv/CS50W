@@ -4,324 +4,47 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title></title>
+	<title>Flack</title>
 	<style type="text/css" media="screen">
-		:root {
-			--main-color: steelblue;
-			--secondary-color: salmon;
-			--worning-color: orange;
-			--danger-clor: red;
-		}
-		* {
-			-ms-overflow-style: none; /* Hide scrollbar IE 10+ */
-			overflow: -moz-scrollbars-none;  /* Hide scrollbarFirefox */
-			box-sizing: border-box;
-		}
-		*::-webkit-scrollbar { 
-			width: 0 !important; /* Hide scrollbar Webkit (Safari and Chrome) */ 
-			box-sizing: border-box;
-		} 
-
-		body {
-			font-family: 'Sarabun', sans-serif;
-			font-size: 1rem;
-		}
-		button {
-			/*-webkit-appearance: none;*/
-			background: transparent;
-			border: 0;
-			outline:0;
-		}
-		form {
-			-webkit-display: flex;
-			display: flex;
-			-webkit-align-items: center;
-			flex-direction: row;
-			margin: 0 10px;
-			align-items: center;
-			justify-content: center;
-			-webkit-justify-content: center;
-			max-width: 95%;
-		}
-		nav {
-			display: flex;
-			position: sticky;
-			position: -webkit-sticky;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 50px;
-			border-bottom: 1px solid lightgrey;
-			/*margin-bottom: 2px;*/
-			z-index: inherit;
-			background-color: white;
-			opacity: 0.9;
-		}
-		nav ul{
-			-webkit-display: flex;
-			display: flex;
-			-webkit-align-items: center;
-			flex-direction: row;
-			margin-right: 20px;
-			margin-left: 0;
-			align-items: center;
-			justify-content: space-between;
-			-webkit-justify-content: space-between;
-			width: 100%;
-		}
-		nav li {
-			display: inline-block;
-			list-style-type: none;
-		}
-		input {
-			width: 100%;
-			padding: 6px;
-  			margin: 1px 10px;
-  			border: 2px solid var(--main-color);
-			border-radius: 4px;
-			font-size: 1rem;
-		}
-		svg {
-			stroke: var(--main-color);
-			stroke-width: 4;
-			stroke-linecap: round;
-			stroke-linejoin: round;
-			fill: none;
-		}
-
-		.menu {
-			cursor: pointer;
-			margin-top: 0;
-			margin-left: 0;
-			width: 30px;
-			height: 30px;
-		}
-		.menu:hover polyline, .menu:hover line,
-		.menu:focus polyline, .menu:focus line {
-			stroke-width: 8;
-		}
-		.menu:active polyline, .menu:active line {
-			stroke-width: 8;
-			transition: all 100ms ease-in-out;
-		}
-		.send {
-			cursor: pointer;
-			margin-top: 0;
-			margin-left: 0;
-			width: 45px;
-			height: 45px;
-		}
-		.send:hover polyline, .send:hover line,
-		.send:focus polyline, .send:focus line {
-			stroke-width: 8;
-		}
-		.send:active polyline, .send:active line {
-			stroke-width: 8;
-			transition: all 100ms ease-in-out;
-		}
-		@keyframes up {
-			from { 
-				opacity: 1;
-				top: 0;
-				height: 100%;
-				line-height: 100%;
-			}
-			to {
-				opacity: 0;
-				top: -110vh;
-				height: 0;
-				line-height: 0;
-			}
-		}
-		@keyframes dwn {
-			from { 
-				top: -110vh;
-				opacity: 0;
-				height: 0;
-				line-height: 0;
-			}
-			to {
-				top: 0;
-				opacity: 1;
-				height: 100%;
-				line-height: 100%;
-			}
-		}
-		@keyframes rgtf {
-			from { 
-				left: -150vw;
-				width: 0;
-				opacity: 0;
-			}
-			to { 
-				left: 0;
-				width: 100vw;
-				opacity: 1;
-			}
-		}
-		@keyframes lftf {
-			from { 
-				left: 0;
-				width: 100vw;
-				opacity: 1;
-			}
-			to { 
-				left: -150vw;
-				width: 0;
-				opacity: 0; 
-			}
-		}
-		.nickname {
-			display: flex;
-			flex-direction: column;
-			position: absolute;
-			top: 0;
-			left: 0;
-			height: 100%;
-			width: 100%;
-			margin: 0;
-			align-items: center;
-			justify-content: center;
-			background-color: snow;
-			border-bottom: 1px solid grey;
-			box-shadow: 2px 0 5px grey;
-			opacity: 1;
-			z-index: 2;
-			animation-name: up;
-           	animation-duration: 1s;
-           	animation-fill-mode: forwards;
-           	animation-play-state: paused;
-		}
-		.convlist {
-			display: block;
-			position: absolute;
-			top: 0;
-			left: 0;
-			padding: 0;
-			height: 100vh;
-			width: 100vw;
-			justify-content: center;
-			overflow-y: scroll;
-			background-color: snow;
-			border-right: 1px solid grey;
-			box-shadow: 0 2px 5px grey;
-			opacity: 1;
-			box-shadow: 5px 0 6px rgba(0, 0, 0, 0.3);
-			z-index: 1;
-			animation-name: lftf;
-           	animation-duration: 1s;
-           	animation-fill-mode: forwards;
-           	animation-play-state: paused;
-		}
-		.conv-item {
-			display: flex;
-			margin: 5% auto 5% 5%;
-			align-items: center;
-			flex-direction: row;
-		}
-		.conv-item:hover, .conv-item:focus {
-			cursor: pointer;
-		} 
-		.chatarea {
-			display: block;
-			position: absolute;
-			padding: 0;
-			margin: 0;
-			top: 0;
-			left: 0;
-			height: calc(100vh - 50px);
-			width: 100vw;
-			overflow-y: hidden;
-			z-index: 0;
-		}
-		.wrapper {
-			display: flex;
-			flex-direction: column;
-			align-items: flex-end;
-			overflow-y: auto;
-			height: calc(100vh - 50px - 50px);
-			z-index: -1
-		}
-		.inputarea {
-			display: block;
-			position: absolute;
-			bottom: 0;
-			left: 0;
-			padding: 0;
-			width: 100%;
-			max-height: 50px;
-			border-top: 1px solid lightgrey;
-			background-color: white;
-			opacity: 0.65;
-			z-index: 0;
-		}
-		.msplaceholder {
-			display: block;
-			width: 100%;
-			margin: 7px 5px 7px 5px;
-			padding: 10px 10px;
-		}
-		.mymessage, .reply{
-			display: flex;
-			max-width: 60%;
-			padding: 0.75rem;
-		}
-		.mymessage { 
-			float: right; 
-			text-align: right;
-			margin-right: 10px;
-			background-color: lightblue;
-			border-radius: 20px;
-		}
-		.reply { 
-			float: left; 
-			background-color: whitesmoke;
-			border-radius: 20px;
-		}
-		.nick {
-			font-size: 1.1rem;
-			font-weight: bold;
-		}
 		
 	</style>
 
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
-			var nick = document.querySelector('#nick');
-			var nickpage = document.querySelector('.nickname');
-			var chats = document.querySelectorAll('.conv-item');
-			var backarr = document.querySelector('#back');
-			var user1 = document.querySelector('#user1');
-			var user2 = document.querySelector('#user2');
 
-			// remove log-in screen and reveal the chats list
-			nick.onclick = function () {
-				nickpage.style.animationName = 'up';
-				nickpage.style.animationPlayState = 'running';
+			document.querySelector('#nick').onsubmit = function () {
+				// Initialize new request
+          		var xhttp = new XMLHttpRequest();
+          		const username = document.querySelector('#username').value;
+          		xhttp.open('POST', '/channels', true);
+
+          		// Callback function for when request completes
+          		xhttp.onload = function() {
+          			// Extract JSON data from request
+              		const rdata = JSON.parse(request.responseText);
+              		// Update the user and channels divs
+              		if (rdata.user) {
+              			const user = `Hello ${rdata.username}!`;
+              			const channels = `${rdata.channels}`;
+              			document.querySelector('#user').innerHTML = user;
+              			document.querySelector('#channels').innerHTML = channels;
+              		}
+              		else {
+              			document.querySelector('#user').innerHTML = 'There was an error.';
+              			document.querySelector('#channels').innerHTML = 'There was an error.';
+              		}
+          		};
+
+	          	// Add data to send with request
+	          	const data = new FormData();
+	          	data.append('username', username);
+	          	// Send request
+	          	xhttp.send(data);
+	          	// Clear the input field
+	          	document.querySelector('#nick').value = '';
+				return false;
 			};
-			
-			// move chat list screen away to reveal message area with messages 
-			// of the chat when a chat is clicked
-			chats.forEach(function(element) {
-				element.onclick = function() {
-				element.parentElement.style.animationName = 'lftf';
-				element.parentElement.style.animationPlayState = 'running';
-				}
-			});
-			// go back to chat list screen
-			backarr.onclick = function() {
-				chats[0].parentElement.style.animationName = 'rgtf';
-				chats[0].parentElement.style.animationPlayState = 'running';
-			};
-			// bring back the log-in or account screen
-			user1.onclick = function() {
-				nickpage.style.animationName = 'dwn';
-				nickpage.style.animationPlayState = 'running';
-			};
-			user2.onclick = function() {
-				nickpage.style.animationName = 'dwn';
-				nickpage.style.animationPlayState = 'running';
-			};
+
 		});
 		
 	</script>
@@ -329,140 +52,26 @@
 </head>
 <body>
 
-	<div class="nickname">
-		<div>
-			<h2>Hi there! Choose your nickname:</h2>
-		</div>
-		<div>
-			<form>
-				<input type="text" name="" placeholder="Nickname" size="60">
-				<input type="email" name="" placeholder="Email" size="60">
-				<button class="send">
-					<svg width="20px" height="40px" viewBox="0 0 50 80">
-						<polyline points="0,75 45,38 0,0"/>
-					</svg>
-				</button>
-			</form>
-			<button id="nick" class="send">
-				<svg width="20px" height="40px" viewBox="0 0 50 80">
-					<polyline points="0,75 45,38 0,0"/>
-				</svg>
-			</button>
-		</div>
+	<div id="who">
+		<form id="nick" action="" method="POST" accept-charset="utf-8">
+			<input id="username" type="string" name="username" autofocus autocomplete="off" placeholder="Choose your nickname">
+			<input type="submit" value="Register">
+		</form>
 	</div>
 
-	<div class="convlist">
-		<nav>
-			<ul>
-				<li> </li>
-				<li>All Conversations</li>
-				<li>
-					<button id="user1" class="menu">
-					  <svg width="30px" height="30px" viewBox="0 0 90 90">
-					    <line x1="0" y1="10" x2="80" y2="10"/>
-					    <line x1="0" y1="40" x2="80" y2="40"/>
-					    <line x1="0" y1="70" x2="80" y2="70"/>
-					  </svg>
-					</button>
-				</li>
-			</ul>
-		</nav>
-		<div class="conv-item">
-			Conversation 1
-		</div>
-		<div class="conv-item">
-			Conversation 2
-		</div>
-		<div class="conv-item">
-			Conversation 3
-		</div>
-	</div>
-
-	<div class="chatarea">
-		<nav>
-			<ul>
-				<li>
-					<button id="back" class="send">
-					  <svg width="20px" height="40px" viewBox="0 0 20 80">
-					    <polyline points="45,75 0,38 45,0"/>
-					  </svg>
-					</button>
-				</li>
-				<li>Conversation Name</li>
-				<li>
-					<button id="user2" class="menu">
-					  <svg width="30px" height="30px" viewBox="0 0 90 90">
-					    <line x1="0" y1="10" x2="80" y2="10"/>
-					    <line x1="0" y1="40" x2="80" y2="40"/>
-					    <line x1="0" y1="70" x2="80" y2="70"/>
-					  </svg>
-					</button>
-				</li>
-			</ul>
-		</nav>
+	<div id="user">
 		
-		<div class="wrapper">
-			<div class="msplaceholder">
-				<div class="reply">
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat.
-				</div>
-			</div>
-			<div class="msplaceholder">
-				<div class="reply">
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat.
-				</div>
-			</div>
-			<div class="msplaceholder">
-				<div class="mymessage">
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat.
-				</div>
-			</div>
-			<div class="msplaceholder">
-				<div class="reply">
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat.
-				</div>
-			</div>
-			<div class="msplaceholder">
-				<div class="mymessage">
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat.
-				</div>
-			</div>
-			<div class="msplaceholder">
-				<div class="reply">
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat.
-				</div>
-			</div>
-		</div>
-
 	</div>
 	
-	<div class="inputarea">
-		<form id="" method="" accept-charset="utf-8">
-				<input type="text" name="">
-				<button id="" class="send">
-					<svg width="20px" height="40px" viewBox="0 0 50 80">
-					    <polyline points="0,75 45,38 0,0"/>
-					</svg>
-				</button>
-		</form>
+	<div id="channels">
+		
+	</div>
+
+	<div id="chat">
+		
+	</div>
+	<div id="message">
+		
 	</div>
 		
 </body>
