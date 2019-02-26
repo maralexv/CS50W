@@ -14,14 +14,14 @@
 
 			document.querySelector('#nick').onsubmit = function () {
 				// Initialize new request
-          		var xhttp = new XMLHttpRequest();
+          		const xhttp = new XMLHttpRequest();
           		const username = document.querySelector('#username').value;
           		xhttp.open('POST', '/channels', true);
 
           		// Callback function for when request completes
           		xhttp.onload = function() {
           			// Extract JSON data from request
-              		const rdata = JSON.parse(request.responseText);
+              		const rdata = JSON.parse(xhttp.responseText);
               		// Update the user and channels divs
               		if (rdata.user) {
               			const user = `Hello ${rdata.username}!`;

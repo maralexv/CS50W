@@ -16,15 +16,17 @@ def index():
 def channels():    
 
 	username = request.form.get('username')
-	if User.query.filter_by(name=username).first() is None:
+	user = User.query.filter_by(name=username).first()
+
+	if user is None:
 		User.add_user(username)
+	
 	user = User.query.filter_by(name=username).first()
 	session['user_id'] = user.id
 	g.user = user
-	name = user.name
 	channels = Message.channels_by_user(session['user_id'])
 
-	return json.jsonify({'user': True, 'username': name, 'channels': channels})
+	return json.jsonify({'user': True, 'username': user.name, 'channels': channels})
 
 
 @app.route("/messages", methods=["POST"])

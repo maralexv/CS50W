@@ -13,8 +13,9 @@ def read():
 	users = User.users_list() 
 	print('\nAll Users:')
 	print(users)
-	username = 'Alex'
+	username = 'User-2'
 	user = User.query.filter_by(name=username).first()
+	print (type(user))
 	print(f"{user.name}'s ID is {user.id}")
 
 
@@ -24,7 +25,7 @@ def read():
 	print(channels)
 
 	# fetch messages of specific user
-	u = 10
+	u = 3
 	channels = Message.channels_by_user(u)
 	print(f'\nAll Chat Channels for User {u}')
 	print(channels)

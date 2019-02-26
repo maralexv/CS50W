@@ -17,10 +17,14 @@ class User(db.Model):
 		us = User.query.all()
 		return [i.name for i in us]
 
-
 	def all_users():
 		return User.query.all()
 
+	# def user_by_name(name):
+	# 	return User.query.filter_by(name=name).first()
+
+	# def user_by_id(id):
+	# 	return User.query.get(id)
 
 	def add_user(name):
 		user = User(name=name)
