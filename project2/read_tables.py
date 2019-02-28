@@ -19,16 +19,20 @@ def read():
 	print(f"{user.name}'s ID is {user.id}")
 
 
-	# fetch the chat channels
+	# fetch all the chat channels
 	channels = Channel.channels_list()
 	print('\nAll Chat Channels:')
 	print(channels)
+	print(type(channels))
 
 	# fetch messages of specific user
 	u = 3
 	channels = Message.channels_by_user(u)
+	channelsnames = []
+	for i in channels:
+		channelsnames.append(Channel.query.get(i).channel)
 	print(f'\nAll Chat Channels for User {u}')
-	print(channels)
+	print(channelsnames)
 
 	# fetch messages of specific channel
 	ch = 1

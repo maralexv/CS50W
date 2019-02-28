@@ -47,8 +47,8 @@ class Channel(db.Model):
 		return [i.channel for i in ch]
 
 
-	def add_channel(chat):
-		channel = Channel(channel=chat)
+	def add_channel(newchannel):
+		channel = Channel(channel=newchannel)
 		db.session.add(channel)
 		db.session.commit()
 

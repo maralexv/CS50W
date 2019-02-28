@@ -24,9 +24,9 @@ def channels():
 	user = User.query.filter_by(name=username).first()
 	session['user_id'] = user.id
 	g.user = user
-	channels = Message.channels_by_user(session['user_id'])
+	channels = Channel.channels_list()
 
-	return json.jsonify({'user': True, 'username': user.name, 'channels': channels})
+	return json.jsonify({'user': True, 'username': g.user.name, 'channels': channels})
 
 
 @app.route("/messages", methods=["POST"])

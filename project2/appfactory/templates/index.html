@@ -8,26 +8,37 @@
 	<style type="text/css" media="screen">
 		
 	</style>
-
+		
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
 
 			document.querySelector('#nick').onsubmit = function () {
 				// Initialize new request
-          		const xhttp = new XMLHttpRequest();
+          		const xhttp1 = new XMLHttpRequest();
           		const username = document.querySelector('#username').value;
-          		xhttp.open('POST', '/channels', true);
+          		xhttp1.open('POST', '/channels', true);
 
           		// Callback function for when request completes
-          		xhttp.onload = function() {
+          		xhttp1.onload = function() {
           			// Extract JSON data from request
-              		const rdata = JSON.parse(xhttp.responseText);
+              		const data = JSON.parse(xhttp1.responseText);
+
               		// Update the user and channels divs
-              		if (rdata.user) {
-              			const user = `Hello ${rdata.username}!`;
-              			const channels = `${rdata.channels}`;
-              			document.querySelector('#user').innerHTML = user;
-              			document.querySelector('#channels').innerHTML = channels;
+              		if (data.user) {
+              			// Welcome User.
+              			document.querySelector('#user').innerHTML = `Hello ${data.username}!`;
+
+              			// Display the list of Channels.
+              			document.querySelector('#channels').innerHTML = 'Existing chat channels to join:';
+              			data.channels.forEach(add_channels);
+              			function add_channels(content) {
+              				const item = document.createElement('p');
+              				item.innerHTML = content;
+              				document.querySelector('#channels').append(item);
+              			};
+
+              			// Make form to add new channel visible
+              			document.querySelector('#newch').style.display = "inline";
               		}
               		else {
               			document.querySelector('#user').innerHTML = 'There was an error.';
@@ -39,11 +50,41 @@
 	          	const data = new FormData();
 	          	data.append('username', username);
 	          	// Send request
-	          	xhttp.send(data);
+	          	xhttp1.send(data);
 	          	// Clear the input field
-	          	document.querySelector('#nick').value = '';
+	          	document.querySelector('#nick').reset();
 				return false;
 			};
+
+
+			// document.querySelector('#addchannel').onsubmit = function () {
+			// 	// Initialize new request
+   //        		const xhttp2 = new XMLHttpRequest();
+   //        		const newchannel = document.querySelector('#newchannel').value;
+   //        		xhttp2.open('POST', '/messages', true);
+
+   //        		// Callback function for when request completes
+   //        		xhttp2.onload = function() {
+   //        			// Extract JSON data from request
+   //            		const cdata = JSON.parse(xhttp2.responseText);
+   //            		// Update the chat div
+   //            		if (cdata.chat) {
+              			
+   //            		}
+   //            		else {
+   //            			document.querySelector('#chat').innerHTML = 'There was an error.';
+   //            		}
+   //        		};
+
+	  //         	// Add data to send with request
+	  //         	const data = new FormData();
+	  //         	data.append('newchannel', newchannel);
+	  //         	// Send request
+	  //         	xhttp2.send(data);
+	  //         	// Clear the input field
+	  //         	document.querySelector('#addchannel').reset();
+			// 	return false;
+			// };
 
 		});
 		
@@ -55,21 +96,32 @@
 	<div id="who">
 		<form id="nick" action="" method="POST" accept-charset="utf-8">
 			<input id="username" type="string" name="username" autofocus autocomplete="off" placeholder="Choose your nickname">
-			<input type="submit" value="Register">
+			<input type="submit" value="Proceed...">
 		</form>
-	</div>
+	</div><br>
 
 	<div id="user">
 		
-	</div>
+	</div><br>
 	
 	<div id="channels">
 		
 	</div>
 
+	<div style="display: inline-flex;">
+		<div id="newch" style="display: none">
+			<form id="addchannel" action="" method="POST" accept-charset="utf-8">
+				<label for="channelname">Here you can create a new chat channel:
+					<input id="newchannel" type="string" name="channelname" autofocus autocomplete="off" placeholder="New channel name">
+				</label>
+				<input type="submit" value="Create">
+			</form>
+		</div>
+	</div><br>
+
 	<div id="chat">
 		
-	</div>
+	</div><br>
 	<div id="message">
 		
 	</div>
