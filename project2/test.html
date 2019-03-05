@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const arr = ['AAA', 'BBB', 'CCC'];
+    arr.forEach(add_elms);
+
+    function add_elms(arr) {
+        // Create div
+        const item = document.createElement('div');
+        item.innerHTML = arr;
+        // Add button 
+        const go = document.createElement('button');
+        go.className = 'gobutton';
+        go.innerHTML = 'Go';
+        item.append(go);
+        document.querySelector('#target').append(item);
+    };
+
+    document.querySelectorAll('.gobutton').forEach(mark);
+
+    function mark(button) {
+        console.log(button);
+        button.onclick = function() {
+            console.log(this);
+            this.parentElement.style.color = "red";
+        };
+    };
+});
+  </script>
+</head>
+<body>
+  <div id="target">
+    
+  </div>
+</body>
+</html>

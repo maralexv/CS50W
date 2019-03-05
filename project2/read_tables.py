@@ -38,7 +38,7 @@ def read():
 	ch = 1
 	channel = Channel.query.get(ch)
 	mes_list = [m.message for m in Message.messages_by_channel(ch)]
-	print(f'\nAll Chats for "{channel.channel}"')
+	print(f'\nAll messages for "{channel.channel}"')
 	print(mes_list)
 
 
