@@ -63,10 +63,16 @@ def messages():
 		error = 'Something went wrong - can not find the chat channel in db.'
 	else:
 		g.channel = channel
-		messages = [m.message for m in Message.messages_by_channel(g.channel.id)]
+		messages = []
+		for m in Message.messages_by_channel(g.channel.id):
+			user = User.query.get(m.user_id).name
+			timestamp = m.date_time
+			text = m.message
+			mes = {'user': user, 'timestamp': timestamp, 'text': text}
+			messages.append(mes)
 
 	if error is None:
-		return json.jsonify({'channel': g.channel.channel, 'messages': messages})
+		return json.jsonify({'me': g.user.name, 'channel': g.channel.channel, 'messages': messages})
 	else:
 		return json.jsonify({'channel': error, 'messages': 'No messages.'})
 

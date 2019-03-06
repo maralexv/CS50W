@@ -122,10 +122,30 @@
 	              		chat.innerHTML = data.channel;
 	              		document.querySelector('#chat').append(chat);
 	              		const msarea = document.createElement('div');
+	              		msarea.className = '';
+	              		const me = data.me;
 	              		const meslist = data.messages;
 	              		meslist.forEach(function(message) {
 	              			const mplace = document.createElement('div');
-	              			mplace.innerHTML = message;
+	              			const user = document.createElement('div');
+	              			if (me == message.user) {
+	              				user.className = '';
+	              			}
+	              			else {
+	              				user.className = '';
+	              			}
+	              			user.innerHTML = message.user;
+	              			const dt = document.createElement('span');
+	              			dt.className = '';
+	              			let dateTime = message.timestamp.split(' ');
+	              			let date = dateTime[1] + '-' + dateTime[2];
+	              			let time = dateTime[4].split(':')
+	              			dt.innerHTML = date + ' ' + time[0] + ':' + time[1];
+	              			const text = document.createElement('div');
+	              			text.innerHTML = message.text;
+	              			user.append(dt);
+	              			mplace.append(user);
+	              			mplace.append(text);
 	              			msarea.append(mplace);
 	              			});
 	              		document.querySelector('#chat').append(msarea);
