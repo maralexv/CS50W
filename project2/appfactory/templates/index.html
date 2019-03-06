@@ -6,7 +6,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Flack</title>
 	<style type="text/css" media="screen">
-		
+		.conv-item:hover, .conv-item:focus {
+			cursor: pointer;
+		}
 	</style>
 		
 	<script>
@@ -36,13 +38,9 @@
               			function add_channels(content) {
               				// Create div with chat channel
               				const item = document.createElement('div');
+              				item.className = 'conv-item';
+							item.setAttribute('data-goo', content);
               				item.innerHTML = content;
-              				// Add button to choose the channel
-							const go = document.createElement('button');
-							go.className = 'gobutton';
-							go.setAttribute('data-goo', content);
-							go.innerHTML = 'Choose';
-							item.append(go);
               				document.querySelector('#channels').append(item);
               			};
 
@@ -50,7 +48,7 @@
               			document.querySelector('#newch').style.display = "inline";
 
               			// Make channels clickable
-              			var chlist = document.querySelectorAll('.gobutton');
+              			var chlist = document.querySelectorAll('.conv-item');
 						console.log(chlist);
 						chlist.forEach(add_chat_messages);
               		}
@@ -170,7 +168,7 @@
 	<div id="who" style="display: inline-flex;">
 		<form id="nick" action="" method="POST" accept-charset="utf-8">
 			<label for="username">Let us know how you want to be called: 
-				<input id="username" type="string" name="username" autofocus autocomplete="off" placeholder="Choose your nickname">
+				<input id="username" type="text" name="username" autofocus autocomplete="off" placeholder="Choose your nickname">
 			</label>
 			<input type="submit" value="Proceed...">
 		</form>
@@ -188,7 +186,7 @@
 		<div id="newch" style="display: none">
 			<form id="addchannel" action="" method="POST" accept-charset="utf-8">
 				<label for="channelname">Here you can create a new chat topic:
-					<input id="newchannel" type="string" name="channelname" autofocus autocomplete="off" placeholder="New channel name">
+					<input id="newchannel" type="text" name="channelname" autofocus autocomplete="off" placeholder="New channel name">
 				</label>
 				<input type="submit" value="Create">
 			</form>
