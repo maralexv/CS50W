@@ -29,10 +29,52 @@ def channels():
 	return json.jsonify({'user': True, 'username': g.user.name, 'channels': channels})
 
 
+@app.route("/newtopic", methods=["POST"])
+def newtopic():
+
+	error = None
+	
+	newchannel = request.form.get('newchannel')
+	channel = Channel.query.filter_by(channel=newchannel).first()
+
+	if channel is None:
+		Channel.add_channel(newchannel)
+	else:
+		error = 'This channel already exists!'
+
+	channel = Channel.query.filter_by(channel=newchannel).first()
+	g.channel = channel
+	# messages = [m.message for m in Message.messages_by_channel(g.channel.id)]
+
+	if error is None:
+		return json.jsonify({'channel': g.channel.channel})
+	else:
+		return json.jsonify({'channel': error})
+
+
 @app.route("/messages", methods=["POST"])
 def messages():
-	
-	pass
+
+	error = None
+	channel = request.form.get('channel')
+	channel = Channel.query.filter_by(channel=channel).first()
+
+	if channel is None:
+		error = 'Something went wrong - can not find the chat channel in db.'
+	else:
+		g.channel = channel
+		messages = []
+		for m in Message.messages_by_channel(g.channel.id):
+			user = User.query.get(m.user_id).name
+			timestamp = m.date_time
+			text = m.message
+			mes = {'user': user, 'timestamp': timestamp, 'text': text}
+			messages.append(mes)
+
+	if error is None:
+		return json.jsonify({'me': g.user.name, 'channel': g.channel.channel, 'messages': messages})
+	else:
+		return json.jsonify({'channel': error, 'messages': 'No messages.'})
 
 
 # Make sure g.user is loaded before every request

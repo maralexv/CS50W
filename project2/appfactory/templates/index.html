@@ -14,14 +14,14 @@
 
 			document.querySelector('#nick').onsubmit = function () {
 				// Initialize new request
-          		const xhttp1 = new XMLHttpRequest();
+          		const xhttp = new XMLHttpRequest();
           		const username = document.querySelector('#username').value;
-          		xhttp1.open('POST', '/channels', true);
+          		xhttp.open('POST', '/channels', true);
 
           		// Callback function for when request completes
-          		xhttp1.onload = function() {
+          		xhttp.onload = function() {
           			// Extract JSON data from request
-              		const data = JSON.parse(xhttp1.responseText);
+              		const data = JSON.parse(xhttp.responseText);
 
               		// Update the user and channels divs
               		if (data.user) {
@@ -29,16 +29,30 @@
               			document.querySelector('#user').innerHTML = `Hello ${data.username}!`;
 
               			// Display the list of Channels.
-              			document.querySelector('#channels').innerHTML = 'Existing chat channels to join:';
+              			document.querySelector('#channels').innerHTML = 'Existing chats to join:';
+              			console.log(data.channels);
               			data.channels.forEach(add_channels);
+
               			function add_channels(content) {
-              				const item = document.createElement('p');
+              				// Create div with chat channel
+              				const item = document.createElement('div');
               				item.innerHTML = content;
+              				// Add button to choose the channel
+							const go = document.createElement('button');
+							go.className = 'gobutton';
+							go.setAttribute('data-goo', content);
+							go.innerHTML = 'Choose';
+							item.append(go);
               				document.querySelector('#channels').append(item);
               			};
 
               			// Make form to add new channel visible
               			document.querySelector('#newch').style.display = "inline";
+
+              			// Make channels clickable
+              			var chlist = document.querySelectorAll('.gobutton');
+						console.log(chlist);
+						chlist.forEach(add_chat_messages);
               		}
               		else {
               			document.querySelector('#user').innerHTML = 'There was an error.';
@@ -50,41 +64,101 @@
 	          	const data = new FormData();
 	          	data.append('username', username);
 	          	// Send request
-	          	xhttp1.send(data);
+	          	xhttp.send(data);
 	          	// Clear the input field
 	          	document.querySelector('#nick').reset();
 				return false;
 			};
 
+			document.querySelector('#addchannel').onsubmit = function () {
+				// Initialize new request
+          		const xhttp = new XMLHttpRequest();
+          		const newchannel = document.querySelector('#newchannel').value;
+          		xhttp.open('POST', '/newtopic', true);
 
-			// document.querySelector('#addchannel').onsubmit = function () {
-			// 	// Initialize new request
-   //        		const xhttp2 = new XMLHttpRequest();
-   //        		const newchannel = document.querySelector('#newchannel').value;
-   //        		xhttp2.open('POST', '/messages', true);
+          		// Callback function for when request completes
+          		xhttp.onload = function() {
+          			// Extract JSON data from request
+              		const data = JSON.parse(xhttp.responseText);
+              		// Update the chat div
+              		const chat = document.createElement('div');
+              		chat.innerHTML = data.channel;
+              		document.querySelector('#chat').append(chat);
+          		};
 
-   //        		// Callback function for when request completes
-   //        		xhttp2.onload = function() {
-   //        			// Extract JSON data from request
-   //            		const cdata = JSON.parse(xhttp2.responseText);
-   //            		// Update the chat div
-   //            		if (cdata.chat) {
-              			
-   //            		}
-   //            		else {
-   //            			document.querySelector('#chat').innerHTML = 'There was an error.';
-   //            		}
-   //        		};
+	          	// Add data to send with request
+	          	const data = new FormData();
+	          	data.append('newchannel', newchannel);
+	          	// Send request
+	          	xhttp.send(data);
+	          	// Clear the input field
+	          	document.querySelector('#addchannel').reset();
+				return false;
+			};
 
-	  //         	// Add data to send with request
-	  //         	const data = new FormData();
-	  //         	data.append('newchannel', newchannel);
-	  //         	// Send request
-	  //         	xhttp2.send(data);
-	  //         	// Clear the input field
-	  //         	document.querySelector('#addchannel').reset();
-			// 	return false;
-			// };
+    		function mark(button) {
+    			console.log(button);
+        		button.onclick = function() {
+        			console.log(this);
+            		this.parentElement.style.color = "red";
+        		};
+    		};
+
+			function add_chat_messages(button) {
+              	button.onclick = function() {
+	               // Initialize new request
+	          		const xhttp = new XMLHttpRequest();
+	          		const channel = button.dataset.goo;
+	          		console.log(channel);
+	          		xhttp.open('POST', '/messages', true);
+
+	          		// Callback function for when request completes
+	          		xhttp.onload = function() {
+	          			// Extract JSON data from request
+	              		const data = JSON.parse(xhttp.responseText);
+	              		console.log(data);
+	              		// Update the chat div
+	              		const chat = document.createElement('div');
+	              		chat.innerHTML = data.channel;
+	              		document.querySelector('#chat').append(chat);
+	              		const msarea = document.createElement('div');
+	              		msarea.className = '';
+	              		const me = data.me;
+	              		const meslist = data.messages;
+	              		meslist.forEach(function(message) {
+	              			const mplace = document.createElement('div');
+	              			const user = document.createElement('div');
+	              			if (me == message.user) {
+	              				user.className = '';
+	              			}
+	              			else {
+	              				user.className = '';
+	              			}
+	              			user.innerHTML = message.user;
+	              			const dt = document.createElement('span');
+	              			dt.className = '';
+	              			let dateTime = message.timestamp.split(' ');
+	              			let date = dateTime[1] + '-' + dateTime[2];
+	              			let time = dateTime[4].split(':')
+	              			dt.innerHTML = date + ' ' + time[0] + ':' + time[1];
+	              			const text = document.createElement('div');
+	              			text.innerHTML = message.text;
+	              			user.append(dt);
+	              			mplace.append(user);
+	              			mplace.append(text);
+	              			msarea.append(mplace);
+	              			});
+	              		document.querySelector('#chat').append(msarea);
+	          		};
+
+		          	// Add data to send with request
+		          	const data = new FormData();
+		          	data.append('channel', channel);
+		          	// Send request
+		          	xhttp.send(data);
+		          	return false;
+              	}; 
+          	};
 
 		});
 		
@@ -93,16 +167,18 @@
 </head>
 <body>
 
-	<div id="who">
+	<div id="who" style="display: inline-flex;">
 		<form id="nick" action="" method="POST" accept-charset="utf-8">
-			<input id="username" type="string" name="username" autofocus autocomplete="off" placeholder="Choose your nickname">
+			<label for="username">Let us know how you want to be called: 
+				<input id="username" type="string" name="username" autofocus autocomplete="off" placeholder="Choose your nickname">
+			</label>
 			<input type="submit" value="Proceed...">
 		</form>
-	</div><br>
+	</div>
 
 	<div id="user">
 		
-	</div><br>
+	</div>
 	
 	<div id="channels">
 		
@@ -111,17 +187,18 @@
 	<div style="display: inline-flex;">
 		<div id="newch" style="display: none">
 			<form id="addchannel" action="" method="POST" accept-charset="utf-8">
-				<label for="channelname">Here you can create a new chat channel:
+				<label for="channelname">Here you can create a new chat topic:
 					<input id="newchannel" type="string" name="channelname" autofocus autocomplete="off" placeholder="New channel name">
 				</label>
 				<input type="submit" value="Create">
 			</form>
 		</div>
-	</div><br>
+	</div>
 
 	<div id="chat">
 		
-	</div><br>
+	</div>
+	
 	<div id="message">
 		
 	</div>
