@@ -76,6 +76,26 @@ def messages():
 	else:
 		return json.jsonify({'channel': error, 'messages': 'No messages.'})
 
+@socketio.on("send message")
+def broadcast(data):
+
+	userid = User.query.filter_by(name=data["message"]["user"]).first().id
+	channelid = Channel.query.filter_by(channel=data["message"]["channel"]).first().id
+	text = data["message"]["text"]
+	Message.add_mes(text, userid, channelid)
+
+	number_of_messages = len(Message.query.all())
+	first = Message.query.all()[0]
+	if number_of_messages > 100:
+		db.session.delete(first)
+		db.session.commit()
+
+	last = Message.query.all()[-1]
+	user = User.query.get(last.user_id).name
+	timestamp = last.date_time.strftime("%a, %d %b %Y %H:%M:%S")
+	text = last.message
+	emit('broadcast message', {'user': user, 'timestamp': timestamp, 'text': text}, broadcast=True)
+
 
 # Make sure g.user is loaded before every request
 @app.before_request
@@ -88,4 +108,4 @@ def load_logged_in_user():
 
 
 if __name__ == '__main__':
-	app.run(debug=True)
+    socketio.run(app)

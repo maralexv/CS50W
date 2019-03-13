@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Flack</title>
 	<style type="text/css" media="screen">
-				:root {
+		:root {
 			--main-color: steelblue;
 			--secondary-color: salmon;
 			--worning-color: orange;
@@ -334,11 +334,10 @@
 			background-color: whitesmoke;
 			border-radius: 20px;
 		}
-		/*.conv-item:hover, .conv-item:focus {
-			cursor: pointer;
-		}*/
 	</style>
-		
+
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
 
@@ -383,7 +382,7 @@
               		// Update the user and channels divs
               		if (data.user) {
               			// Welcome User.
-              			document.querySelector('#user').innerHTML = `Hello ${data.username}!`;
+              			document.querySelector('#user').innerHTML = `Hello ${data.username}`;
               			document.querySelector('#welcome').innerHTML = 'Here are existing chats to join:';
               			// Display the list of Channels.
               			// document.querySelector('#channels').innerHTML = 'Existing chats to join';
@@ -430,15 +429,27 @@
           		const xhttp = new XMLHttpRequest();
           		const newchannel = document.querySelector('#newchannel').value;
           		xhttp.open('POST', '/newtopic', true);
+          		document.querySelector('#topic12').innerHTML = "";
+	          	document.querySelector('#chat').innerHTML = "";
+
+	          	// Add new chat topic to the Channels list
+  				const item = document.createElement('div');
+  				item.className = 'conv-item';
+				item.setAttribute('data-goo', newchannel);
+  				item.innerHTML = newchannel;
+  				document.querySelector('#channels').append(item);
+  				// Make newchannel clickable
+  				var chlist = document.querySelectorAll('.conv-item');
+				console.log(chlist);
+				chlist.forEach(add_chat_messages);
 
           		// Callback function for when request completes
           		xhttp.onload = function() {
           			// Extract JSON data from request
               		const data = JSON.parse(xhttp.responseText);
               		// Update the chat div
-              		const chat = document.createElement('div');
-              		chat.innerHTML = data.channel;
-              		document.querySelector('#chat').append(chat);
+              		const newChatTopic = data.channel;
+              		document.querySelector('#topic12').innerHTML = newChatTopic;
           		};
 
 	          	// Add data to send with request
@@ -453,11 +464,11 @@
 				return false;
 			};
 
-			function add_chat_messages(button) {
-              	button.onclick = function() {
+			function add_chat_messages(element) {
+              	element.onclick = function() {
 	               // Initialize new request
 	          		const xhttp = new XMLHttpRequest();
-	          		const channel = button.dataset.goo;
+	          		const channel = element.dataset.goo;
 	          		console.log(channel);
 	          		xhttp.open('POST', '/messages', true);
 	          		document.querySelector('#topic12').innerHTML = "";
@@ -503,6 +514,7 @@
 	              			msarea.append(mplace1);
 	              			});
 	              		document.querySelector('#chat').append(msarea);
+
 	          		};
 
 		          	// Add data to send with request
@@ -516,19 +528,57 @@
               	}; 
           	};
 
-          	// post a message
-			document.querySelector('#message').onsubmit = function() {
-				let message = document.querySelector('#txt').value;
-				console.log(message);
-				// const placeholder = document.createElement('div');
-				let content = document.createElement('div');
-				// placeholder.className = 'msplaceholder';
-				content.className = 'my';
-				content.innerHTML = message;
-				// placeholder.innerHTML = content;
-				document.querySelector('.wrapper').append(content);
+			// Connect to websocket
+			var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+			// When connected, configure send button
+			socket.on('connect', function () {
+				document.querySelector('#majorTomToGoundControl').onclick = () => {
+					let user = document.querySelector('#user').innerHTML;
+					username = user.split(' ')[1];
+					const channel = document.querySelector('#topic12').innerHTML;
+					const text = document.querySelector('#txt').value;
+					const message = {'user': username, 'channel': channel, 'text': text};
+					console.log(message);
+					document.querySelector('#txt').value = "";
+					socket.emit('send message', {'message': message});
+					return false;
+				};
 				return false;
-			};
+			});
+
+			// When a new message is broadcasted, post it in the message are
+			socket.on('broadcast message', data => {
+				console.log(data);
+      			const mplace1 = document.createElement('div');
+      			mplace1.className = 'placeholder';
+      			const user = document.createElement('div');
+      			user.className = 'bywho';
+      			user.innerHTML = data.user;
+      			const dt = document.createElement('div');
+      			dt.className = 'tstamp'
+      			let dateTime = data.timestamp.split(' ');
+      			let date = dateTime[1] + '-' + dateTime[2];
+      			let time = dateTime[4].split(':')
+      			dt.innerHTML = date + ' ' + time[0] + ':' + time[1];
+      			const mplace2 = document.createElement('div');
+      			const meName = document.querySelector('#user').innerHTML;
+      			const me = meName.split(' ')[1];
+      			if (me == data.user) {
+      				mplace2.className = 'myreplika';
+      			}
+      			else {
+      				mplace2.className = 'reply';
+      			}
+      			const text = document.createElement('div');
+      			text.innerHTML = data.text;
+      			mplace2.append(user);
+      			mplace2.append(text);
+      			mplace2.append(dt);
+      			mplace1.append(mplace2);
+      			document.querySelector('.wrapper').append(mplace1);
+    			
+          	});
+
 		});
 		
 	</script>
@@ -618,12 +668,12 @@
 	
 	<div class="inputarea">
 		<form id="message" method="" accept-charset="utf-8">
-				<input id="txt" type="text" name="">
-				<button id="" class="send" type="submit">
-					<svg width="20px" height="40px" viewBox="0 0 50 80">
-					    <polyline points="0,75 45,38 0,0"/>
-					</svg>
-				</button>
+			<input id="txt" type="text" name="txt">
+			<button id="majorTomToGoundControl" class="send" type='submit'>
+				<svg width="20px" height="40px" viewBox="0 0 50 80">
+				    <polyline points="0,75 45,38 0,0"/>
+				</svg>
+			</button>
 		</form>
 	</div>
 		

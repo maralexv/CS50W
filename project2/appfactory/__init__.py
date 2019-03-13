@@ -2,7 +2,6 @@ import os
 from flask import Flask, session
 from flask_sqlalchemy import SQLAlchemy
 
-
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.urandom(16)
 # app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
