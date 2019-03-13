@@ -6,11 +6,367 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Flack</title>
 	<style type="text/css" media="screen">
-		
+		:root {
+			--main-color: steelblue;
+			--secondary-color: salmon;
+			--worning-color: orange;
+			--danger-clor: red;
+		}
+		* {
+			-ms-overflow-style: none; /* Hide scrollbar IE 10+ */
+			overflow: -moz-scrollbars-none;  /* Hide scrollbarFirefox */
+			box-sizing: border-box;
+		}
+		*::-webkit-scrollbar { 
+			width: 0 !important; /* Hide scrollbar Webkit (Safari and Chrome) */ 
+			box-sizing: border-box;
+		} 
+
+		body {
+			font-family: 'Sarabun', sans-serif;
+			font-size: 1rem;
+		}
+		button {
+			/*-webkit-appearance: none;*/
+			background: transparent;
+			border: 0;
+			outline:0;
+		}
+		form {
+			-webkit-display: flex;
+			display: flex;
+			-webkit-align-items: center;
+			/*flex-direction: column;*/
+			margin: 10px 10px;
+			padding: 10px;
+			align-items: center;
+			justify-content: center;
+			-webkit-justify-content: center;
+			max-width: 95%;
+		}
+		fieldset {
+			-webkit-display: flex;
+			display: flex;
+			flex-direction: column;
+			-webkit-align-items: center;
+			margin: 10px 10px;
+			padding: 10px;
+			align-items: center;
+			justify-content: center;
+			-webkit-justify-content: center;
+			border: 1px solid var(--main-color);
+			border-radius: 4px;
+			box-shadow: 2px 2px 10px lightgrey, -2px -2px 20px lightgrey;
+		}
+		input {
+			width: 80%;
+			padding: 6px;
+  			margin: 10px 10px;
+  			border: 1px solid var(--main-color);
+			border-radius: 4px;
+			font-size: 1rem;
+		}
+		nav {
+			display: flex;
+			position: sticky;
+			position: -webkit-sticky;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 50px;
+			border-bottom: 1px solid lightgrey;
+			/*margin-bottom: 2px;*/
+			z-index: inherit;
+			background-color: white;
+			opacity: 0.9;
+		}
+		nav ul{
+			-webkit-display: flex;
+			display: flex;
+			-webkit-align-items: center;
+			flex-direction: row;
+			margin-right: 20px;
+			margin-left: 0;
+			align-items: center;
+			justify-content: space-between;
+			-webkit-justify-content: space-between;
+			width: 100%;
+		}
+		nav li {
+			display: inline-block;
+			list-style-type: none;
+		}
+		svg {
+			stroke: var(--main-color);
+			stroke-width: 4;
+			stroke-linecap: round;
+			stroke-linejoin: round;
+			fill: none;
+		}
+
+		.menu {
+			cursor: pointer;
+			margin-top: 0;
+			margin-left: 0;
+			width: 30px;
+			height: 30px;
+		}
+		.menu:hover polyline, .menu:hover line,
+		.menu:focus polyline, .menu:focus line {
+			stroke-width: 8;
+		}
+		.menu:active polyline, .menu:active line {
+			stroke-width: 8;
+			transition: all 100ms ease-in-out;
+		}
+		.send {
+			cursor: pointer;
+			margin-top: 0;
+			margin-left: 0;
+			width: 45px;
+			height: 45px;
+		}
+		.send:hover polyline, .send:hover line,
+		.send:focus polyline, .send:focus line {
+			stroke-width: 8;
+		}
+		.send:active polyline, .send:active line {
+			stroke-width: 8;
+			transition: all 100ms ease-in-out;
+		}
+		@keyframes up {
+			from { 
+				opacity: 1;
+				top: 0;
+				height: 100%;
+				line-height: 100%;
+			}
+			to {
+				opacity: 0;
+				top: -110vh;
+				height: 0;
+				line-height: 0;
+			}
+		}
+		@keyframes dwn {
+			from { 
+				top: -110vh;
+				opacity: 0;
+				height: 0;
+				line-height: 0;
+			}
+			to {
+				top: 0;
+				opacity: 1;
+				height: 100%;
+				line-height: 100%;
+			}
+		}
+		@keyframes rgtf {
+			from { 
+				left: -150vw;
+				width: 0;
+				opacity: 0;
+			}
+			to { 
+				left: 0;
+				width: 100vw;
+				opacity: 1;
+			}
+		}
+		@keyframes lftf {
+			from { 
+				left: 0;
+				width: 100vw;
+				opacity: 1;
+			}
+			to { 
+				left: -150vw;
+				width: 0;
+				opacity: 0; 
+			}
+		}
+		.nickname {
+			display: flex;
+			flex-direction: row;
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			margin: 0;
+			align-items: center;
+			justify-content: center;
+			background-color: snow;
+			border-bottom: 1px solid grey;
+			box-shadow: 2px 0 5px grey;
+			opacity: 1;
+			z-index: 2;
+			animation-name: up;
+           	animation-duration: 1s;
+           	animation-fill-mode: forwards;
+           	animation-play-state: paused;
+		}
+		.user {
+			display: flex;
+			flex-direction: column;
+			position: absolute;
+			top: -110vh;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			margin: 0;
+			align-items: center;
+			justify-content: center;
+			background-color: snow;
+			border-bottom: 1px solid grey;
+			box-shadow: 2px 0 5px grey;
+			opacity: 1;
+			z-index: 2;
+			animation-name: dwn;
+           	animation-duration: 1s;
+           	animation-fill-mode: forwards;
+           	animation-play-state: paused;
+		}
+		.convlist {
+			display: block;
+			position: absolute;
+			top: 0;
+			left: 0;
+			padding: 0;
+			height: 100vh;
+			width: 100vw;
+			justify-content: center;
+			overflow-y: scroll;
+			background-color: snow;
+			border-right: 1px solid grey;
+			box-shadow: 0 2px 5px grey;
+			opacity: 1;
+			box-shadow: 5px 0 6px rgba(0, 0, 0, 0.3);
+			z-index: 1;
+			animation-name: lftf;
+           	animation-duration: 1s;
+           	animation-fill-mode: forwards;
+           	animation-play-state: paused;
+		}
+		.conv-item {
+			display: flex;
+			margin: 5% auto 5% 5%;
+			align-items: center;
+			flex-direction: row;
+		}
+		.conv-item:hover, .conv-item:focus {
+			cursor: pointer;
+			color: var(--main-color);
+		} 
+		.chatarea {
+			display: block;
+			position: absolute;
+			padding: 0;
+			margin: 0;
+			top: 0;
+			left: 0;
+			height: calc(100vh - 85px);
+			width: 100vw;
+			overflow-y: hidden;
+			z-index: 0;
+		}
+		.wrapper {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-end;
+			overflow-y: auto;
+			height: calc(100vh - 50px - 85px);
+			z-index: -1
+		}
+		.inputarea {
+			display: block;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			padding: 0;
+			width: 100%;
+			max-height: 85px;
+			border-top: 1px solid lightgrey;
+			background-color: white;
+			opacity: 0.65;
+			z-index: 0;
+		}
+		.placeholder {
+			display: block;
+			width: 100%;
+			margin: 1px 5px 1px 5px;
+			padding: 10px 10px;
+		}
+		.bywho {
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			/*font-size: 0.8em;*/
+			/*font-style: italic;*/
+			color: var(--main-color);
+		}
+		.tstamp {
+			display: flex;
+			justify-content: flex-end;
+			font-size: 0.2em;
+			font-style: italic;
+			color: grey;
+		}
+		.myreplika { 
+			float: right; 
+			display: flex;
+			flex-direction: column;
+			max-width: 75%;
+			padding: 0.75rem;
+			text-align: right;
+			margin-right: 1px;
+			background-color: lightblue;
+			border-radius: 20px;
+		}
+		.reply { 
+			float: left; 
+			display: flex;
+			flex-direction: column;
+			max-width: 78%;
+			padding: 0.75rem;
+			margin-left: 5px;
+			background-color: whitesmoke;
+			border-radius: 20px;
+		}
 	</style>
-		
+
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
+
+			var nickname = document.querySelector('.nickname');
+			var userpage = document.querySelector('.user');
+			var chats = document.querySelectorAll('.conv-item');
+			var backarr = document.querySelector('#back');
+			var user1 = document.querySelector('#user1');
+			var user2 = document.querySelector('#user2');
+			
+			// go back to chat list screen
+			backarr.onclick = function() {
+				document.querySelector('.convlist').style.animationName = 'rgtf';
+				document.querySelector('.convlist').style.animationPlayState = 'running';
+			};
+			// bring account screen
+			user1.onclick = function() {
+				userpage.style.animationName = 'dwn';
+				userpage.style.animationPlayState = 'running';
+			};
+			user2.onclick = function() {
+				userpage.style.animationName = 'dwn';
+				userpage.style.animationPlayState = 'running';
+			};
+			// remove account screen
+			userpage.onclick = function() {
+				userpage.style.animationName = 'up';
+				userpage.style.animationPlayState = 'running';
+			};
 
 			document.querySelector('#nick').onsubmit = function () {
 				// Initialize new request
@@ -26,23 +382,19 @@
               		// Update the user and channels divs
               		if (data.user) {
               			// Welcome User.
-              			document.querySelector('#user').innerHTML = `Hello ${data.username}!`;
-
+              			document.querySelector('#user').innerHTML = `Hello ${data.username}`;
+              			document.querySelector('#welcome').innerHTML = 'Here are existing chats to join:';
               			// Display the list of Channels.
-              			document.querySelector('#channels').innerHTML = 'Existing chats to join:';
+              			// document.querySelector('#channels').innerHTML = 'Existing chats to join';
               			console.log(data.channels);
               			data.channels.forEach(add_channels);
 
               			function add_channels(content) {
               				// Create div with chat channel
               				const item = document.createElement('div');
+              				item.className = 'conv-item';
+							item.setAttribute('data-goo', content);
               				item.innerHTML = content;
-              				// Add button to choose the channel
-							const go = document.createElement('button');
-							go.className = 'gobutton';
-							go.setAttribute('data-goo', content);
-							go.innerHTML = 'Choose';
-							item.append(go);
               				document.querySelector('#channels').append(item);
               			};
 
@@ -50,7 +402,7 @@
               			document.querySelector('#newch').style.display = "inline";
 
               			// Make channels clickable
-              			var chlist = document.querySelectorAll('.gobutton');
+              			var chlist = document.querySelectorAll('.conv-item');
 						console.log(chlist);
 						chlist.forEach(add_chat_messages);
               		}
@@ -65,6 +417,8 @@
 	          	data.append('username', username);
 	          	// Send request
 	          	xhttp.send(data);
+	          	nickname.style.animationName = 'up';
+				nickname.style.animationPlayState = 'running';
 	          	// Clear the input field
 	          	document.querySelector('#nick').reset();
 				return false;
@@ -75,15 +429,27 @@
           		const xhttp = new XMLHttpRequest();
           		const newchannel = document.querySelector('#newchannel').value;
           		xhttp.open('POST', '/newtopic', true);
+          		document.querySelector('#topic12').innerHTML = "";
+	          	document.querySelector('#chat').innerHTML = "";
+
+	          	// Add new chat topic to the Channels list
+  				const item = document.createElement('div');
+  				item.className = 'conv-item';
+				item.setAttribute('data-goo', newchannel);
+  				item.innerHTML = newchannel;
+  				document.querySelector('#channels').append(item);
+  				// Make newchannel clickable
+  				var chlist = document.querySelectorAll('.conv-item');
+				console.log(chlist);
+				chlist.forEach(add_chat_messages);
 
           		// Callback function for when request completes
           		xhttp.onload = function() {
           			// Extract JSON data from request
               		const data = JSON.parse(xhttp.responseText);
               		// Update the chat div
-              		const chat = document.createElement('div');
-              		chat.innerHTML = data.channel;
-              		document.querySelector('#chat').append(chat);
+              		const newChatTopic = data.channel;
+              		document.querySelector('#topic12').innerHTML = newChatTopic;
           		};
 
 	          	// Add data to send with request
@@ -91,26 +457,23 @@
 	          	data.append('newchannel', newchannel);
 	          	// Send request
 	          	xhttp.send(data);
+	          	document.querySelector('#channels').parentElement.style.animationName = 'lftf';
+				document.querySelector('#channels').parentElement.style.animationPlayState = 'running';
 	          	// Clear the input field
 	          	document.querySelector('#addchannel').reset();
 				return false;
 			};
 
-    		function mark(button) {
-    			console.log(button);
-        		button.onclick = function() {
-        			console.log(this);
-            		this.parentElement.style.color = "red";
-        		};
-    		};
-
-			function add_chat_messages(button) {
-              	button.onclick = function() {
+			function add_chat_messages(element) {
+              	element.onclick = function() {
 	               // Initialize new request
 	          		const xhttp = new XMLHttpRequest();
-	          		const channel = button.dataset.goo;
+	          		const channel = element.dataset.goo;
 	          		console.log(channel);
 	          		xhttp.open('POST', '/messages', true);
+	          		document.querySelector('#topic12').innerHTML = "";
+	          		document.querySelector('#chat').innerHTML = "";
+
 
 	          		// Callback function for when request completes
 	          		xhttp.onload = function() {
@@ -118,37 +481,40 @@
 	              		const data = JSON.parse(xhttp.responseText);
 	              		console.log(data);
 	              		// Update the chat div
-	              		const chat = document.createElement('div');
-	              		chat.innerHTML = data.channel;
-	              		document.querySelector('#chat').append(chat);
+	              		document.querySelector('#topic12').innerHTML = data.channel;
 	              		const msarea = document.createElement('div');
-	              		msarea.className = '';
 	              		const me = data.me;
 	              		const meslist = data.messages;
+	              		msarea.className = 'wrapper';
 	              		meslist.forEach(function(message) {
-	              			const mplace = document.createElement('div');
+	              			const mplace1 = document.createElement('div');
+	              			mplace1.className = 'placeholder';
 	              			const user = document.createElement('div');
-	              			if (me == message.user) {
-	              				user.className = '';
-	              			}
-	              			else {
-	              				user.className = '';
-	              			}
+	              			user.className = 'bywho';
 	              			user.innerHTML = message.user;
-	              			const dt = document.createElement('span');
-	              			dt.className = '';
+	              			const dt = document.createElement('div');
+	              			dt.className = 'tstamp'
 	              			let dateTime = message.timestamp.split(' ');
 	              			let date = dateTime[1] + '-' + dateTime[2];
 	              			let time = dateTime[4].split(':')
 	              			dt.innerHTML = date + ' ' + time[0] + ':' + time[1];
+	              			const mplace2 = document.createElement('div');
+	              			if (me == message.user) {
+	              				mplace2.className = 'myreplika';
+	              			}
+	              			else {
+	              				mplace2.className = 'reply';
+	              			}
 	              			const text = document.createElement('div');
 	              			text.innerHTML = message.text;
-	              			user.append(dt);
-	              			mplace.append(user);
-	              			mplace.append(text);
-	              			msarea.append(mplace);
+	              			mplace2.append(user);
+	              			mplace2.append(text);
+	              			mplace2.append(dt);
+	              			mplace1.append(mplace2);
+	              			msarea.append(mplace1);
 	              			});
 	              		document.querySelector('#chat').append(msarea);
+
 	          		};
 
 		          	// Add data to send with request
@@ -156,9 +522,62 @@
 		          	data.append('channel', channel);
 		          	// Send request
 		          	xhttp.send(data);
+		          	document.querySelector('#channels').parentElement.style.animationName = 'lftf';
+					document.querySelector('#channels').parentElement.style.animationPlayState = 'running';
 		          	return false;
               	}; 
           	};
+
+			// Connect to websocket
+			var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+			// When connected, configure send button
+			socket.on('connect', function () {
+				document.querySelector('#majorTomToGoundControl').onclick = () => {
+					let user = document.querySelector('#user').innerHTML;
+					username = user.split(' ')[1];
+					const channel = document.querySelector('#topic12').innerHTML;
+					const text = document.querySelector('#txt').value;
+					const message = {'user': username, 'channel': channel, 'text': text};
+					console.log(message);
+					document.querySelector('#txt').value = "";
+					socket.emit('send message', {'message': message});
+					return false;
+				};
+				return false;
+			});
+
+			// When a new message is broadcasted, post it in the message are
+			socket.on('broadcast message', data => {
+				console.log(data);
+      			const mplace1 = document.createElement('div');
+      			mplace1.className = 'placeholder';
+      			const user = document.createElement('div');
+      			user.className = 'bywho';
+      			user.innerHTML = data.user;
+      			const dt = document.createElement('div');
+      			dt.className = 'tstamp'
+      			let dateTime = data.timestamp.split(' ');
+      			let date = dateTime[1] + '-' + dateTime[2];
+      			let time = dateTime[4].split(':')
+      			dt.innerHTML = date + ' ' + time[0] + ':' + time[1];
+      			const mplace2 = document.createElement('div');
+      			const meName = document.querySelector('#user').innerHTML;
+      			const me = meName.split(' ')[1];
+      			if (me == data.user) {
+      				mplace2.className = 'myreplika';
+      			}
+      			else {
+      				mplace2.className = 'reply';
+      			}
+      			const text = document.createElement('div');
+      			text.innerHTML = data.text;
+      			mplace2.append(user);
+      			mplace2.append(text);
+      			mplace2.append(dt);
+      			mplace1.append(mplace2);
+      			document.querySelector('.wrapper').append(mplace1);
+    			
+          	});
 
 		});
 		
@@ -167,40 +586,95 @@
 </head>
 <body>
 
-	<div id="who" style="display: inline-flex;">
+	<div id="who" class="nickname">
 		<form id="nick" action="" method="POST" accept-charset="utf-8">
-			<label for="username">Let us know how you want to be called: 
-				<input id="username" type="string" name="username" autofocus autocomplete="off" placeholder="Choose your nickname">
-			</label>
-			<input type="submit" value="Proceed...">
+			<fieldset>
+			<legend><h3>Let us know how you want to be called:</h3></legend>
+				<input id="username" type="text" name="username" autofocus autocomplete="off" placeholder="Choose your nickname">
+				<input type="submit" value="Proceed...">
+			</fieldset>
 		</form>
 	</div>
 
-	<div id="user">
-		
+	<div class="user">
+		<h1 id="user"></h1>
 	</div>
 	
-	<div id="channels">
+	<div class="convlist">
+		<nav>
+			<ul>
+				<li> </li>
+				<li id='welcome'></li>
+				<li>
+					<button id="user1" class="menu">
+					  <svg width="30px" height="30px" viewBox="0 0 90 90">
+					    <line x1="0" y1="10" x2="80" y2="10"/>
+					    <line x1="0" y1="40" x2="80" y2="40"/>
+					    <line x1="0" y1="70" x2="80" y2="70"/>
+					  </svg>
+					</button>
+				</li>
+			</ul>
+		</nav>
 		
-	</div>
+		<div id="channels">
+		</div>
 
-	<div style="display: inline-flex;">
-		<div id="newch" style="display: none">
-			<form id="addchannel" action="" method="POST" accept-charset="utf-8">
-				<label for="channelname">Here you can create a new chat topic:
-					<input id="newchannel" type="string" name="channelname" autofocus autocomplete="off" placeholder="New channel name">
-				</label>
-				<input type="submit" value="Create">
-			</form>
+		<div style="display: inline-flex;">
+			<div id="newch" style="display: none">
+				<form id="addchannel" action="" method="POST" accept-charset="utf-8">
+					<label for="channelname">Here you can create a new chat topic:
+						<input id="newchannel" type="text" name="channelname" autofocus autocomplete="off" placeholder="New channel name">
+					</label>
+					<!-- <input type="submit" value="Create"> -->
+					<button id="" class="send" type="submit">
+					<svg width="20px" height="40px" viewBox="0 0 50 50">
+					    <polyline points="0,75 45,38 0,0"/>
+					</svg>
+				</button>
+				</form>
+			</div>
 		</div>
 	</div>
 
-	<div id="chat">
+
+	<div class="chatarea">
+		<nav>
+			<ul>
+				<li>
+					<button id="back" class="send">
+					  <svg width="20px" height="40px" viewBox="0 0 20 80">
+					    <polyline points="45,75 0,38 45,0"/>
+					  </svg>
+					</button>
+				</li>
+				<li id='topic12'></li>
+				<li>
+					<button id="user2" class="menu">
+					  <svg width="30px" height="30px" viewBox="0 0 90 90">
+					    <line x1="0" y1="10" x2="80" y2="10"/>
+					    <line x1="0" y1="40" x2="80" y2="40"/>
+					    <line x1="0" y1="70" x2="80" y2="70"/>
+					  </svg>
+					</button>
+				</li>
+			</ul>
+		</nav>
+
+		<div id="chat">
+		</div>
 		
 	</div>
 	
-	<div id="message">
-		
+	<div class="inputarea">
+		<form id="message" method="" accept-charset="utf-8">
+			<input id="txt" type="text" name="txt">
+			<button id="majorTomToGoundControl" class="send" type='submit'>
+				<svg width="20px" height="40px" viewBox="0 0 50 80">
+				    <polyline points="0,75 45,38 0,0"/>
+				</svg>
+			</button>
+		</form>
 	</div>
 		
 </body>

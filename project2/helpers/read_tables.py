@@ -53,6 +53,20 @@ def read():
 		messages.append(mes)
 	print(messages)
 
+	last = Message.query.all()[-1]
+	first = Message.query.all()[0]
+	print(f'last message: {last}')
+	print(f'first message: {first}')
+	print(f'user id of the 1st message: {User.query.get(first.user_id).name}')
+	print(f'timestamp of the 1st message: {first.date_time}')
+	print(f'the body of 1st message: {first.message}')
+	num = len(Message.query.all())
+	print(f"Total num of messages is: {num}")
+	user = User.query.get(last.user_id).name
+	timestamp = last.date_time.strftime("%a, %Y-%b-%d %H:%M:%S")
+	text = last.message
+	a = {'user': user, 'timestamp': timestamp, 'text': text}
+	print(a)
 
 if __name__ == "__main__":
     with app.app_context():
