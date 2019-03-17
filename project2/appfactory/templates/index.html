@@ -236,6 +236,7 @@
 			padding: 0;
 			height: 100vh;
 			width: 100vw;
+			margin: auto;
 			justify-content: center;
 			overflow-y: scroll;
 			background-color: snow;
@@ -274,9 +275,12 @@
 		.wrapper {
 			display: flex;
 			flex-direction: column;
-			align-items: flex-end;
+			align-items: flex-start;
 			overflow-y: auto;
-			height: calc(100vh - 50px - 85px);
+			max-width: 720px;
+			margin: auto;
+			height: calc(100vh - 50px - 80px);
+			/*background-color: grey;*/
 			z-index: -1
 		}
 		.inputarea {
@@ -289,7 +293,7 @@
 			max-height: 85px;
 			border-top: 1px solid lightgrey;
 			background-color: white;
-			opacity: 0.65;
+			opacity: 1;
 			z-index: 0;
 		}
 		.placeholder {
@@ -300,39 +304,44 @@
 		}
 		.bywho {
 			display: flex;
-			justify-content: flex-start;
-			align-items: center;
+			flex-direction: row;
+			align-items: flex-start;
+			font-style: bold;
 			/*font-size: 0.8em;*/
 			/*font-style: italic;*/
-			color: var(--main-color);
+			/*color: var(--main-color);*/
 		}
 		.tstamp {
 			display: flex;
-			justify-content: flex-end;
-			font-size: 0.2em;
+			justify-content: flex-start;
+			margin-right: 0.3rem;
+			font-size: 0.75rem;
 			font-style: italic;
 			color: grey;
 		}
 		.myreplika { 
-			float: right; 
+			float: left; 
 			display: flex;
-			flex-direction: column;
-			max-width: 75%;
-			padding: 0.75rem;
-			text-align: right;
-			margin-right: 1px;
-			background-color: lightblue;
-			border-radius: 20px;
+			flex-direction: row;
+			/*max-width: 75%;*/
+			padding: 5px;
+			/*text-align: left;*/
+			margin-right: 5px;
+			/*background-color: lightblue;*/
+			/*border-radius: 20px;*/
 		}
 		.reply { 
 			float: left; 
 			display: flex;
-			flex-direction: column;
-			max-width: 78%;
-			padding: 0.75rem;
+			flex-direction: row;
+			/*max-width: 78%;*/
+			padding: 5px;
 			margin-left: 5px;
-			background-color: whitesmoke;
-			border-radius: 20px;
+			/*background-color: whitesmoke;*/
+			/*border-radius: 20px;*/
+		}
+		.contento {
+			margin-left: 0.5rem;
 		}
 	</style>
 
@@ -347,6 +356,7 @@
 			var backarr = document.querySelector('#back');
 			var user1 = document.querySelector('#user1');
 			var user2 = document.querySelector('#user2');
+			var mcounter = 0;
 			
 			// go back to chat list screen
 			backarr.onclick = function() {
@@ -474,7 +484,6 @@
 	          		document.querySelector('#topic12').innerHTML = "";
 	          		document.querySelector('#chat').innerHTML = "";
 
-
 	          		// Callback function for when request completes
 	          		xhttp.onload = function() {
 	          			// Extract JSON data from request
@@ -488,10 +497,13 @@
 	              		msarea.className = 'wrapper';
 	              		meslist.forEach(function(message) {
 	              			const mplace1 = document.createElement('div');
+	              			mcounter += 1;
+	              			console.log(mcounter);
 	              			mplace1.className = 'placeholder';
+	              			mplace1.id = mcounter;
 	              			const user = document.createElement('div');
 	              			user.className = 'bywho';
-	              			user.innerHTML = message.user;
+	              			user.innerHTML = `${message.user}:` + ' ';
 	              			const dt = document.createElement('div');
 	              			dt.className = 'tstamp'
 	              			let dateTime = message.timestamp.split(' ');
@@ -506,14 +518,18 @@
 	              				mplace2.className = 'reply';
 	              			}
 	              			const text = document.createElement('div');
+	              			text.className = 'contento';
 	              			text.innerHTML = message.text;
+	              			mplace2.append(dt);
 	              			mplace2.append(user);
 	              			mplace2.append(text);
-	              			mplace2.append(dt);
 	              			mplace1.append(mplace2);
 	              			msarea.append(mplace1);
 	              			});
 	              		document.querySelector('#chat').append(msarea);
+	              		let last = document.getElementById(`${mcounter}`);
+	              		console.log(last);
+	              		last.scrollIntoView({behavior: "smooth", block: "end"});
 
 	          		};
 
@@ -550,10 +566,13 @@
 			socket.on('broadcast message', data => {
 				console.log(data);
       			const mplace1 = document.createElement('div');
+      			mcounter += 1;
+      			console.log(mcounter);
       			mplace1.className = 'placeholder';
+      			mplace1.id = mcounter;
       			const user = document.createElement('div');
       			user.className = 'bywho';
-      			user.innerHTML = data.user;
+      			user.innerHTML = `${data.user}:` + ' ';
       			const dt = document.createElement('div');
       			dt.className = 'tstamp'
       			let dateTime = data.timestamp.split(' ');
@@ -570,13 +589,15 @@
       				mplace2.className = 'reply';
       			}
       			const text = document.createElement('div');
+      			text.className = 'contento';
       			text.innerHTML = data.text;
+      			mplace2.append(dt);
       			mplace2.append(user);
       			mplace2.append(text);
-      			mplace2.append(dt);
       			mplace1.append(mplace2);
       			document.querySelector('.wrapper').append(mplace1);
-    			
+    			let last = document.getElementById(`${mcounter}`);
+				last.scrollIntoView({behavior: "smooth", block: "end"});
           	});
 
 		});
@@ -663,8 +684,8 @@
 
 		<div id="chat">
 		</div>
-		
 	</div>
+	
 	
 	<div class="inputarea">
 		<form id="message" method="" accept-charset="utf-8">
