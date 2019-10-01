@@ -348,6 +348,45 @@
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 
 	<script>
+
+		// Hide 'choose your nickname' screen if user is defined already on this machine
+		if (!localStorage.getItem('guest')) {
+			let p = document.getElementById('who').style.display = 'none';
+			// Welcome User.
+  			const guestname = localStorage.getItem('guest');
+  			document.querySelector('#user').innerHTML = `Hello ${guestname}`;
+  			document.querySelector('#welcome').innerHTML = 'Here are existing chats to join:';
+  			// Initialize new request
+  			const xhttp0 = new XMLHttpRequest();
+      		xhttp0.open('POST', '/channels', true);
+
+      		xhttp0.onload = function() {
+      			// Extract JSON data from request
+          		const data = JSON.parse(xhttp0.responseText);
+	  			// Display the list of Channels.
+	  			// document.querySelector('#channels').innerHTML = 'Existing chats to join';
+	  			console.log(data.channels);
+	  			data.channels.forEach(add_channels);
+
+	  			function add_channels(content) {
+	  				// Create div with chat channel
+	  				const item = document.createElement('div');
+	  				item.className = 'conv-item';
+					item.setAttribute('data-goo', content);
+	  				item.innerHTML = content;
+	  				document.querySelector('#channels').append(item);
+	  			};
+	  			// Make form to add new channel visible
+	  			document.querySelector('#newch').style.display = "inline";
+
+	  			// Make channels clickable
+	  			var chlist = document.querySelectorAll('.conv-item');
+				console.log(chlist);
+				chlist.forEach(add_chat_messages);
+			};
+		};
+
+
 		document.addEventListener('DOMContentLoaded', function() {
 
 			var nickname = document.querySelector('.nickname');
@@ -392,6 +431,7 @@
               		// Update the user and channels divs
               		if (data.user) {
               			// Welcome User.
+              			localStorage.setItem('guest', data.username);
               			document.querySelector('#user').innerHTML = `Hello ${data.username}`;
               			document.querySelector('#welcome').innerHTML = 'Here are existing chats to join:';
               			// Display the list of Channels.
